@@ -1,0 +1,103 @@
+# Promitto Project Rules
+
+## Directory Structure
+- Maintain the established directory structure:
+  - `src/` for source code
+  - `docs/` for documentation
+  - `public/` for static assets
+  - `components/` for React components
+
+## Documentation Standards
+- All documentation must be in Markdown format
+- Follow the documentation structure in `docs/README.md`
+- Include dates of last updates
+- Add screenshots for visual guidance
+- Reference related documentation when relevant
+
+## Code Style
+- Use TypeScript for all components
+- Follow React functional components pattern
+- Use Tailwind CSS for styling
+- Maintain consistent color scheme:
+  - Primary: #1E40AF (blue)
+  - Secondary: #F59E0B (orange)
+  - Hover: #D97706 (dark orange)
+- Use semantic HTML elements
+- Implement responsive design for all components
+
+## Component Guidelines
+- Components should be modular and reusable
+- Each component should have a single responsibility
+- Use proper TypeScript types and interfaces
+- Include proper error handling
+- Implement loading states where necessary
+- Follow accessibility best practices
+
+## File Naming
+- Use PascalCase for component files (e.g., `Header.tsx`)
+- Use kebab-case for documentation files (e.g., `user-guide.md`)
+- Use camelCase for utility files (e.g., `formatDate.ts`)
+
+## Documentation Categories
+- Technical documentation in `docs/technical/`
+- User journeys in `docs/user-journeys/`
+- Guides in `docs/guides/`
+- Design documentation in `docs/design/`
+
+## Version Control
+- Use meaningful commit messages
+- Follow semantic versioning
+- Document breaking changes
+- Keep the main branch stable
+
+## Testing
+- Write unit tests for critical components
+- Test responsive design across breakpoints
+- Verify accessibility compliance
+- Test user flows and interactions
+
+## Performance
+- Optimize images and assets
+- Implement lazy loading where appropriate
+- Minimize bundle size
+- Use proper caching strategies
+
+## Security
+- Follow security best practices
+- Implement proper authentication
+- Sanitize user inputs
+- Use environment variables for sensitive data
+
+## Deployment
+- Follow deployment procedures in `docs/technical/setup/`
+- Maintain separate environments
+- Document deployment steps
+- Monitor performance metrics
+
+## Code Review
+- Review for:
+  - Code quality
+  - Performance impact
+  - Security concerns
+  - Accessibility compliance
+  - Documentation updates
+
+## Maintenance
+- Keep dependencies updated
+- Monitor for deprecated features
+- Regular security audits
+- Performance optimization
+- Documentation updates
+
+## Communication
+- Document all major changes
+- Update relevant documentation
+- Notify team of breaking changes
+- Maintain changelog
+
+## Design System
+- Follow established color scheme
+- Use consistent typography
+- Maintain component library
+- Document design decisions
+- Follow responsive design guidelines 
