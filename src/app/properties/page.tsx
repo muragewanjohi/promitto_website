@@ -6,7 +6,7 @@ import PropertyCard from '../../components/PropertyCard';
 import PropertyFilters from '../../components/PropertyFilters';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { propertyDetails } from '../../data/properties';
+import { supabase } from '@/lib/supabase';
 
 interface Property {
   id: string;
@@ -44,20 +44,37 @@ export default function PropertiesPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    // Instead of fetching from API, use the static data
-    try {
-      const propertiesArray = Object.values(propertyDetails).map(property => ({
-        ...property,
-        mainImage: `/images/${property.id}/main.jpg`, // Update image path to use images folder
+    const fetchProperties = async () => {
+      setLoading(true);
+      setError(null);
+      const { data, error } = await supabase
+        .from('properties')
+        .select(`*, property_types(name), property_statuses(name), roof_types(name)`);
+      if (error) {
+        setError('Failed to load properties');
+        setLoading(false);
+        return;
+      }
+      const propertiesArray = (data || []).map((property: any) => ({
+        id: property.id,
+        name: property.name,
+        location: property.location,
+        price: property.price,
+        bedrooms: property.bedrooms,
+        bathrooms: property.bathrooms,
+        mainImage: property.featuredImage || (property.images && property.images[0]) || '/images/placeholder.png',
+        status: property.property_statuses?.name || 'completed',
+        type: property.property_types?.name || 'House',
+        area: property.area,
+        description: property.description,
+        features: property.features,
+        roofType: property.roof_types?.name || '',
       }));
       setProperties(propertiesArray);
       setFilteredProperties(propertiesArray);
       setLoading(false);
-    } catch (err) {
-      setError('Failed to load properties');
-      console.error('Error loading properties:', err);
-      setLoading(false);
-    }
+    };
+    fetchProperties();
   }, []);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -80,14 +97,14 @@ export default function PropertiesPage() {
     }
 
     // Filter by price range
-    if (filters.priceMin !== null) {
+    if (filters.priceMin !== null && filters.priceMin !== undefined) {
       filtered = filtered.filter(property => 
-        property.price && parseFloat(property.price.replace(/[^0-9]/g, '')) >= filters.priceMin
+        property.price && parseFloat(property.price.replace(/[^0-9]/g, '')) >= filters.priceMin!
       );
     }
-    if (filters.priceMax !== null) {
+    if (filters.priceMax !== null && filters.priceMax !== undefined) {
       filtered = filtered.filter(property => 
-        property.price && parseFloat(property.price.replace(/[^0-9]/g, '')) <= filters.priceMax
+        property.price && parseFloat(property.price.replace(/[^0-9]/g, '')) <= filters.priceMax!
       );
     }
 

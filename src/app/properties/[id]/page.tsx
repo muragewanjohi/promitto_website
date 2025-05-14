@@ -1,9 +1,8 @@
-import React from 'react';
-import fs from 'fs';
-import path from 'path';
+'use client';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { propertyDetails } from '../../../data/properties';
+import { supabase } from '@/lib/supabase';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 
@@ -13,123 +12,160 @@ interface PropertyPageProps {
   };
 }
 
-function getPropertyImages(id: string): string[] {
-  const propertyDir = path.join(process.cwd(), 'public/images', id);
-  const images = fs.readdirSync(propertyDir);
-  return images.sort().map(img => `/images/${id}/${img}`);
-}
-
-export async function generateStaticParams() {
-  return Object.keys(propertyDetails).map((id) => ({
-    id,
-  }));
-}
-
 export default function PropertyPage({ params }: PropertyPageProps) {
-  const images = getPropertyImages(params.id);
-  const details = propertyDetails[params.id] || {
-    id: params.id,
-    name: params.id.replace(/([A-Z])/g, ' $1').trim(),
-    location: 'Nairobi, Kenya',
-    description: 'Contact us for more information about this property.',
-    features: [],
-    price: undefined,
-    bedrooms: undefined,
-    bathrooms: undefined,
-    area: undefined
-  };
+  const [property, setProperty] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      setLoading(true);
+      setError(null);
+      const { data, error } = await supabase
+        .from('properties')
+        .select(`*, property_types(name), property_statuses(name), roof_types(name)`)
+        .eq('id', params.id)
+        .single();
+      if (error || !data) {
+        setError('Property not found');
+        setProperty(null);
+      } else {
+        setProperty(data);
+      }
+      setLoading(false);
+    };
+    fetchProperty();
+  }, [params.id]);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center text-gray-600">Loading property...</div>;
+  }
+  if (error || !property) {
+    return <div className="min-h-screen flex items-center justify-center text-red-600">{error || 'Property not found'}</div>;
+  }
+
+  const images: string[] = property.images || (property.featuredImage ? [property.featuredImage] : []);
 
   return (
     <main className="min-h-screen flex flex-col">
       <Header />
       <div className="flex-grow bg-gray-50 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Back Button */}
-          <Link href="/properties" className="inline-flex items-center text-[#1E40AF] hover:text-[#F59E0B] mb-8">
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to Properties
-          </Link>
+          {/* Logo and Back Button Row */}
+          <div className="flex items-center mb-8">
+            <div className="mr-6">
+              {/* Logo is already in Header, so just add spacing if needed */}
+            </div>
+            <Link href="/properties" className="inline-flex items-center text-[#1E40AF] hover:text-[#F59E0B] text-base pl-4">
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to Properties
+            </Link>
+          </div>
 
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">{details.name}</h1>
-            <div className="flex items-center text-xl text-gray-600">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">{property.name}</h1>
+            {/* Property Status and Roof Type */}
+            <div className="flex items-center gap-4 mb-4">
+              {property.status && (
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${property.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>{property.status}</span>
+              )}
+              {property.roofType && (
+                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">{property.roofType}</span>
+              )}
+            </div>
+            <div className="flex items-center text-xl text-gray-600 mb-4">
               <svg className="w-6 h-6 mr-2 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              {details.location}
+              {property.location}
             </div>
+            {/* Features Section */}
+            {property.features && property.features.length > 0 && (
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Features</h3>
+                <ul className="flex flex-wrap gap-2">
+                  {property.features.map((feature: string) => (
+                    <li key={feature} className="bg-[#F59E0B] text-white px-3 py-1 rounded-full text-xs font-medium">{feature}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           {/* Main Image */}
-          <div className="relative h-[60vh] w-full mb-8 rounded-xl overflow-hidden">
-            <Image
-              src={images[0]}
-              alt={details.name}
-              fill
-              className="object-cover"
-              priority
-              sizes="100vw"
-            />
-          </div>
+          {images[0] && (
+            <div className="relative h-[60vh] w-full mb-8 rounded-xl overflow-hidden">
+              <Image
+                src={images[0]}
+                alt={property.name}
+                fill
+                className="object-cover"
+                priority
+                sizes="100vw"
+              />
+            </div>
+          )}
 
           {/* Key Details */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-            {details.price && (
+            {property.price && (
               <div className="bg-white p-4 rounded-lg shadow-sm">
                 <h3 className="text-sm font-medium text-gray-500">Price</h3>
-                <p className="text-lg font-semibold text-[#1E40AF]">KES {details.price}</p>
+                <p className="text-lg font-semibold text-[#1E40AF]">KES {property.price}</p>
               </div>
             )}
-            {details.bedrooms && (
+            {property.bedrooms && (
               <div className="bg-white p-4 rounded-lg shadow-sm">
                 <h3 className="text-sm font-medium text-gray-500">Bedrooms</h3>
-                <p className="text-lg font-semibold text-gray-900">{details.bedrooms}</p>
+                <p className="text-lg font-semibold text-gray-900">{property.bedrooms}</p>
               </div>
             )}
-            {details.bathrooms && (
+            {property.bathrooms && (
               <div className="bg-white p-4 rounded-lg shadow-sm">
                 <h3 className="text-sm font-medium text-gray-500">Bathrooms</h3>
-                <p className="text-lg font-semibold text-gray-900">{details.bathrooms}</p>
+                <p className="text-lg font-semibold text-gray-900">{property.bathrooms}</p>
               </div>
             )}
-            {details.area && (
+            {property.area && (
               <div className="bg-white p-4 rounded-lg shadow-sm">
                 <h3 className="text-sm font-medium text-gray-500">Area</h3>
-                <p className="text-lg font-semibold text-gray-900">{details.area}</p>
+                <p className="text-lg font-semibold text-gray-900">{property.area}</p>
               </div>
             )}
           </div>
 
           {/* Image Gallery */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
-            {images.slice(1).map((image, index) => (
-              <div key={image} className="relative aspect-square rounded-lg overflow-hidden">
-                <Image
-                  src={image}
-                  alt={`${details.name} - Image ${index + 2}`}
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-300"
-                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                />
-              </div>
-            ))}
-          </div>
+          {images.length > 1 && (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
+              {images.slice(1).map((image: string, index: number) => (
+                <div key={image} className="relative aspect-square rounded-lg overflow-hidden">
+                  <Image
+                    src={image}
+                    alt={`${property.name} - Image ${index + 2}`}
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Property Details */}
           <div className="grid md:grid-cols-2 gap-8">
             {/* Description and Features */}
             <div className="bg-white rounded-xl shadow-sm p-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">Description</h2>
-              <p className="text-gray-600 mb-8">{details.description}</p>
+              <p className="text-gray-600 mb-8">{property.description}</p>
 
-              {details.features && details.features.length > 0 && (
+              {property.features && property.features.length > 0 && (
                 <>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">Features</h3>
                   <ul className="grid grid-cols-2 gap-4">
-                    {details.features.map((feature) => (
+                    {property.features.map((feature: string) => (
                       <li key={feature} className="flex items-center text-gray-600">
                         <svg className="w-5 h-5 mr-2 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

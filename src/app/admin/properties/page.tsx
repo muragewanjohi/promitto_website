@@ -20,6 +20,21 @@ export default function PropertiesAdmin() {
     status: '',
   });
 
+  const handleToggleFeatured = async (id: string, currentFeatured: boolean) => {
+    const { error } = await supabase
+      .from('properties')
+      .update({ featured: !currentFeatured })
+      .eq('id', id);
+
+    if (!error) {
+      setProperties(prev => prev.map(p => 
+        p.id === id ? { ...p, featured: !currentFeatured } : p
+      ));
+    } else {
+      alert('Failed to update featured status');
+    }
+  };
+
   useEffect(() => {
     const fetchProperties = async () => {
       setLoading(true);
@@ -117,6 +132,9 @@ export default function PropertiesAdmin() {
                   />
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Featured
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -157,6 +175,18 @@ export default function PropertiesAdmin() {
                     }`}>
                       {property.status_name}
                     </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => handleToggleFeatured(property.id, property.featured)}
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        property.featured
+                          ? 'bg-[#1E40AF] text-white hover:bg-[#1E3A8A]'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      {property.featured ? 'Featured' : 'Not Featured'}
+                    </button>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <Link
