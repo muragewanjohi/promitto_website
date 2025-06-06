@@ -5,9 +5,9 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 const LoanCalculator = () => {
-  const [loanAmount, setLoanAmount] = useState<string>('3,000,000');
-  const [downPayment, setDownPayment] = useState<string>('0');
-  const [loanTerm, setLoanTerm] = useState<string>('36');
+  const [propertyCost, setPropertyCost] = useState<string>('3,000,000');
+  const [downPayment, setDownPayment] = useState<string>('900,000');
+  const [loanTerm] = useState<string>('84'); // Fixed at 7 years
   const [interestRate] = useState<string>('12');
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
   const [totalPayment, setTotalPayment] = useState<number>(0);
@@ -28,8 +28,15 @@ const LoanCalculator = () => {
     return Number(value.replace(/,/g, ''));
   };
 
+  // Update down payment whenever property cost changes
+  useEffect(() => {
+    const cost = parseNumber(propertyCost);
+    const downPaymentAmount = Math.round(cost * 0.3); // 30% of property cost
+    setDownPayment(formatNumber(downPaymentAmount.toString()));
+  }, [propertyCost]);
+
   const calculateLoan = () => {
-    const principal = parseNumber(loanAmount) - parseNumber(downPayment);
+    const principal = parseNumber(propertyCost) - parseNumber(downPayment);
     const annualRate = Number(interestRate) / 100;
     const monthlyRate = annualRate / 12;
     const numberOfPayments = Number(loanTerm);
@@ -62,9 +69,9 @@ const LoanCalculator = () => {
       if (paymentRatio <= 0.3) {
         setRecommendation("Based on your salary, this loan appears affordable. The monthly payment is within the recommended 30% of your income.");
       } else if (paymentRatio <= 0.4) {
-        setRecommendation("The monthly payment is slightly high for your income. Consider a longer loan term or increasing your down payment.");
+        setRecommendation("The monthly payment is slightly high for your income. Consider increasing your down payment.");
       } else {
-        setRecommendation("This loan amount may be too high for your current income. Consider increasing your down payment or exploring more affordable options.");
+        setRecommendation("This property cost may be too high for your current income. Consider exploring more affordable options.");
       }
     } else {
       setRecommendation('');
@@ -74,14 +81,8 @@ const LoanCalculator = () => {
   const handleInputChange = (field: string, value: string) => {
     setIsCalculated(false);
     switch (field) {
-      case 'loanAmount':
-        setLoanAmount(formatNumber(value));
-        break;
-      case 'downPayment':
-        setDownPayment(formatNumber(value));
-        break;
-      case 'loanTerm':
-        setLoanTerm(value);
+      case 'propertyCost':
+        setPropertyCost(formatNumber(value));
         break;
       case 'salary':
         setSalary(formatNumber(value));
@@ -96,6 +97,7 @@ const LoanCalculator = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-[#F59E0B] mb-4">Loan Calculator</h1>
           <h2 className="text-2xl text-gray-700">Jenga Nyumba Loan Calculator</h2>
+          <p className="mt-2 text-lg text-[#1E40AF] font-semibold">Interest Rate: 12% per annum (fixed, reducing balance)</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12">
@@ -103,37 +105,33 @@ const LoanCalculator = () => {
           <div className="bg-[#F5E6CC] p-8 rounded-lg shadow-lg">
             <div className="space-y-6">
               <div>
-                <label className="block text-gray-700 font-medium mb-2">Loan Amount (KES)</label>
+                <label className="block text-gray-700 font-medium mb-2">Property Cost (KES)</label>
                 <input
                   type="text"
-                  value={loanAmount}
-                  onChange={(e) => handleInputChange('loanAmount', e.target.value)}
+                  value={propertyCost}
+                  onChange={(e) => handleInputChange('propertyCost', e.target.value)}
                   className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
-                  placeholder="Enter loan amount"
+                  placeholder="Enter property cost"
                 />
               </div>
 
               <div>
-                <label className="block text-gray-700 font-medium mb-2">Down Payment (Optional)</label>
+                <label className="block text-gray-700 font-medium mb-2">Down Payment (30% of Property Cost)</label>
                 <input
                   type="text"
                   value={downPayment}
-                  onChange={(e) => handleInputChange('downPayment', e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
-                  placeholder="Enter down payment (optional)"
+                  readOnly
+                  className="w-full px-4 py-2 rounded-lg border bg-gray-100"
                 />
               </div>
 
               <div>
-                <label className="block text-gray-700 font-medium mb-2">Loan Term (Months)</label>
+                <label className="block text-gray-700 font-medium mb-2">Loan Term</label>
                 <input
-                  type="number"
-                  value={loanTerm}
-                  onChange={(e) => handleInputChange('loanTerm', e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
-                  placeholder="Enter loan term in months"
-                  max="84"
-                  min="12"
+                  type="text"
+                  value="7 years (84 months)"
+                  readOnly
+                  className="w-full px-4 py-2 rounded-lg border bg-gray-100"
                 />
               </div>
 
@@ -176,15 +174,17 @@ const LoanCalculator = () => {
               <h3 className="text-2xl font-semibold text-[#1E40AF] mb-6">Loan Summary</h3>
               <div className="space-y-4">
                 <div>
-                  <p className="text-gray-600">Loan Amount</p>
-                  <p className="text-2xl font-bold">KES {loanAmount}</p>
+                  <p className="text-gray-600">Property Cost</p>
+                  <p className="text-2xl font-bold">KES {propertyCost}</p>
                 </div>
-                {parseNumber(downPayment) > 0 && (
-                  <div>
-                    <p className="text-gray-600">Down Payment</p>
-                    <p className="text-2xl font-bold">KES {downPayment}</p>
-                  </div>
-                )}
+                <div>
+                  <p className="text-gray-600">Down Payment (30%)</p>
+                  <p className="text-2xl font-bold">KES {downPayment}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Interest Rate</p>
+                  <p className="text-xl font-bold text-[#1E40AF]">12% per annum (reducing balance)</p>
+                </div>
                 <div className="pt-4 border-t">
                   <p className="text-gray-600">Estimated Monthly Payment</p>
                   <p className="text-3xl font-bold text-[#1E40AF] mt-2">
@@ -220,8 +220,9 @@ const LoanCalculator = () => {
             <div className="bg-gray-50 p-6 rounded-lg">
               <h4 className="text-lg font-semibold text-[#1E40AF] mb-4">Important Notes</h4>
               <ul className="list-disc pl-6 text-gray-700 space-y-2">
-                <li>The loan term can be up to a maximum of seven (7) years (84 months)</li>
-                <li>Interest rate is fixed at 12% per annum on reducing balance</li>
+                <li>Down payment is fixed at 30% of the property cost</li>
+                <li>Loan term is fixed at 7 years (84 months)</li>
+                <li>Interest rate is fixed at <span className="font-bold">12% per annum</span> on reducing balance</li>
                 <li>Monthly payments start one month after construction begins</li>
                 <li>Construction period is typically 6-12 months</li>
               </ul>

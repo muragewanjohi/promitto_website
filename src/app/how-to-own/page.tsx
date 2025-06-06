@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Image from 'next/image';
@@ -9,7 +9,7 @@ const HowToOwn = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-24">
         <div className="mb-16">
           <h1 className="text-6xl font-bold text-[#F59E0B] mb-6">Own a Home</h1>
           <p className="text-xl text-gray-700 mb-8">
@@ -55,62 +55,7 @@ const HowToOwn = () => {
         </div>
 
         <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-16">
-          <h2 className="text-3xl font-bold text-[#F59E0B] p-8 border-b">Our Terms & Conditions</h2>
-          
-          <div className="p-8">
-            <h3 className="text-2xl font-semibold text-[#1E40AF] mb-6">01. Loan Security</h3>
-            <p className="text-gray-700 mb-4">
-              Borrower agrees that on or before the date of this agreement shall deliver the following document to the lender:
-            </p>
-            <ul className="list-disc pl-6 text-gray-700 mb-8">
-              <li>A title deed to a parcel of land upon which the construction project will be executed.</li>
-              <li>The borrower must possess a personal title deed written under his or her name.</li>
-              <li>In case of the title deed belonging to a second party, the company will require written consent from the second party to use the title deed.</li>
-              <li>The title deed must be free from any distress. Title deeds held up with other financing institutions shall not be accepted.</li>
-              <li>If there are any family disputes concerning the title deed, Promitto will not be part and parcel of that.</li>
-            </ul>
-
-            <h3 className="text-2xl font-semibold text-[#1E40AF] mb-6">02. Loan Terms</h3>
-            
-            <h4 className="text-xl font-semibold mb-4">(A) Deposits</h4>
-            <ul className="list-disc pl-6 text-gray-700 mb-8">
-              <li>The borrower shall be required to make a 30% deposit of the loan amount depending on the selected house design.</li>
-              <li>In cases where the borrower is not financially ready with the minimum deposit for the construction to happen, the client will be allowed to make instalments payments but will be made to understand that the construction will only start once the minimum deposit has been attained.</li>
-              <li>In a case where the client/borrower is ready with the 30% deposit, they will proceed to sign the construction agreement for the construction to commence.</li>
-              <li>The client can also deposit more than the required 30% minimum deposit to kickstart the project if they chose to do so.</li>
-              <li>The Company can also enter into a construction agreement with a client not seeking a loan facility for construction on the condition that the client provides the full finances to undertake the project.</li>
-            </ul>
-
-            <h4 className="text-xl font-semibold mb-4">(B) Loan Repayment Terms</h4>
-            <ul className="list-disc pl-6 text-gray-700 mb-8">
-              <li>The Loan shall be payable up to a maximum of seven (7) years. The exact loan term shall be as discussed and signed in the Loan application form.</li>
-              <li>The loan interest rate for the construction loan will be at 12% on a reducing balance rate. With a monthly standard payment plan which the borrower is expected to honour without fail.</li>
-            </ul>
-
-            <div className="bg-yellow-50 p-6 rounded-lg mb-8">
-              <h4 className="text-xl font-semibold text-[#F59E0B] mb-4">A customer can default a loan in three ways:</h4>
-              <ul className="list-disc pl-6 text-gray-700">
-                <li>If the client fails to completely repay the remaining 70% of the loan</li>
-                <li>If the client fails to repay the monthly instalment as agreed.</li>
-                <li>If the client fails to repay the monthly instalment on the stipulated timeline.</li>
-              </ul>
-            </div>
-
-            <div className="bg-red-50 p-6 rounded-lg mb-8">
-              <h4 className="text-xl font-semibold text-red-600 mb-4">Actionables</h4>
-              <p className="text-gray-700 italic mb-4">If the client fails to repay any instalment within 60 days, the directive will be to:</p>
-              <ul className="list-disc pl-6 text-gray-700">
-                <li>Repossess or auction the property.</li>
-                <li>If the client fails to repay the loan on the agreed instalments or on the agreed timelines there will be added penalties incurred.</li>
-              </ul>
-            </div>
-
-            <h4 className="text-xl font-semibold mb-4">(C) Expenses</h4>
-            <ul className="list-disc pl-6 text-gray-700">
-              <li>In case the client changes any component of the construction along the way, QS will have to re-evaluate the change cost and charge the customer. This will have to be paid for immediately.</li>
-              <li>In case a statutory requirement is delayed, Promitto shall not be held liable.</li>
-            </ul>
-          </div>
+          <CollapsibleTerms />
         </div>
 
         <div className="mb-16">
@@ -360,5 +305,77 @@ const HowToOwn = () => {
     </div>
   );
 };
+
+function CollapsibleTerms() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <button
+        className="w-full text-left text-3xl font-bold text-[#F59E0B] p-8 border-b focus:outline-none flex items-center justify-between bg-white"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls="terms-content"
+      >
+        Our Terms & Conditions
+        <span className="ml-4 text-2xl">{open ? '−' : '+'}</span>
+      </button>
+      {open && (
+        <div id="terms-content" className="p-8 animate-fade-in">
+          <h3 className="text-2xl font-semibold text-[#1E40AF] mb-6">01. Loan Security</h3>
+          <p className="text-gray-700 mb-4">
+            Borrower agrees that on or before the date of this agreement shall deliver the following document to the lender:
+          </p>
+          <ul className="list-disc pl-6 text-gray-700 mb-8">
+            <li>A title deed to a parcel of land upon which the construction project will be executed.</li>
+            <li>The borrower must possess a personal title deed written under his or her name.</li>
+            <li>In case of the title deed belonging to a second party, the company will require written consent from the second party to use the title deed.</li>
+            <li>The title deed must be free from any distress. Title deeds held up with other financing institutions shall not be accepted.</li>
+            <li>If there are any family disputes concerning the title deed, Promitto will not be part and parcel of that.</li>
+          </ul>
+
+          <h3 className="text-2xl font-semibold text-[#1E40AF] mb-6">02. Loan Terms</h3>
+          <h4 className="text-xl font-semibold mb-4">(A) Deposits</h4>
+          <ul className="list-disc pl-6 text-gray-700 mb-8">
+            <li>The borrower shall be required to make a 30% deposit of the loan amount depending on the selected house design.</li>
+            <li>In cases where the borrower is not financially ready with the minimum deposit for the construction to happen, the client will be allowed to make instalments payments but will be made to understand that the construction will only start once the minimum deposit has been attained.</li>
+            <li>In a case where the client/borrower is ready with the 30% deposit, they will proceed to sign the construction agreement for the construction to commence.</li>
+            <li>The client can also deposit more than the required 30% minimum deposit to kickstart the project if they chose to do so.</li>
+            <li>The Company can also enter into a construction agreement with a client not seeking a loan facility for construction on the condition that the client provides the full finances to undertake the project.</li>
+          </ul>
+
+          <h4 className="text-xl font-semibold mb-4">(B) Loan Repayment Terms</h4>
+          <ul className="list-disc pl-6 text-gray-700 mb-8">
+            <li>The Loan shall be payable up to a maximum of seven (7) years. The exact loan term shall be as discussed and signed in the Loan application form.</li>
+            <li>The loan interest rate for the construction loan will be at 12% on a reducing balance rate. With a monthly standard payment plan which the borrower is expected to honour without fail.</li>
+          </ul>
+
+          <div className="bg-yellow-50 p-6 rounded-lg mb-8">
+            <h4 className="text-xl font-semibold text-[#F59E0B] mb-4">A customer can default a loan in three ways:</h4>
+            <ul className="list-disc pl-6 text-gray-700">
+              <li>If the client fails to completely repay the remaining 70% of the loan</li>
+              <li>If the client fails to repay the monthly instalment as agreed.</li>
+              <li>If the client fails to repay the monthly instalment on the stipulated timeline.</li>
+            </ul>
+          </div>
+
+          <div className="bg-red-50 p-6 rounded-lg mb-8">
+            <h4 className="text-xl font-semibold text-red-600 mb-4">Actionables</h4>
+            <p className="text-gray-700 italic mb-4">If the client fails to repay any instalment within 60 days, the directive will be to:</p>
+            <ul className="list-disc pl-6 text-gray-700">
+              <li>Repossess or auction the property.</li>
+              <li>If the client fails to repay the loan on the agreed instalments or on the agreed timelines there will be added penalties incurred.</li>
+            </ul>
+          </div>
+
+          <h4 className="text-xl font-semibold mb-4">(C) Expenses</h4>
+          <ul className="list-disc pl-6 text-gray-700">
+            <li>In case the client changes any component of the construction along the way, QS will have to re-evaluate the change cost and charge the customer. This will have to be paid for immediately.</li>
+            <li>In case a statutory requirement is delayed, Promitto shall not be held liable.</li>
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default HowToOwn; 

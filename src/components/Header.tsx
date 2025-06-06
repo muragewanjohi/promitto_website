@@ -1,20 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, userProfile, signOut } = useAuth();
+  const pathname = usePathname();
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
 
   return (
-    <header className="fixed w-full bg-transparent z-50">
+    <header className="fixed w-full bg-[#1E40AF] z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center" prefetch={false}>
             <Image
               src="/logo.png"
               alt="Promitto Logo"
@@ -27,23 +34,26 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <Link href="/" className="text-white hover:text-[#F59E0B]">
+            <Link href="/" className="text-white hover:text-[#F59E0B]" prefetch={false}>
               Home
             </Link>
-            <Link href="/properties" className="text-white hover:text-[#F59E0B]">
-              Properties
+            <Link href="/properties" className="text-white hover:text-[#F59E0B]" prefetch={false}>
+              Projects
             </Link>
-            <Link href="/how-to-own" className="text-white hover:text-[#F59E0B]">
+            <Link href="/how-to-own" className="text-white hover:text-[#F59E0B]" prefetch={false}>
               How to Own
             </Link>
-            <Link href="/about" className="text-white hover:text-[#F59E0B]">
+            <Link href="/loan-calculator" className="text-white hover:text-[#F59E0B]" prefetch={false}>
+              Loan Calculator
+            </Link>
+            <Link href="/about" className="text-white hover:text-[#F59E0B]" prefetch={false}>
               About
             </Link>
-            <Link href="/contact" className="text-white hover:text-[#F59E0B]">
+            <Link href="/contact" className="text-white hover:text-[#F59E0B]" prefetch={false}>
               Contact
             </Link>
             {userProfile?.role === 'admin' && (
-              <Link href="/admin" className="text-white hover:text-[#F59E0B] font-semibold">
+              <Link href="/admin" className="text-white hover:text-[#F59E0B] font-semibold" prefetch={false}>
                 Admin Dashboard
               </Link>
             )}
@@ -66,12 +76,14 @@ export default function Header() {
                 <Link
                   href="/login"
                   className="text-white hover:text-[#F59E0B]"
+                  prefetch={false}
                 >
                   Login
                 </Link>
                 <Link
                   href="/signup"
                   className="bg-[#F59E0B] text-white px-4 py-2 rounded-md hover:bg-[#D97706]"
+                  prefetch={false}
                 >
                   Sign Up
                 </Link>
@@ -117,6 +129,7 @@ export default function Header() {
                 href="/"
                 className="text-white hover:text-[#F59E0B]"
                 onClick={() => setIsMenuOpen(false)}
+                prefetch={false}
               >
                 Home
               </Link>
@@ -124,6 +137,7 @@ export default function Header() {
                 href="/properties"
                 className="text-white hover:text-[#F59E0B]"
                 onClick={() => setIsMenuOpen(false)}
+                prefetch={false}
               >
                 Properties
               </Link>
@@ -131,13 +145,23 @@ export default function Header() {
                 href="/how-to-own"
                 className="text-white hover:text-[#F59E0B]"
                 onClick={() => setIsMenuOpen(false)}
+                prefetch={false}
               >
                 How to Own
+              </Link>
+              <Link
+                href="/loan-calculator"
+                className="text-white hover:text-[#F59E0B]"
+                onClick={() => setIsMenuOpen(false)}
+                prefetch={false}
+              >
+                Loan Calculator
               </Link>
               <Link
                 href="/about"
                 className="text-white hover:text-[#F59E0B]"
                 onClick={() => setIsMenuOpen(false)}
+                prefetch={false}
               >
                 About
               </Link>
@@ -145,6 +169,7 @@ export default function Header() {
                 href="/contact"
                 className="text-white hover:text-[#F59E0B]"
                 onClick={() => setIsMenuOpen(false)}
+                prefetch={false}
               >
                 Contact
               </Link>
@@ -153,6 +178,7 @@ export default function Header() {
                   href="/admin"
                   className="text-white hover:text-[#F59E0B] font-semibold"
                   onClick={() => setIsMenuOpen(false)}
+                  prefetch={false}
                 >
                   Admin Dashboard
                 </Link>
@@ -176,6 +202,7 @@ export default function Header() {
                     href="/login"
                     className="text-white hover:text-[#F59E0B]"
                     onClick={() => setIsMenuOpen(false)}
+                    prefetch={false}
                   >
                     Login
                   </Link>
@@ -183,6 +210,7 @@ export default function Header() {
                     href="/signup"
                     className="bg-[#F59E0B] text-white px-4 py-2 rounded-md hover:bg-[#D97706]"
                     onClick={() => setIsMenuOpen(false)}
+                    prefetch={false}
                   >
                     Sign Up
                   </Link>

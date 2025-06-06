@@ -15,14 +15,14 @@ const Hero = () => {
               Beautiful homes made for you
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-200">
-              Discover the perfect home with Promitto's extensive property listings
+              Discover the perfect home with Promitto's extensive project listings
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link
                 href="/properties"
                 className="bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-3 rounded-lg font-medium transition-colors"
               >
-                Browse Properties
+                Completed Projects
               </Link>
               <Link
                 href="/how-to-own"

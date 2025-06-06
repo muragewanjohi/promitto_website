@@ -3,6 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import Header from '@/components/Header';
 
 export default function AdminLayout({
   children,
@@ -20,7 +21,8 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="flex">
+      <Header />
+      <div className="flex pt-16">
         {/* Sidebar */}
         <aside className="w-64 bg-white text-gray-900 min-h-screen border-r border-gray-200 flex flex-col">
           <div className="p-4 flex-grow">
