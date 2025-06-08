@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 
-export default function VerifyEmailPage() {
+function VerifyEmailPageInner() {
   const [email, setEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
@@ -25,19 +25,15 @@ export default function VerifyEmailPage() {
 
   const handleResendVerification = async () => {
     if (!email) return;
-    
     setResendLoading(true);
     setError(null);
     setSuccess(null);
-
     try {
       const { error } = await supabase.auth.resend({
         type: 'signup',
         email,
       });
-
       if (error) throw error;
-      
       setSuccess('Verification email has been resent successfully!');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to resend verification email');
@@ -70,20 +66,16 @@ export default function VerifyEmailPage() {
              <p className="mt-2 text-sm text-gray-500">
               Close this page after you verify your email.
             </p>
-            
-            
             {error && (
               <div className="mt-4 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded relative" role="alert">
                 <span className="block sm:inline">{error}</span>
               </div>
             )}
-            
             {success && (
               <div className="mt-4 bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded relative" role="alert">
                 <span className="block sm:inline">{success}</span>
               </div>
             )}
-
             <div className="mt-6 space-y-4">
               <button
                 onClick={handleResendVerification}
@@ -102,7 +94,6 @@ export default function VerifyEmailPage() {
                   'Resend verification email'
                 )}
               </button>
-
               <div className="text-center">
                 <Link
                   href="/signup"
@@ -116,5 +107,13 @@ export default function VerifyEmailPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense>
+      <VerifyEmailPageInner />
+    </Suspense>
   );
 } 

@@ -17,7 +17,7 @@ const HowToOwn = () => {
             With our innovative approach, owning a home becomes an achievable reality. We offer flexible financing options, 
             tailored to suit your unique circumstances, ensuring that your dream of homeownership fits comfortably within your budget.
           </p>
-          <a href="#enroll" className="inline-block bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-3 rounded-lg font-medium transition-colors">
+          <a href="/customer-journey" className="inline-block bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-3 rounded-lg font-medium transition-colors">
             Enroll Now
           </a>
         </div>
@@ -76,10 +76,13 @@ const HowToOwn = () => {
                     <li>A perimeter wall equivalent to 50 by 100m, steel gate, wired with provisions of security lights, internet, CCTV and Cable TV</li>
                   </ul>
                 </div>
+                <a href="/customer-journey" className="inline-block bg-[#F59E0B] hover:bg-[#D97706] text-white px-6 py-2 rounded-lg font-medium transition-colors mt-4">
+                  Inquire Now
+                </a>
               </div>
               <div className="relative h-[300px] rounded-lg overflow-hidden">
                 <Image 
-                  src="/house-designs/two-bedroom.jpg" 
+                  src="/images/house_designs/2b_bungalowjpg.jpg" 
                   alt="Two Bedroom House Design"
                   fill
                   className="object-cover"
@@ -91,7 +94,7 @@ const HowToOwn = () => {
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="relative h-[300px] rounded-lg overflow-hidden md:order-1">
                 <Image 
-                  src="/house-designs/three-bedroom.jpg" 
+                  src="/images/house_designs/3b_bungalowjpg.jpg" 
                   alt="Three Bedroom House Design"
                   fill
                   className="object-cover"
@@ -109,6 +112,9 @@ const HowToOwn = () => {
                     <li>A perimeter wall equivalent to 50 by 80m, steel gate, wired with provisions of security lights, internet, CCTV and Cable TV</li>
                   </ul>
                 </div>
+                <a href="/customer-journey" className="inline-block bg-[#F59E0B] hover:bg-[#D97706] text-white px-6 py-2 rounded-lg font-medium transition-colors mt-4">
+                  Inquire Now
+                </a>
               </div>
             </div>
 
@@ -130,10 +136,13 @@ const HowToOwn = () => {
                     <li>One Extra balcony, stairs, and tiled floors</li>
                   </ul>
                 </div>
+                <a href="/customer-journey" className="inline-block bg-[#F59E0B] hover:bg-[#D97706] text-white px-6 py-2 rounded-lg font-medium transition-colors mt-4">
+                  Inquire Now
+                </a>
               </div>
               <div className="relative h-[300px] rounded-lg overflow-hidden">
                 <Image 
-                  src="/house-designs/four-bedroom.jpg" 
+                  src="/images/house_designs/4b_hybrid.jpg" 
                   alt="Four Bedroom House Design"
                   fill
                   className="object-cover"
@@ -260,29 +269,13 @@ const HowToOwn = () => {
 
             <div className="bg-white p-8 rounded-lg shadow-lg">
               <h3 className="text-2xl font-semibold mb-6">Document Downloads (Brochures)</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <a href="/brochures/2-bedroom-bungalow-flatroof.pdf" className="text-[#1E40AF] hover:text-[#F59E0B] block">
-                    2 Bedroom bungalow flatroof
-                  </a>
-                  <a href="/brochures/3-bedroom-bungalow-flatroof.pdf" className="text-[#1E40AF] hover:text-[#F59E0B] block">
-                    3 Bedroom bungalow flatroof
-                  </a>
-                  <a href="/brochures/3-bedroom-bungalow-hidden-roof.pdf" className="text-[#1E40AF] hover:text-[#F59E0B] block">
-                    3 Bedroom bungalow hidden roof
-                  </a>
-                </div>
-                <div className="space-y-4">
-                  <a href="/brochures/3-bedroom-bungalow-pitchroofed.pdf" className="text-[#1E40AF] hover:text-[#F59E0B] block">
-                    3 Bedroom bungalow Pitchroofed
-                  </a>
-                  <a href="/brochures/3-bedroom-mansion-pitchroof.pdf" className="text-[#1E40AF] hover:text-[#F59E0B] block">
-                    3 Bedroom mansion pitchroof
-                  </a>
-                  <a href="/brochures/3-bedroom-mansion-flatroof.pdf" className="text-[#1E40AF] hover:text-[#F59E0B] block">
-                    3 Bedroom mansion flatroof
-                  </a>
-                </div>
+              <div className="space-y-4">
+                <a href="/documents/PROMITTO_BANK_ACCOUNT_DETAILS.pdf" className="text-[#1E40AF] hover:text-[#F59E0B] block" target="_blank" rel="noopener noreferrer">
+                  Promitto Bank Account Details
+                </a>
+                <a href="/documents/membership_application_form.pdf" className="text-[#1E40AF] hover:text-[#F59E0B] block" target="_blank" rel="noopener noreferrer">
+                  Membership Application Form
+                </a>
               </div>
             </div>
           </div>

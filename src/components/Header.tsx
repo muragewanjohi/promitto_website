@@ -38,7 +38,7 @@ export default function Header() {
               Home
             </Link>
             <Link href="/properties" className="text-white hover:text-[#F59E0B]" prefetch={false}>
-              Projects
+              Product Designs
             </Link>
             <Link href="/how-to-own" className="text-white hover:text-[#F59E0B]" prefetch={false}>
               How to Own
@@ -139,7 +139,7 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
                 prefetch={false}
               >
-                Properties
+                Product Designs
               </Link>
               <Link
                 href="/how-to-own"

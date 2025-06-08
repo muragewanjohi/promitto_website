@@ -28,34 +28,9 @@ export async function GET() {
       };
     });
 
-    const { data: userData, error: userError } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', session.user.id)
-      .single();
-
-    if (userError || userData?.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Forbidden', message: 'Only admins can create properties' },
-        { status: 403 }
-      );
-    }
-
     return NextResponse.json(properties);
   } catch (error) {
     console.error('Error fetching properties:', error);
     return NextResponse.json({ error: 'Failed to fetch properties' }, { status: 500 });
   }
-}
-
-const { data: inserted, error } = await supabase
-  .from('properties')
-  .insert([
-    {
-      name: data.name,
-      location: data.location,
-      // ...other fields
-    },
-  ])
-  .select()
-  .single(); 
+} 
