@@ -57,6 +57,11 @@ export default function Header() {
                 Admin Dashboard
               </Link>
             )}
+            {user && (
+              <Link href="/profile" className="text-white hover:text-[#F59E0B] font-semibold" prefetch={false}>
+                Profile
+              </Link>
+            )}
           </nav>
 
           {/* Auth Buttons */}
@@ -181,6 +186,16 @@ export default function Header() {
                   prefetch={false}
                 >
                   Admin Dashboard
+                </Link>
+              )}
+              {user && (
+                <Link
+                  href="/profile"
+                  className="text-white hover:text-[#F59E0B] font-semibold"
+                  onClick={() => setIsMenuOpen(false)}
+                  prefetch={false}
+                >
+                  Profile
                 </Link>
               )}
               {user ? (

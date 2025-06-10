@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Missing required fields.' }, { status: 400 });
     }
     const result = await sendContactEmail({
-      to: 'muragedev@gmail.com', //'info@promitto.com',
+      to: 'info@promitto.com',
       name,
       email,
       subject,
