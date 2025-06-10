@@ -23,10 +23,10 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center" prefetch={false}>
             <Image
-              src="/logo.png"
+              src="/logo_white.png"
               alt="Promitto Logo"
-              width={40}
-              height={40}
+              width={150}
+              height={150}
               className="h-10 w-auto"
             />
             <span className="ml-2 text-xl font-bold text-white">Promitto</span>
@@ -63,7 +63,7 @@ export default function Header() {
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <div className="flex items-center space-x-4">
-                <span className="text-white">Welcome, {user.email}</span>
+                {/* <span className="text-white">Welcome, {user.email}</span> */}
                 <button
                   onClick={() => signOut()}
                   className="bg-[#F59E0B] text-white px-4 py-2 rounded-md hover:bg-[#D97706]"

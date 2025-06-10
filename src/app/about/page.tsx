@@ -9,15 +9,7 @@ const AboutUs = () => {
       <Header />
       <div className="pt-16">
         {/* Hero Section */}
-        <section className="relative h-[400px] bg-[#1E40AF]">
-          <div className="absolute inset-0 bg-black/50" />
-          <div className="relative h-full flex items-center justify-center">
-            <div className="text-center text-white">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">About Promitto</h1>
-              <p className="text-xl text-gray-200">Building Dreams, Creating Communities</p>
-            </div>
-          </div>
-        </section>
+        
 
         {/* Company Story */}
         <section className="py-16">
@@ -32,13 +24,17 @@ const AboutUs = () => {
                   Today, we're proud to serve thousands of clients across the region, helping them find their dream properties, manage their investments, and build sustainable communities.
                 </p>
               </div>
-              <div className="relative h-[400px] rounded-xl overflow-hidden">
-                <Image
-                  src="/images/about/office.jpg"
-                  alt="Promitto Office"
-                  fill
-                  className="object-cover"
-                />
+              <div className="relative h-[400px] rounded-xl overflow-hidden flex items-center justify-center bg-black">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/FMRvwAfwk48"
+                  title="Promitto Story Video"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                ></iframe>
               </div>
             </div>
           </div>
@@ -49,21 +45,27 @@ const AboutUs = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Our Mission & Values</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-white p-8 rounded-xl shadow-sm">
+              <div className="bg-white p-8 rounded-xl shadow-sm flex flex-col items-center">
+                {/* Mission Icon */}
+                <svg className="w-12 h-12 text-[#1E40AF] mb-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" /></svg>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Mission</h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-center">
                   To empower individuals and businesses with innovative property solutions that create lasting value and foster community growth.
                 </p>
               </div>
-              <div className="bg-white p-8 rounded-xl shadow-sm">
+              <div className="bg-white p-8 rounded-xl shadow-sm flex flex-col items-center">
+                {/* Vision Icon */}
+                <svg className="w-12 h-12 text-[#F59E0B] mb-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Vision</h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-center">
                   To be the leading platform for property management and real estate services, setting new standards for excellence and innovation.
                 </p>
               </div>
-              <div className="bg-white p-8 rounded-xl shadow-sm">
+              <div className="bg-white p-8 rounded-xl shadow-sm flex flex-col items-center">
+                {/* Values Icon */}
+                <svg className="w-12 h-12 text-[#D97706] mb-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Values</h3>
-                <ul className="text-gray-600 space-y-2">
+                <ul className="text-gray-600 space-y-2 text-center">
                   <li>• Integrity and Transparency</li>
                   <li>• Innovation and Excellence</li>
                   <li>• Customer-Centric Approach</li>
@@ -75,7 +77,7 @@ const AboutUs = () => {
         </section>
 
         {/* Team Section */}
-        <section className="py-16">
+        {/* <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Our Team</h2>
             <div className="grid md:grid-cols-3 gap-8">
@@ -98,7 +100,7 @@ const AboutUs = () => {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Board Members Section */}
         <section className="py-16 bg-gray-50">

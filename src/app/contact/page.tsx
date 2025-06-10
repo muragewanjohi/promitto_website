@@ -1,23 +1,50 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import Map from '../../components/Map';
 
 const ContactUs = () => {
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess('');
+    setError('');
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const result = await response.json();
+      if (result.success) {
+        setSuccess('Message sent! We will get back to you soon.');
+        setForm({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setError(result.error || 'Failed to send message.');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to send message.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-white">
       <Header />
       <div className="pt-16">
-        {/* Hero Section */}
-        <section className="relative h-[400px] bg-[#1E40AF]">
-          <div className="absolute inset-0 bg-black/50" />
-          <div className="relative h-full flex items-center justify-center">
-            <div className="text-center text-white">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
-              <p className="text-xl text-gray-200">Get in touch with our team</p>
-            </div>
-          </div>
-        </section>
+     
 
         {/* Contact Information */}
         <section className="py-16">
@@ -26,7 +53,7 @@ const ContactUs = () => {
               {/* Contact Form */}
               <div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-8">Send us a Message</h2>
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                       Full Name
@@ -37,6 +64,9 @@ const ContactUs = () => {
                       name="name"
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent"
                       placeholder="Your name"
+                      value={form.name}
+                      onChange={handleChange}
+                      required
                     />
                   </div>
                   <div>
@@ -49,6 +79,9 @@ const ContactUs = () => {
                       name="email"
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent"
                       placeholder="your@email.com"
+                      value={form.email}
+                      onChange={handleChange}
+                      required
                     />
                   </div>
                   <div>
@@ -61,6 +94,9 @@ const ContactUs = () => {
                       name="subject"
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent"
                       placeholder="How can we help?"
+                      value={form.subject}
+                      onChange={handleChange}
+                      required
                     />
                   </div>
                   <div>
@@ -73,14 +109,20 @@ const ContactUs = () => {
                       rows={4}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent"
                       placeholder="Your message..."
+                      value={form.message}
+                      onChange={handleChange}
+                      required
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-[#F59E0B] hover:bg-[#D97706] text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                    className="w-full bg-[#F59E0B] hover:bg-[#D97706] text-white px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
+                    disabled={loading}
                   >
-                    Send Message
+                    {loading ? 'Sending...' : 'Send Message'}
                   </button>
+                  {success && <div className="text-green-600 font-medium mt-2">{success}</div>}
+                  {error && <div className="text-red-600 font-medium mt-2">{error}</div>}
                 </form>
               </div>
 
@@ -98,7 +140,7 @@ const ContactUs = () => {
                       </div>
                       <div>
                         <h3 className="text-lg font-medium text-gray-900">Address</h3>
-                        <p className="text-gray-600">123 Business Street, City, Country</p>
+                        <p className="text-gray-600">Pension Towers, Loita St, Nairobi</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-4">
@@ -109,7 +151,7 @@ const ContactUs = () => {
                       </div>
                       <div>
                         <h3 className="text-lg font-medium text-gray-900">Phone</h3>
-                        <p className="text-gray-600">+1 (555) 123-4567</p>
+                        <p className="text-gray-600">0729 506506</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-4">
@@ -127,14 +169,7 @@ const ContactUs = () => {
                 </div>
 
                 {/* Map */}
-                <div className="relative h-64 rounded-xl overflow-hidden">
-                  <Image
-                    src="/images/contact/map.jpg"
-                    alt="Office Location"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                <Map />
               </div>
             </div>
           </div>

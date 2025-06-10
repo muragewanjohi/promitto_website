@@ -35,8 +35,28 @@ function InquiryCard({ propertyId, propertyName }: { propertyId: string, propert
         user_email: userProfile?.email || user?.email || '',
         user_phone: phone,
       };
+      
+      // Save to database
       const { error } = await supabase.from('inquiries').insert([inquiryData]);
       if (error) throw error;
+
+      // Send email notification via API route
+      const response = await fetch('/api/send-inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: 'info@promitto.com', // info@promitto.com
+          propertyName,
+          message,
+          phone,
+          userEmail: userProfile?.email || user?.email || '',
+        }),
+      });
+      const result = await response.json();
+      if (!result.success) {
+        console.error('Failed to send email notification:', result.error);
+      }
+
       setSuccess('Inquiry submitted! We will contact you soon.');
       setMessage('');
     } catch (err: any) {
