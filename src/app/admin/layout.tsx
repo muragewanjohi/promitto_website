@@ -35,9 +35,9 @@ export default function AdminLayout({
                     <li>
                       <Link href="/admin" className="block px-2 py-1 text-[#1E40AF] hover:text-[#D97706] rounded transition-colors">Overview</Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link href="/admin/analytics" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Analytics</Link>
-                    </li>
+                    </li> */}
                   </ul>
                 </li>
                 <li><hr className="my-3 border-gray-200" /></li>
@@ -60,9 +60,9 @@ export default function AdminLayout({
                     <li>
                       <Link href="/admin/roof-types" className="block px-2 py-1 hover:text-[#F59E0B] rounded transition-colors font-semibold">Roof Types</Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link href="/admin/documents" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Documents</Link>
-                    </li>
+                    </li> */}
                     <li>
                       <Link href="/admin/features" className="block px-2 py-1 hover:text-[#F59E0B] rounded transition-colors font-semibold">Features Management</Link>
                     </li>
@@ -70,7 +70,7 @@ export default function AdminLayout({
                 </li>
                 <li><hr className="my-3 border-gray-200" /></li>
                 {/* Content Management Section */}
-                <li className="mb-2">
+                {/* <li className="mb-2">
                   <span className="block text-sm font-bold text-gray-900 mb-1">Content Management</span>
                   <ul className="ml-2 space-y-1">
                     <li>
@@ -92,13 +92,13 @@ export default function AdminLayout({
                       <Link href="/admin/email-templates" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Email Templates</Link>
                     </li>
                   </ul>
-                </li>
+                </li> */}
                 <li><hr className="my-3 border-gray-200" /></li>
                 {/* Settings Section */}
                 <li className="mb-2">
                   <span className="block text-sm font-bold text-gray-900 mb-1">Settings</span>
                   <ul className="ml-2 space-y-1">
-                    <li>
+                    {/* <li>
                       <Link href="/admin/user-management" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">User Management</Link>
                     </li>
                     <li>
@@ -106,6 +106,9 @@ export default function AdminLayout({
                     </li>
                     <li>
                       <Link href="/admin/backup-recovery" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Backup & Recovery</Link>
+                    </li> */}
+                    <li>
+                      <Link href="/admin/membership-management" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Membership Management</Link>
                     </li>
                   </ul>
                 </li>
