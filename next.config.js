@@ -6,7 +6,7 @@ const nextConfig = {
     domains: ['images.unsplash.com'],
     formats: ['image/avif', 'image/webp'],
   },
- // output: 'export',
+ 
   compress: true,
   poweredByHeader: false,
   trailingSlash: true,

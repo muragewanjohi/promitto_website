@@ -73,7 +73,7 @@ const AdminMetrics = () => {
       }
       if (inquiries) {
         inquiries.forEach(inquiry => {
-          const typeName = inquiry.properties?.property_types?.name || 'Unknown';
+          const typeName = inquiry.properties?.[0]?.property_types?.[0]?.name || 'Unknown';
           if (typeName in inquiriesPerType) {
             inquiriesPerType[typeName] += 1;
           } else {

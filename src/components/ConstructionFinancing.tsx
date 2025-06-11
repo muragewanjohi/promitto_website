@@ -61,7 +61,7 @@ const ConstructionFinancing = () => {
                 and explore our flexible financing options.
               </p>
               <Link
-                href="/services/financing/apply"
+                href="/customer-journey"
                 className="inline-block bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-3 rounded-lg font-medium transition-colors"
               >
                 Apply for Financing
