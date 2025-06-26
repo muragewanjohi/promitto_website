@@ -37,17 +37,17 @@ export default function Header() {
             <Link href="/" className="text-white hover:text-[#F59E0B]" prefetch={false}>
               Home
             </Link>
+            <Link href="/about" className="text-white hover:text-[#F59E0B]" prefetch={false}>
+              About
+            </Link>
             <Link href="/properties" className="text-white hover:text-[#F59E0B]" prefetch={false}>
               Product Designs
             </Link>
             <Link href="/how-to-own" className="text-white hover:text-[#F59E0B]" prefetch={false}>
-              How to Own
+              How To Own
             </Link>
             <Link href="/loan-calculator" className="text-white hover:text-[#F59E0B]" prefetch={false}>
               Loan Calculator
-            </Link>
-            <Link href="/about" className="text-white hover:text-[#F59E0B]" prefetch={false}>
-              About
             </Link>
             <Link href="/contact" className="text-white hover:text-[#F59E0B]" prefetch={false}>
               Contact
@@ -139,6 +139,14 @@ export default function Header() {
                 Home
               </Link>
               <Link
+                href="/about"
+                className="text-white hover:text-[#F59E0B]"
+                onClick={() => setIsMenuOpen(false)}
+                prefetch={false}
+              >
+                About
+              </Link>
+              <Link
                 href="/properties"
                 className="text-white hover:text-[#F59E0B]"
                 onClick={() => setIsMenuOpen(false)}
@@ -152,7 +160,7 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
                 prefetch={false}
               >
-                How to Own
+                How To Own
               </Link>
               <Link
                 href="/loan-calculator"
@@ -161,14 +169,6 @@ export default function Header() {
                 prefetch={false}
               >
                 Loan Calculator
-              </Link>
-              <Link
-                href="/about"
-                className="text-white hover:text-[#F59E0B]"
-                onClick={() => setIsMenuOpen(false)}
-                prefetch={false}
-              >
-                About
               </Link>
               <Link
                 href="/contact"

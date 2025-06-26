@@ -25,9 +25,9 @@ const ConstructionFinancing = () => {
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h4 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Construction Financing Solutions
-          </h2>
+          </h4>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             We provide tailored financing solutions to help bring your construction projects to life. 
             Our expert team works with you to find the best financing options for your needs.
@@ -40,9 +40,9 @@ const ConstructionFinancing = () => {
               key={index}
               className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
             >
-              <h3 className="text-lg font-bold text-gray-900 mb-3">
+              <h4 className="text-xl font-bold text-gray-900 mb-3">
                 {benefit.title}
-              </h3>
+              </h4>
               <p className="text-gray-600">
                 {benefit.description}
               </p>
@@ -53,9 +53,9 @@ const ConstructionFinancing = () => {
         <div className="bg-[#1E40AF] text-white rounded-2xl p-8 md:p-12">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
-              <h3 className="text-2xl md:text-3xl font-bold mb-4">
+              <h4 className="text-2xl md:text-3xl font-bold mb-4">
                 Ready to Start Your Project?
-              </h3>
+              </h4>
               <p className="text-lg text-gray-100 mb-6">
                 Get in touch with our financing team today to discuss your construction project 
                 and explore our flexible financing options.

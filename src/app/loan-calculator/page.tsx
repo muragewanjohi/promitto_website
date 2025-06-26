@@ -7,7 +7,7 @@ import Footer from '../../components/Footer';
 const LoanCalculator = () => {
   const [propertyCost, setPropertyCost] = useState<string>('3,000,000');
   const [downPayment, setDownPayment] = useState<string>('900,000');
-  const [loanTerm] = useState<string>('84'); // Fixed at 7 years
+  const [loanTerm, setLoanTerm] = useState<string>('7'); // Default 7 years, adjustable
   const [interestRate] = useState<string>('12');
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
   const [totalPayment, setTotalPayment] = useState<number>(0);
@@ -39,7 +39,7 @@ const LoanCalculator = () => {
     const principal = parseNumber(propertyCost) - parseNumber(downPayment);
     const annualRate = Number(interestRate) / 100;
     const monthlyRate = annualRate / 12;
-    const numberOfPayments = Number(loanTerm);
+    const numberOfPayments = Number(loanTerm) * 12; // loanTerm is in years
     
     // Calculate monthly payment using the loan amortization formula
     // PMT = P * (r * (1 + r)^n) / ((1 + r)^n - 1)
@@ -126,13 +126,16 @@ const LoanCalculator = () => {
               </div>
 
               <div>
-                <label className="block text-gray-700 font-medium mb-2">Loan Term</label>
-                <input
-                  type="text"
-                  value="7 years (84 months)"
-                  readOnly
-                  className="w-full px-4 py-2 rounded-lg border bg-gray-100"
-                />
+                <label className="block text-gray-700 font-medium mb-2">Loan Term (Years)</label>
+                <select
+                  value={loanTerm}
+                  onChange={(e) => { setLoanTerm(e.target.value); setIsCalculated(false); }}
+                  className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
+                >
+                  {[...Array(7)].map((_, i) => (
+                    <option key={i+1} value={i+1}>{i+1} {i+1 === 1 ? 'year' : 'years'} ({(i+1)*12} months)</option>
+                  ))}
+                </select>
               </div>
 
               <div>
@@ -185,6 +188,10 @@ const LoanCalculator = () => {
                   <p className="text-gray-600">Interest Rate</p>
                   <p className="text-xl font-bold text-[#1E40AF]">12% per annum (reducing balance)</p>
                 </div>
+                <div>
+                  <p className="text-gray-600">Loan Term</p>
+                  <p className="text-xl font-bold text-[#1E40AF]">{loanTerm} {loanTerm === '1' ? 'year' : 'years'} ({Number(loanTerm) * 12} months)</p>
+                </div>
                 <div className="pt-4 border-t">
                   <p className="text-gray-600">Estimated Monthly Payment</p>
                   <p className="text-3xl font-bold text-[#1E40AF] mt-2">
@@ -221,7 +228,7 @@ const LoanCalculator = () => {
               <h4 className="text-lg font-semibold text-[#1E40AF] mb-4">Important Notes</h4>
               <ul className="list-disc pl-6 text-gray-700 space-y-2">
                 <li>Down payment is fixed at 30% of the property cost</li>
-                <li>Loan term is fixed at 7 years (84 months)</li>
+                <li>Loan term is adjustable</li>
                 <li>Interest rate is fixed at <span className="font-bold">12% per annum</span> on reducing balance</li>
                 <li>Monthly payments start one month after construction begins</li>
                 <li>Construction period is typically 6-12 months</li>

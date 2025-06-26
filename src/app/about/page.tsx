@@ -9,19 +9,39 @@ const AboutUs = () => {
       <Header />
       <div className="pt-16">
         {/* Hero Section */}
-        
+        <section className="py-16 bg-gradient-to-r from-blue-50 to-orange-50">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <div className="flex flex-col items-center mb-6">
+              <span className="inline-block bg-blue-100 p-4 rounded-full mb-4">
+                <svg className="w-12 h-12 text-blue-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6" /></svg>
+              </span>
+              <h1 className="text-4xl font-bold text-[#1E40AF] mb-4">About Promitto Limited</h1>
+            </div>
+            <p className="text-xl text-gray-700 mb-4">
+              Delivering the promise of homeownership through innovative construction financing and comprehensive project management.
+            </p>
+            <p className="text-lg text-gray-600">
+              Promitto is your one-stop shop for turning your dream of homeownership into reality. We provide construction cash flow help for both residential and commercial projects, and our comprehensive services include site visits, cost estimates (BQ preparation), 3D architectural and structural drawings, securing approvals, and doing the construction for you.
+            </p>
+          </div>
+        </section>
 
-        {/* Company Story */}
+        {/* Company Story & Context */}
         <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
+                <div className="flex items-center mb-4">
+                  <span className="inline-block bg-orange-100 p-3 rounded-full mr-3">
+                    <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 22s8-4 8-10V5a2 2 0 00-2-2H6a2 2 0 00-2 2v7c0 6 8 10 8 10z" /></svg>
+                  </span>
+                  <h4 className="text-3xl font-bold text-gray-900">Our Story & The Housing Context</h4>
+                </div>
                 <p className="text-gray-600 mb-4">
-                  Founded with a vision to revolutionize the real estate industry, Promitto has grown from a small startup to a leading property management platform. Our journey began with a simple idea: to make property ownership and management accessible, efficient, and rewarding for everyone.
+                  Kenya faces a significant housing deficit, with over 2 million units needed and an annual demand gap of 200,000 homes. While initiatives like the Affordable Housing Programme have made strides, challenges related to cost, financing, and regulatory inefficiencies persist. This gap presents a tremendous opportunity for Promitto to expand its reach and help address this crisis.
                 </p>
                 <p className="text-gray-600 mb-4">
-                  Today, we're proud to serve thousands of clients across the region, helping them find their dream properties, manage their investments, and build sustainable communities.
+                  Promitto was founded to bridge this gap by providing affordable construction financing and end-to-end project management. Our approach empowers individuals and businesses to build homes and commercial properties with minimal upfront investment, making homeownership accessible to more Kenyans.
                 </p>
               </div>
               <div className="relative h-[400px] rounded-xl overflow-hidden flex items-center justify-center bg-black">
@@ -40,76 +60,117 @@ const AboutUs = () => {
           </div>
         </section>
 
-        {/* Mission & Values */}
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Our Mission & Values</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-white p-8 rounded-xl shadow-sm flex flex-col items-center">
-                {/* Mission Icon */}
-                <svg className="w-12 h-12 text-[#1E40AF] mb-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" /></svg>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Mission</h3>
-                <p className="text-gray-600 text-center">
-                  To empower individuals and businesses with innovative property solutions that create lasting value and foster community growth.
-                </p>
+        {/* Key Statistics */}
+        <section className="py-8 bg-gray-50">
+          <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="flex flex-col items-center mb-2">
+                <span className="inline-block bg-blue-100 p-3 rounded-full mb-2">
+                  <svg className="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 10l1.553-1.553A2 2 0 017.172 8h9.656a2 2 0 011.619.447L21 10m-9 4v6m0 0h4m-4 0H7" /></svg>
+                </span>
+                <div className="text-4xl font-bold text-blue-700">200,000+</div>
               </div>
-              <div className="bg-white p-8 rounded-xl shadow-sm flex flex-col items-center">
-                {/* Vision Icon */}
-                <svg className="w-12 h-12 text-[#F59E0B] mb-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Vision</h3>
-                <p className="text-gray-600 text-center">
-                  To be the leading platform for property management and real estate services, setting new standards for excellence and innovation.
-                </p>
+              <div className="text-gray-700">Housing Units Needed Annually</div>
+            </div>
+            <div>
+              <div className="flex flex-col items-center mb-2">
+                <span className="inline-block bg-orange-100 p-3 rounded-full mb-2">
+                  <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0h6" /></svg>
+                </span>
+                <div className="text-4xl font-bold text-orange-500">50+</div>
               </div>
-              <div className="bg-white p-8 rounded-xl shadow-sm flex flex-col items-center">
-                {/* Values Icon */}
-                <svg className="w-12 h-12 text-[#D97706] mb-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Values</h3>
-                <ul className="text-gray-600 space-y-2 text-center">
-                  <li>• Integrity and Transparency</li>
-                  <li>• Innovation and Excellence</li>
-                  <li>• Customer-Centric Approach</li>
-                  <li>• Sustainable Growth</li>
-                </ul>
+              <div className="text-gray-700">Homes Constructed Annually in Kenya</div>
+            </div>
+            <div>
+              <div className="flex flex-col items-center mb-2">
+                <span className="inline-block bg-blue-100 p-3 rounded-full mb-2">
+                  <svg className="w-8 h-8 text-blue-900" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 17v-2a4 4 0 014-4h10a4 4 0 014 4v2" /></svg>
+                </span>
+                <div className="text-4xl font-bold text-blue-900">2M+</div>
               </div>
+              <div className="text-gray-700">Total Housing Deficit</div>
             </div>
           </div>
         </section>
 
-        {/* Team Section */}
-        {/* <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Our Team</h2>
+        {/* Technical Expertise */}
+        <section className="py-16">
+          <div className="max-w-5xl mx-auto px-4">
+            <div className="flex items-center justify-center mb-8">
+              <span className="inline-block bg-green-100 p-3 rounded-full mr-3">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0h6" /></svg>
+              </span>
+              <h4 className="text-3xl font-bold text-gray-900">Our Technical Capacity</h4>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              <ul className="text-gray-700 space-y-3">
+                <li><span className="mr-2">🗂️</span><span className="font-semibold">Project Management Department:</span> 5 team members</li>
+                <li><span className="mr-2">📐</span><span className="font-semibold">Architectural & Interior Designers:</span> 5 engineers</li>
+                <li><span className="mr-2">📊</span><span className="font-semibold">Quantity Survey Department:</span> 4 Quantity Surveyors</li>
+              </ul>
+              <ul className="text-gray-700 space-y-3">
+                <li><span className="mr-2">💼</span><span className="font-semibold">Account Management Department:</span> 6 account managers</li>
+                <li><span className="mr-2">🛠️</span><span className="font-semibold">Engineering Department:</span> 2 Engineers</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Management Team */}
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="flex items-center justify-center mb-12">
+              <span className="inline-block bg-purple-100 p-3 rounded-full mr-3">
+                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4V7a4 4 0 00-8 0v2m8 4a4 4 0 01-8 0" /></svg>
+              </span>
+              <h4 className="text-3xl font-bold text-gray-900">Our Management Team</h4>
+            </div>
             <div className="grid md:grid-cols-3 gap-8">
-              {[1, 2, 3].map((member) => (
-                <div key={member} className="text-center">
-                  <div className="relative w-48 h-48 mx-auto mb-4 rounded-full overflow-hidden">
-                    <Image
-                      src={`/images/team/member-${member}.jpg`}
-                      alt={`Team Member ${member}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900">Team Member {member}</h3>
-                  <p className="text-[#F59E0B] mb-2">Position</p>
-                  <p className="text-gray-600">
-                    Brief description of the team member's role and expertise.
-                  </p>
+              {[
+                { name: 'Jimmy Kagoni', title: 'Chief Executive Officer', img: '/images/board/jimmy-kagoni.png' },
+                { name: 'Innocent Ongeri', title: 'Operations Manager' },
+                { name: 'Machira Minyati', title: 'Project Manager' },
+                { name: 'Steve Kihara', title: 'Chief Finance Officer' },
+                { name: 'Anastaciah Wajohi', title: 'Head of Customer Service' },
+                { name: 'David Mwangi', title: 'Risk Manager' },
+                { name: 'Adreen Gichore', title: 'Chief of Staff & Head of Credit Management' },
+              ].map((member, idx) => (
+                <div key={idx} className="bg-white rounded-xl shadow p-6 text-center">
+                  {member.img ? (
+                    <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-4 border-blue-200">
+                      <Image
+                        src={member.img}
+                        alt={member.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-blue-100 flex items-center justify-center text-3xl text-blue-700 font-bold">
+                      {member.name.split(' ').map(n => n[0]).join('')}
+                    </div>
+                  )}
+                  <h4 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h4>
+                  <p className="text-[#F59E0B] text-base">{member.title}</p>
                 </div>
               ))}
             </div>
           </div>
-        </section> */}
+        </section>
 
         {/* Board Members Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Board Members</h2>
+        <section className="py-16 bg-white">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="flex items-center justify-center mb-12">
+              <span className="inline-block bg-orange-100 p-3 rounded-full mr-3">
+                <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4V7a4 4 0 00-8 0v2m8 4a4 4 0 01-8 0" /></svg>
+              </span>
+              <h4 className="text-3xl font-bold text-gray-900">Board Members</h4>
+            </div>
             <div className="grid md:grid-cols-4 gap-8">
               {/* Dr. Olufunso Somorin */}
-              <div className="text-center">
-                <div className="relative w-48 h-48 mx-auto mb-4 rounded-full overflow-hidden">
+              <div className="text-center bg-gray-50 rounded-xl shadow p-6">
+                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-orange-200">
                   <Image
                     src="/images/board/olufunso-somorin.png"
                     alt="Dr. Olufunso Somorin"
@@ -117,13 +178,12 @@ const AboutUs = () => {
                     className="object-cover"
                   />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900">Dr. Olufunso Somorin</h3>
-                <p className="text-[#F59E0B] mb-2">Overall Chairman</p>
+                <h4 className="text-xl font-bold text-gray-900 mb-2">Dr. Olufunso Somorin</h4>
+                <p className="text-[#D97706]">Overall Chairman</p>
               </div>
-
               {/* Mark Muema */}
-              <div className="text-center">
-                <div className="relative w-48 h-48 mx-auto mb-4 rounded-full overflow-hidden">
+              <div className="text-center bg-gray-50 rounded-xl shadow p-6">
+                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-orange-200">
                   <Image
                     src="/images/board/mark-muema.png"
                     alt="Mark Muema"
@@ -131,13 +191,12 @@ const AboutUs = () => {
                     className="object-cover"
                   />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900">Mark Muema</h3>
-                <p className="text-[#F59E0B] mb-2">Chairman, Finance and HR Subcommittee</p>
+                <h4 className="text-xl font-bold text-gray-900 mb-2">Mark Muema</h4>
+                <p className="text-[#D97706]">Chairman, Finance and HR Subcommittee</p>
               </div>
-
               {/* Waceke Munene */}
-              <div className="text-center">
-                <div className="relative w-48 h-48 mx-auto mb-4 rounded-full overflow-hidden">
+              <div className="text-center bg-gray-50 rounded-xl shadow p-6">
+                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-orange-200">
                   <Image
                     src="/images/board/waceke-munene.png"
                     alt="Waceke Munene"
@@ -145,13 +204,12 @@ const AboutUs = () => {
                     className="object-cover"
                   />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900">Waceke Munene</h3>
-                <p className="text-[#F59E0B] mb-2">IT & Operations Subcommittee</p>
+                <h4 className="text-xl font-bold text-gray-900 mb-2">Waceke Munene</h4>
+                <p className="text-[#D97706]">IT & Operations Subcommittee</p>
               </div>
-
               {/* Jimmy Kagoni */}
-              <div className="text-center">
-                <div className="relative w-48 h-48 mx-auto mb-4 rounded-full overflow-hidden">
+              <div className="text-center bg-gray-50 rounded-xl shadow p-6">
+                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-orange-200">
                   <Image
                     src="/images/board/jimmy-kagoni.png"
                     alt="Jimmy Kagoni"
@@ -159,12 +217,136 @@ const AboutUs = () => {
                     className="object-cover"
                   />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900">Jimmy Kagoni</h3>
-                <p className="text-[#F59E0B] mb-2">Secretary to the Board</p>
+                <h4 className="text-xl font-bold text-gray-900 mb-2">Jimmy Kagoni</h4>
+                <p className="text-[#D97706]">Secretary to the Board</p>
               </div>
             </div>
           </div>
         </section>
+
+        {/* Services Breakdown */}
+        <section className="py-16">
+          <div className="max-w-5xl mx-auto px-4">
+            <div className="flex items-center justify-center mb-8">
+              <span className="inline-block bg-orange-100 p-3 rounded-full mr-3">
+                <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0h6" /></svg>
+              </span>
+              <h4 className="text-3xl font-bold text-gray-900">Our Services</h4>
+            </div>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-white p-6 rounded-xl shadow flex flex-col items-center">
+                <span className="inline-block bg-blue-100 p-3 rounded-full mb-2">
+                  <svg className="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0h6" /></svg>
+                </span>
+                <h4 className="text-xl font-bold text-blue-700 mb-2">Construction Project Management</h4>
+                <p className="text-gray-700">We oversee everything about our client's project from site visit, construction monitoring, and even getting all construction approvals.</p>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow flex flex-col items-center">
+                <span className="inline-block bg-green-100 p-3 rounded-full mb-2">
+                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg>
+                </span>
+                <h4 className="text-xl font-bold text-blue-700 mb-2">Design Consultancy</h4>
+                <p className="text-gray-700">We offer site analysis, conceptual and schematic design, design development, overseeing of interior design, cost estimation, and creation of a detailed Bill of Quantities to our clients.</p>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow flex flex-col items-center">
+                <span className="inline-block bg-orange-100 p-3 rounded-full mb-2">
+                  <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                </span>
+                <h4 className="text-xl font-bold text-blue-700 mb-2">Jenga Nyumba Loan Product</h4>
+                <p className="text-gray-700">We provide affordable and sustainable loan products that fund up to 70% of the total construction cost, geared towards providing affordable housing.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Registration Requirements */}
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-5xl mx-auto px-4">
+            <div className="flex items-center justify-center mb-8">
+              <span className="inline-block bg-blue-100 p-3 rounded-full mr-3">
+                <svg className="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+              </span>
+              <h4 className="text-3xl font-bold text-gray-900">Registration Requirements</h4>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <h4 className="text-xl font-bold text-blue-700 mb-2 flex items-center"><span className="mr-2">👤</span>Individual</h4>
+                <ul className="list-disc pl-6 text-gray-700 space-y-2">
+                  <li>Passport Photos</li>
+                  <li>National ID</li>
+                  <li>Title Deed</li>
+                  <li>Desired House Plan</li>
+                  <li>Registration Fee of Ksh. 30,000</li>
+                  <li>KRA Certificate</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-xl font-bold text-blue-700 mb-2 flex items-center"><span className="mr-2">🏢</span>Corporate</h4>
+                <ul className="list-disc pl-6 text-gray-700 space-y-2">
+                  <li>Directors Passport Photos</li>
+                  <li>Directors National ID</li>
+                  <li>Directors KRA Certificate</li>
+                  <li>Title Deed copy</li>
+                  <li>Certificate of Incorporation</li>
+                  <li>Company PIN Certificate</li>
+                  <li>CR</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Funding Model */}
+        <section className="py-16">
+          <div className="max-w-5xl mx-auto px-4">
+            <div className="flex items-center justify-center mb-8">
+              <span className="inline-block bg-green-100 p-3 rounded-full mr-3">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg>
+              </span>
+              <h4 className="text-3xl font-bold text-gray-900">Funding Model</h4>
+            </div>
+            <ul className="list-disc pl-6 text-gray-700 space-y-2">
+              <li><span className="mr-2">💵</span><span className="font-semibold">Deposit Required:</span> At least 30% of the total project cost</li>
+              <li><span className="mr-2">💸</span><span className="font-semibold">Loan to be Advanced:</span> Up to 70% of the total project cost</li>
+              <li><span className="mr-2">⏳</span><span className="font-semibold">Repayment Period:</span> 1-10 years for commercial units & 1-7 years for residential homes</li>
+              <li><span className="mr-2">📉</span><span className="font-semibold">Interest Rate:</span> 12% per annum on reducing balance</li>
+              <li><span className="mr-2">🧾</span><span className="font-semibold">Loan Fees/Charges:</span> 5% of loan advanced to cover insurance, appraisal, and legal costs</li>
+              <li><span className="mr-2">🕒</span><span className="font-semibold">Repayment Grace Period:</span> 30 days from the date of site mobilization</li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Contact Information */}
+        {/* <section className="py-16 bg-gray-50">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="flex items-center justify-center mb-8">
+              <span className="inline-block bg-blue-100 p-3 rounded-full mr-3">
+                <svg className="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16 2a2 2 0 012 2v16a2 2 0 01-2 2H8a2 2 0 01-2-2V4a2 2 0 012-2h8zm-4 18v-2m0-4v-4m0-4V4" /></svg>
+              </span>
+              <h4 className="text-3xl font-bold text-gray-900">Contact Information</h4>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <h4 className="text-xl font-bold text-blue-700 mb-2 flex items-center"><span className="mr-2">🇰🇪</span>Main Office (Kenya)</h4>
+                <ul className="text-gray-700 space-y-2">
+                  <li><span className="mr-2">📞</span><span className="font-semibold">Phone:</span> +254 729 506 506</li>
+                  <li><span className="mr-2">✉️</span><span className="font-semibold">Email:</span> info@promittoltd.com</li>
+                  <li><span className="mr-2">🏢</span><span className="font-semibold">Office:</span> Pension Towers, Nairobi Loita street, Floor M2</li>
+                  <li><span className="mr-2">🌐</span><span className="font-semibold">Website:</span> <a href="http://www.promittoltd.com" className="text-blue-600 underline">www.promittoltd.com</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-xl font-bold text-blue-700 mb-2 flex items-center"><span className="mr-2">🇿🇲</span>Zambia Branch</h4>
+                <ul className="text-gray-700 space-y-2">
+                  <li><span className="mr-2">📞</span><span className="font-semibold">Phone:</span> +260 775 604 455</li>
+                  <li><span className="mr-2">✉️</span><span className="font-semibold">Email:</span> info@promittoltd.com</li>
+                  <li><span className="mr-2">🏢</span><span className="font-semibold">Office:</span> Woodlands shopping mall, 1st floor</li>
+                  <li><span className="mr-2">🌐</span><span className="font-semibold">Website:</span> <a href="http://www.promittoltd.com" className="text-blue-600 underline">www.promittoltd.com</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section> */}
       </div>
       <Footer />
     </main>

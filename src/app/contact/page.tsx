@@ -162,7 +162,7 @@ const ContactUs = () => {
                       </div>
                       <div>
                         <h3 className="text-lg font-medium text-gray-900">Email</h3>
-                        <p className="text-gray-600">info@promitto.com</p>
+                        <p className="text-gray-600">info@promittoltd.com</p>
                       </div>
                     </div>
                   </div>
