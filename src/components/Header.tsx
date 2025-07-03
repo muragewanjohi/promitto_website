@@ -25,8 +25,8 @@ export default function Header() {
             <Image
               src="/logo_white.png"
               alt="Promitto Logo"
-              width={150}
-              height={150}
+              width={200}
+              height={200}
               className="h-10 w-auto"
             />
             <span className="ml-2 text-xl font-bold text-white">Promitto</span>

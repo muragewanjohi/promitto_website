@@ -4,160 +4,245 @@ import React, { useState } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Image from 'next/image';
+import { ArrowRight, CheckCircle, TrendingUp, Home, Shield, BedDouble, Bath, Ruler } from 'lucide-react';
 
 const HowToOwn = () => {
+  const [showTerms, setShowTerms] = useState(false);
   return (
     <div className="min-h-screen">
       <Header />
+      {/* Hero Section */}
+      <div className="bg-white rounded-2xl shadow-lg mb-12 mt-8 pt-24 min-h-[500px] md:min-h-[800px]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <section className="flex flex-col-reverse md:flex-row items-center justify-between gap-8">
+            {/* Left Side */}
+            <div className="flex-1 min-w-[300px]">
+              <h1 className="text-5xl md:text-6xl font-bold mb-4">
+                Own a <span className="text-primary">Home</span>
+              </h1>
+              <p className="text-lg md:text-xl text-gray mb-6">
+                At Promitto Ltd, we have streamlined the path to homeownership, making it easier and more accessible than ever before. With our innovative approach, owning a home becomes an achievable reality.
+              </p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center text-gray text-base md:text-lg">
+                <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  Flexible financing options tailored to your needs
+                </li>
+                <li className="flex items-center text-gray text-base md:text-lg">
+                <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  Dream home fits comfortably within your budget
+                </li>
+                <li className="flex items-center text-gray text-base md:text-lg">
+                <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  Professional construction and project management
+                </li>
+              </ul>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a href="/customer-journey" className="bg-primary text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-accent transition-colors text-center">
+                  Get Started Now &rarr;
+                </a>
+                <a href="#learn-more" className="border border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors text-center">
+                  Learn More
+                </a>
+              </div>
+            </div>
+            {/* Right Side */}
+            <div className="flex-1 flex items-center justify-center relative min-w-[300px]">
+              <div className="relative w-full max-w-xl h-80 md:h-[28rem] rounded-xl overflow-hidden shadow-lg">
+                <Image 
+                  src="/images/house_designs/3b_bungalowjpg2.jpg"
+                  alt="Modern house"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                {/* Approval Badge */}
+                <div className="absolute bottom-4 left-4 bg-white rounded-xl shadow px-6 py-4 flex flex-col items-center">
+                  <span className="text-primary text-2xl font-bold">95%</span>
+                  <span className="text-gray text-sm font-medium">Approval Rate</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-24">
-        <div className="mb-16">
-          <h1 className="text-6xl font-bold text-[#F59E0B] mb-6">Own a Home</h1>
-          <p className="text-xl text-gray-700 mb-8">
-            At Promitto Ltd, we have streamlined the path to homeownership, making it easier and more accessible than ever before. 
-            With our innovative approach, owning a home becomes an achievable reality. We offer flexible financing options, 
-            tailored to suit your unique circumstances, ensuring that your dream of homeownership fits comfortably within your budget.
-          </p>
-          <a href="/customer-journey" className="inline-block bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-3 rounded-lg font-medium transition-colors">
-            Enroll Now
-          </a>
-        </div>
+        
 
-        <h2 className="text-4xl font-bold text-[#1E40AF] mb-4">Jenga Nyumba Loan</h2>
-        <p className="text-xl text-gray-700 mb-12">Why You Should Get It!</p>
-
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
-            <div className="w-16 h-16 bg-[#F59E0B] rounded-full flex items-center justify-center mb-6">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
+        {/* Jenga Nyumba Loan Section */}
+        <section className="mb-16">
+          <h2 className="text-4xl font-bold text-center mb-2">Jenga Nyumba Loan</h2>
+          <p className="text-xl text-primary text-center mb-12 font-semibold hover:underline cursor-pointer">Why You Should Get It!</p>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Sustainable Loans Card */}
+            <div className="bg-gray-50 p-8 rounded-2xl shadow flex flex-col h-full">
+              <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center mb-6">
+                <TrendingUp className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-black">Sustainable Loans</h3>
+              <p className="text-gray text-base">
+                Housing is a basic need. Promitto provides affordable and sustainable Jenga Nyumba loan products geared towards providing affordable housing to its members.
+              </p>
             </div>
-            <h3 className="text-2xl font-semibold mb-4">Sustainable Loans</h3>
-            <p className="text-gray-700">
-              Housing is a basic need. Promitto provides affordable and sustainable Jenga Nyumba loan products 
-              geared towards providing affordable housing to its members.
-            </p>
-          </div>
-
-          <div className="bg-[#F59E0B] p-8 rounded-lg shadow-lg text-white">
-            <div className="w-16 h-16 bg-[#1E40AF] rounded-full flex items-center justify-center mb-6">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
+            {/* Construction Services Card */}
+            <div className="bg-gray-50 p-8 rounded-2xl shadow flex flex-col h-full">
+              <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mb-6">
+                <Home className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-black">Construction Services</h3>
+              <p className="text-gray text-base">
+                Attached to the Jenga Nyumba Loan Product, members are offered full construction services by the society's contractors to guarantee members with quality and timely completion.
+              </p>
             </div>
-            <h3 className="text-2xl font-semibold mb-4">Construction Services</h3>
-            <p>
-              Attached to the Jenga Nyumba Loan Product, members are offered full construction services 
-              by the society's contractors to help members construct with efficiency and timeliness.
-            </p>
           </div>
-        </div>
+        </section>
 
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-16">
+         {/* Terms & Conditions Section */}
+        <section className="mb-12">
+          <div className="bg-gradient-to-r from-blue-50 to-orange-50 rounded-2xl flex flex-row items-center justify-between px-8 py-4 min-h-[80px]">
+            {/* Left: Title and Subtitle */}
+            <div className="flex flex-col justify-center">
+              <h3 className="text-lg md:text-xl font-bold text-black mb-1">Our Terms & Conditions</h3>
+              <p className="text-gray text-sm md:text-base">Review our comprehensive loan terms and conditions</p>
+            </div>
+            {/* Right: Icon and Button */}
+            <div className="flex items-center gap-3">
+              <Shield className="w-6 h-6 text-primary" />
+              <button
+                onClick={() => setShowTerms((v) => !v)}
+                className="border border-gray-200 bg-white rounded-lg px-4 py-2 font-medium text-black hover:bg-primary hover:text-white transition-colors flex items-center gap-2 shadow-sm text-sm md:text-base"
+              >
+                {showTerms ? 'Hide Details' : 'View Details'}
+              </button>
+            </div>
+          </div>
+          {showTerms && (
+            <div className="mt-4 bg-white rounded-2xl shadow p-6">
+              <CollapsibleTerms />
+            </div>
+          )}
+        </section>
+
+        {/* <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-16">
           <CollapsibleTerms />
-        </div>
+        </div> */}
 
-        <div className="mb-16">
-          <h2 className="text-4xl font-bold text-[#F59E0B] mb-12 text-center">House Designs & Features</h2>
-          
-          <div className="space-y-16">
-            {/* Two Bedroom House */}
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="space-y-4">
-                <h3 className="text-2xl font-bold text-[#1E40AF]">Two Bedroom House</h3>
-                <div className="space-y-2 text-gray-700">
-                  <h4 className="font-semibold">Features</h4>
-                  <ul className="list-disc pl-6">
-                    <li>Master Ensuite Bedroom with walk-in closet, 1 bedroom with a common washroom</li>
-                    <li>Dining Area, Living Room, Open Plan Kitchen, Built-in Wardrobes for the two bedrooms</li>
-                    <li>Pantry, 500 litres internal storage tank & 5,000 litres reserve tank</li>
-                    <li>Foyer at the main entrance, Septic tank, Tiled floors, 2 steel doors</li>
-                    <li>A perimeter wall equivalent to 50 by 100m, steel gate, wired with provisions of security lights, internet, CCTV and Cable TV</li>
-                  </ul>
-                </div>
-                <a href="/customer-journey" className="inline-block bg-[#F59E0B] hover:bg-[#D97706] text-white px-6 py-2 rounded-lg font-medium transition-colors mt-4">
-                  Inquire Now
-                </a>
-              </div>
-              <div className="relative h-[300px] rounded-lg overflow-hidden">
-                <Image 
-                  src="/images/house_designs/2b_bungalowjpg.jpg" 
-                  alt="Two Bedroom House Design"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+        {/* House Designs & Features Section */}
+        <section className="mb-16">
+          <h2 className="text-4xl font-bold text-center mb-2">House Designs & Features</h2>
+          <p className="text-lg text-gray text-center mb-10">Choose from our carefully crafted home designs</p>
+
+          {/* Two Bedroom House Card */}
+          <div className="flex flex-col md:flex-row bg-white rounded-2xl shadow-lg overflow-hidden mb-10">
+            {/* Image */}
+            <div className="md:w-1/2 w-full h-72 md:h-auto relative">
+              <Image
+                src="/images/house_designs/2b_bungalowjpg.jpg"
+                alt="Two Bedroom House"
+                fill
+                className="object-cover w-full h-full"
+                style={{ borderTopLeftRadius: '1rem', borderBottomLeftRadius: '1rem' }}
+                priority
+              />
             </div>
-
-            {/* Three Bedroom House */}
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="relative h-[300px] rounded-lg overflow-hidden md:order-1">
-                <Image 
-                  src="/images/house_designs/3b_bungalowjpg.jpg" 
-                  alt="Three Bedroom House Design"
-                  fill
-                  className="object-cover"
-                />
+            {/* Info */}
+            <div className="md:w-1/2 w-full p-8 flex flex-col justify-center">
+              <h3 className="text-2xl md:text-3xl font-bold mb-2">Two Bedroom House</h3>
+              <div className="flex items-center gap-6 text-gray-600 mb-3">
+                <span className="flex items-center gap-1 text-base"><BedDouble className="w-5 h-5 text-primary" />2 Bedrooms</span>
+                <span className="flex items-center gap-1 text-base"><Bath className="w-5 h-5 text-primary" />2 Bathrooms</span>
+                <span className="flex items-center gap-1 text-base"><Ruler className="w-5 h-5 text-primary" />120 sqm</span>
               </div>
-              <div className="space-y-4 md:order-2">
-                <h3 className="text-2xl font-bold text-[#1E40AF]">Three Bedroom House</h3>
-                <div className="space-y-2 text-gray-700">
-                  <h4 className="font-semibold">Features</h4>
-                  <ul className="list-disc pl-6">
-                    <li>Master Ensuite Bedroom with walk-in closet, 2 bedrooms with a common washroom</li>
-                    <li>Dining Area, Living Room, Open Plan Kitchen, Built-in Wardrobes for the bedrooms</li>
-                    <li>Pantry, 500 litres internal storage tank & 5,000 litres reserve tank</li>
-                    <li>Foyer at the main entrance, Septic tank, Tiled floors, 2 steel doors</li>
-                    <li>A perimeter wall equivalent to 50 by 80m, steel gate, wired with provisions of security lights, internet, CCTV and Cable TV</li>
-                  </ul>
-                </div>
-                <a href="/customer-journey" className="inline-block bg-[#F59E0B] hover:bg-[#D97706] text-white px-6 py-2 rounded-lg font-medium transition-colors mt-4">
-                  Inquire Now
-                </a>
+              <div className="text-primary text-xl font-bold mb-4">From KSh 2.5M</div>
+              <div className="mb-4">
+                <div className="font-semibold mb-1">Features</div>
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />Master Ensuite Bedroom with walk-in closet, 1 bedroom with a common washroom</li>
+                  <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />Dining Area, Living Room, Open Plan Kitchen, Built-in Wardrobes for the two bedrooms</li>
+                  <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />Pantry, 500 litres Internal storage tank & 5,000 litres reserve tank</li>
+                  <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />Perimeter wall, Septic tank, Pit latrine, Tap stand, Floor and wall tiles</li>
+                  <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />A perimeter wall equivalent to 50 by 50m, steel gate, wired with provision of security lights, Internet, CCTV and Cable TV</li>
+                </ul>
               </div>
-            </div>
-
-            {/* Four Bedroom House */}
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="space-y-4">
-                <h3 className="text-2xl font-bold text-[#1E40AF]">Four Bedroom House</h3>
-                <div className="space-y-2 text-gray-700">
-                  <h4 className="font-semibold">Ground Floor</h4>
-                  <ul className="list-disc pl-6">
-                    <li>Dining Area, Living Room, Pantry, One Bedroom ensuite</li>
-                    <li>Open Plan Kitchen, Cloakroom</li>
-                    <li>Foyer at the main entrance, 2 steel doors, 5000ltr internal storage tank & 5000l reserve tank</li>
-                  </ul>
-                  <h4 className="font-semibold mt-4">1st Floor</h4>
-                  <ul className="list-disc pl-6">
-                    <li>Master Ensuite Bedroom with walk-in closet and balcony</li>
-                    <li>2 bedrooms with built-in wardrobes and a shared washroom</li>
-                    <li>One Extra balcony, stairs, and tiled floors</li>
-                  </ul>
-                </div>
-                <a href="/customer-journey" className="inline-block bg-[#F59E0B] hover:bg-[#D97706] text-white px-6 py-2 rounded-lg font-medium transition-colors mt-4">
-                  Inquire Now
-                </a>
-              </div>
-              <div className="relative h-[300px] rounded-lg overflow-hidden">
-                <Image 
-                  src="/images/house_designs/4b_hybrid.jpg" 
-                  alt="Four Bedroom House Design"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <a href="/customer-journey" className="inline-block bg-secondary hover:bg-accent text-white px-8 py-3 rounded-lg font-semibold transition-colors mt-2 w-fit">Inquire Now</a>
             </div>
           </div>
 
-          <div className="mt-8 p-4 bg-yellow-50 rounded-lg">
-            <p className="text-red-600 font-semibold">**Note</p>
-            <p className="text-gray-700 italic">
-              Excavation shall not be beyond 2 feet of black cotton and the gradient is flat or gently slanting. Anything beyond a standard design, a tailored BQ will be prepared.
-            </p>
+          {/* Three Bedroom House Card */}
+          <div className="flex flex-col md:flex-row bg-white rounded-2xl shadow-lg overflow-hidden">
+            
+            {/* Info */}
+            <div className="md:w-1/2 w-full p-8 flex flex-col justify-center">
+              <h3 className="text-2xl md:text-3xl font-bold mb-2">Three Bedroom House</h3>
+              <div className="flex items-center gap-6 text-gray-600 mb-3">
+                <span className="flex items-center gap-1 text-base"><BedDouble className="w-5 h-5 text-primary" />3 Bedrooms</span>
+                <span className="flex items-center gap-1 text-base"><Bath className="w-5 h-5 text-primary" />2 Bathrooms</span>
+                <span className="flex items-center gap-1 text-base"><Ruler className="w-5 h-5 text-primary" />160 sqm</span>
+              </div>
+              <div className="text-primary text-xl font-bold mb-4">From KSh 3.8M</div>
+              <div className="font-semibold mb-1">Features</div>
+              <ul className="space-y-2 mb-4">
+                <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />Master Ensuite Bedroom with walk-in closet, 2 bedrooms with a common washroom</li>
+                <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />Dining Area, Living Room, Open Plan Kitchen, Built-in Wardrobes for the bedrooms</li>
+                <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />Pantry, 500 litres internal storage tank & 5,000 litres reserve tank</li>
+                <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />Foyer at the main entrance, Septic tank, Tiled floors, 2 steel doors</li>
+                <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />A perimeter wall equivalent to 50 by 80m, steel gate, wired with provisions of security lights, internet, CCTV and Cable TV</li>
+              </ul>
+              <a href="/customer-journey" className="inline-block bg-secondary hover:bg-accent text-white px-8 py-3 rounded-lg font-semibold transition-colors mt-2 w-fit">Inquire Now</a>
+            </div>
+            {/* Image */}
+            <div className="md:w-1/2 w-full h-72 md:h-auto relative">
+              <Image
+                src="/images/house_designs/3b_bungalowjpg.jpg"
+                alt="Three Bedroom House"
+                fill
+                className="object-cover w-full h-full"
+                style={{ borderTopLeftRadius: '1rem', borderBottomLeftRadius: '1rem' }}
+                priority
+              />
+            </div>
+
           </div>
-        </div>
+
+          {/* Four Bedroom House Card */}
+          <div className="flex flex-col md:flex-row bg-white rounded-2xl shadow-lg overflow-hidden mt-10">
+            {/* Image */}
+            <div className="md:w-1/2 w-full h-72 md:h-auto relative">
+              <Image
+                src="/images/house_designs/4b_hybrid.jpg"
+                alt="Four Bedroom House"
+                fill
+                className="object-cover w-full h-full"
+                style={{ borderTopLeftRadius: '1rem', borderBottomLeftRadius: '1rem' }}
+                priority
+              />
+            </div>
+            {/* Info */}
+            <div className="md:w-1/2 w-full p-8 flex flex-col justify-center">
+              <h3 className="text-2xl md:text-3xl font-bold mb-2">Four Bedroom House</h3>
+              <div className="flex items-center gap-6 text-gray-600 mb-3">
+                <span className="flex items-center gap-1 text-base"><BedDouble className="w-5 h-5 text-primary" />4 Bedrooms</span>
+                <span className="flex items-center gap-1 text-base"><Bath className="w-5 h-5 text-primary" />3 Bathrooms</span>
+                <span className="flex items-center gap-1 text-base"><Ruler className="w-5 h-5 text-primary" />220 sqm</span>
+              </div>
+              <div className="text-primary text-xl font-bold mb-4">From KSh 5.2M</div>
+              <div className="font-semibold mb-1">Features</div>
+              <div className="mb-2 mt-2 font-semibold text-primary">Ground Floor</div>
+              <ul className="space-y-2 mb-2">
+                <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />Dining Area, Living Room, Pantry, One Bedroom ensuite</li>
+                <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />Open Plan Kitchen, Cloakroom</li>
+                <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />Foyer at the main entrance, 2 steel doors, 5000ltr internal storage tank & 5000l reserve tank</li>
+              </ul>
+              <div className="mb-2 font-semibold text-primary">1st Floor</div>
+              <ul className="space-y-2 mb-4">
+                <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />Master Ensuite Bedroom with walk-in closet and balcony</li>
+                <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />2 bedrooms with built-in wardrobes and a shared washroom</li>
+                <li className="flex items-start gap-2 text-gray-700 text-sm md:text-base"><CheckCircle className="w-5 h-5 text-primary mt-1" />One Extra balcony, stairs, and tiled floors</li>
+              </ul>
+              <a href="/customer-journey" className="inline-block bg-secondary hover:bg-accent text-white px-8 py-3 rounded-lg font-semibold transition-colors mt-2 w-fit">Inquire Now</a>
+            </div>
+          </div>
+        </section>
 
         <div className="mb-16">
           <h2 className="text-4xl font-bold text-[#F59E0B] mb-12 text-center">Construction Process</h2>
@@ -293,6 +378,8 @@ const HowToOwn = () => {
             Contact Us Today
           </a>
         </div>
+
+       
       </main>
       <Footer />
     </div>
