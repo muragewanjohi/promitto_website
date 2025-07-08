@@ -16,8 +16,8 @@ const ConstructionProcess = () => {
       icon: Handshake,
       title: 'Expression of Interest',
       description: 'Client expresses interest to construct and commits with a deposit of KES 20,000. Promitto kicks off by performing due diligence including basic title search and KYC verification.',
-      color: 'bg-blue-600',
-      bgColor: 'bg-blue-50',
+      color: 'bg-primary',
+      bgColor: 'bg-primary',//'bg-blue-50',
       delay: '0ms',
       row: 1
     },
@@ -26,8 +26,8 @@ const ConstructionProcess = () => {
       icon: Users,
       title: 'Client Authorization Stage',
       description: 'Promitto shares project details with contractor for preparation of a Bill of Quantities.',
-      color: 'bg-blue-600',
-      bgColor: 'bg-blue-50',
+      color: 'bg-secondary',
+      bgColor: 'bg-secondary',
       delay: '100ms',
       row: 1
     },
@@ -36,8 +36,8 @@ const ConstructionProcess = () => {
       icon: Calculator,
       title: 'Project Assignment',
       description: 'Promitto provides Bill of Quantities within a maximum of 14 working days.',
-      color: 'bg-blue-600',
-      bgColor: 'bg-blue-50',
+      color: 'bg-primary',
+      bgColor: 'bg-primary',
       delay: '200ms',
       row: 1
     },
@@ -46,8 +46,8 @@ const ConstructionProcess = () => {
       icon: FileCheck,
       title: 'Clearance Stage',
       description: 'Promitto shares the Bill of Quantities with the Client. Client makes deposit of 30% to Promitto.',
-      color: 'bg-orange-500',
-      bgColor: 'bg-orange-50',
+      color: 'bg-secondary',
+      bgColor: 'bg-secondary',
       delay: '300ms',
       row: 2
     },
@@ -56,8 +56,8 @@ const ConstructionProcess = () => {
       icon: Banknote,
       title: 'Confirmation Stage',
       description: 'Promitto shares the Bill of Quantities with the Client. Client makes deposit of 30% to Promitto.',
-      color: 'bg-orange-500',
-      bgColor: 'bg-orange-50',
+      color: 'bg-primary',
+      bgColor: 'bg-primary',
       delay: '400ms',
       row: 2
     },
@@ -66,8 +66,8 @@ const ConstructionProcess = () => {
       icon: HardHat,
       title: 'Implementation, Monitoring and Evaluation Stage',
       description: 'Promitto flags off construction and oversees management of project. Construction ends in 6 - 12 months as client continues to make monthly repayments. Client starts making monthly repayments a month after construction begins.',
-      color: 'bg-green-600',
-      bgColor: 'bg-green-50',
+      color: 'bg-secondary',
+      bgColor: 'bg-secondary',
       delay: '500ms',
       row: 2
     }
@@ -86,8 +86,8 @@ const ConstructionProcess = () => {
     <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden" id="process">
       {/* Background Construction Elements */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-10 left-10 w-32 h-32 bg-orange-500 rounded-full"></div>
-        <div className="absolute bottom-20 right-20 w-24 h-24 bg-blue-600 rounded-full"></div>
+        <div className="absolute top-10 left-10 w-32 h-32 bg-secondary rounded-full"></div>
+        <div className="absolute bottom-20 right-20 w-24 h-24 bg-primary rounded-full"></div>
         <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-green-600 transform rotate-45"></div>
       </div>
       
@@ -96,7 +96,7 @@ const ConstructionProcess = () => {
           {/* Construction imagery header */}
           <div className="flex justify-center mb-6">
             <div className="relative">
-              <div className="w-20 h-20 bg-gradient-to-r from-orange-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-20 h-20 bg-gradient-to-r from-secondary to-primary rounded-2xl flex items-center justify-center shadow-lg">
                 <HardHat className="w-10 h-10 text-white" />
               </div>
               <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
@@ -105,8 +105,8 @@ const ConstructionProcess = () => {
             </div>
           </div>
           
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Our <span className="text-orange-500">Construction Process</span>
+          <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-4">
+            Our Construction Process
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             A transparent, step-by-step approach to bringing your dream home to life. 
@@ -140,10 +140,10 @@ const ConstructionProcess = () => {
 
                   {/* Content */}
                   <div className="space-y-4">
-                    <h3 className="text-xl font-bold text-gray-900 leading-tight">
+                    <h3 className="text-xl font-bold text-white leading-tight">
                       {step.title}
                     </h3>
-                    <p className="text-gray-600 leading-relaxed text-sm">
+                    <p className="text-white leading-relaxed text-sm">
                       {step.description}
                     </p>
                   </div>
@@ -156,7 +156,7 @@ const ConstructionProcess = () => {
                   )}
 
                   {/* Hover effect overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-orange-500/5 to-green-600/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-green-600/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
               ))}
             </div>
@@ -171,7 +171,7 @@ const ConstructionProcess = () => {
           </div>
           
           <div className="relative">
-            <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-600 via-orange-500 to-green-600 rounded-full opacity-30"></div>
+            <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-green-600 rounded-full opacity-30"></div>
             {processSteps.map((step, index) => (
               <div key={`mobile-${step.id}`} className="relative flex items-start space-x-4 pb-8">
                 <div className={`${step.color} w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 z-10 shadow-lg relative`}>
@@ -194,8 +194,8 @@ const ConstructionProcess = () => {
           <div className="bg-white rounded-2xl p-8 shadow-lg max-w-2xl mx-auto border border-gray-100 relative overflow-hidden">
             {/* Construction pattern background */}
             <div className="absolute inset-0 opacity-5">
-              <div className="absolute top-4 right-4 w-8 h-8 border-2 border-orange-500 rotate-45"></div>
-              <div className="absolute bottom-4 left-4 w-6 h-6 bg-blue-600 rounded-full"></div>
+                          <div className="absolute top-4 right-4 w-8 h-8 border-2 border-secondary rotate-45"></div>
+            <div className="absolute bottom-4 left-4 w-6 h-6 bg-primary rounded-full"></div>
             </div>
             
             <h3 className="text-2xl font-bold text-gray-900 mb-4">
@@ -205,7 +205,7 @@ const ConstructionProcess = () => {
               Join hundreds of satisfied homeowners who trusted Promitto with their construction projects.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 group shadow-lg hover:shadow-xl">
+              <button className="bg-primary hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2 group shadow-lg hover:shadow-xl">
                 <span>Start Your Project</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
               </button>

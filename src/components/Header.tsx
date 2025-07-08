@@ -71,7 +71,7 @@ export default function Header() {
                 {/* <span className="text-white">Welcome, {user.email}</span> */}
                 <button
                   onClick={() => signOut()}
-                  className="bg-[#F59E0B] text-white px-4 py-2 rounded-md hover:bg-[#D97706]"
+                  className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-[#D97706]"
                 >
                   Sign Out
                 </button>
@@ -87,7 +87,7 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/signup"
-                  className="bg-[#F59E0B] text-white px-4 py-2 rounded-md hover:bg-[#D97706]"
+                  className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-[#D97706]"
                   prefetch={false}
                 >
                   Sign Up
@@ -206,7 +206,7 @@ export default function Header() {
                       signOut();
                       setIsMenuOpen(false);
                     }}
-                    className="bg-[#F59E0B] text-white px-4 py-2 rounded-md hover:bg-[#D97706]"
+                    className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-[#D97706]"
                   >
                     Sign Out
                   </button>
@@ -223,7 +223,7 @@ export default function Header() {
                   </Link>
                   <Link
                     href="/signup"
-                    className="bg-[#F59E0B] text-white px-4 py-2 rounded-md hover:bg-[#D97706]"
+                    className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-[#D97706]"
                     onClick={() => setIsMenuOpen(false)}
                     prefetch={false}
                   >
