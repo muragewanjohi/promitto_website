@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import ConstructionProcess from '../../components/ConstructionProcess';
 import Image from 'next/image';
 import { ArrowRight, CheckCircle, TrendingUp, Home, Shield, BedDouble, Bath, Ruler } from 'lucide-react';
 
@@ -244,89 +245,8 @@ const HowToOwn = () => {
           </div>
         </section>
 
-        <div className="mb-16">
-          <h2 className="text-4xl font-bold text-[#F59E0B] mb-12 text-center">Construction Process</h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Step 1 */}
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <div className="w-16 h-16 bg-[#1E40AF] rounded-full flex items-center justify-center mb-4 mx-auto">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-center mb-3">Expression of Interest</h3>
-              <p className="text-gray-700 text-center">
-                Client expresses interest to construct and commits with a deposit of KES 20,000. Promitto kicks off by performing due diligence including basic title search and KYC verification.
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <div className="w-16 h-16 bg-[#1E40AF] rounded-full flex items-center justify-center mb-4 mx-auto">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-center mb-3">Client Authorization Stage</h3>
-              <p className="text-gray-700 text-center">
-                Promitto shares project details with contractor for preparation of a Bill of Quantities.
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <div className="w-16 h-16 bg-[#1E40AF] rounded-full flex items-center justify-center mb-4 mx-auto">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-center mb-3">Project Assignment</h3>
-              <p className="text-gray-700 text-center">
-                Promitto provides Bill of Quantities within a maximum of 14 working days.
-              </p>
-            </div>
-
-            {/* Step 4 */}
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <div className="w-16 h-16 bg-[#1E40AF] rounded-full flex items-center justify-center mb-4 mx-auto">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-center mb-3">Clearance Stage</h3>
-              <p className="text-gray-700 text-center">
-                Promitto shares the Bill of Quantities with the Client. Client makes deposit of 30% to Promitto.
-              </p>
-            </div>
-
-            {/* Step 5 */}
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <div className="w-16 h-16 bg-[#1E40AF] rounded-full flex items-center justify-center mb-4 mx-auto">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-center mb-3">Confirmation Stage</h3>
-              <p className="text-gray-700 text-center">
-                Promitto shares the Bill of Quantities with the Client. Client makes deposit of 30% to Promitto.
-              </p>
-            </div>
-
-            {/* Step 6 */}
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <div className="w-16 h-16 bg-[#1E40AF] rounded-full flex items-center justify-center mb-4 mx-auto">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-center mb-3">Implementation, Monitoring and Evaluation Stage</h3>
-              <p className="text-gray-700 text-center">
-                Promitto flags off construction and oversees management of project. Construction ends in 6 - 12 months as client continues to make monthly repayments. Client starts making monthly repayments a month after construction begins.
-              </p>
-            </div>
-          </div>
-        </div>
+        {/* Construction Process Section */}
+        <ConstructionProcess />
 
         <div className="mb-16">
           <h2 className="text-4xl font-bold text-[#F59E0B] mb-12 text-center">Savings</h2>
