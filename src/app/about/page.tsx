@@ -134,8 +134,7 @@ const AboutUs = () => {
                   fill
                   className="object-cover"
                 />
-                {/* Custom markers for Kenya and Zambia */}
-                
+                                
                 
               </div>
             </div>
