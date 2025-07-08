@@ -93,6 +93,55 @@ const AboutUs = () => {
           </div>
         </section>
 
+        {/* Global Presence Map */}
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="flex items-center justify-center mb-8">
+              <span className="inline-block bg-blue-100 p-3 rounded-full mr-3">
+                <svg className="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              </span>
+              <h4 className="text-3xl font-bold text-gray-900">Our Global Presence</h4>
+            </div>
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h5 className="text-xl font-bold text-gray-900 mb-4">Serving East and Southern Africa</h5>
+                <p className="text-gray-600 mb-6">
+                  Promitto has established a strong presence across East and Southern Africa, with offices in Kenya and Zambia. Our regional footprint allows us to serve clients across multiple markets while maintaining our commitment to quality and innovation.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-3 h-3 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                    <div>
+                      <h6 className="font-semibold text-gray-900">Kenya - Main Office</h6>
+                      <p className="text-gray-600 text-sm">Pension Towers, Nairobi Loita street, Floor M2</p>
+                      <p className="text-gray-600 text-sm">+254 729 506 506</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="w-3 h-3 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <div>
+                      <h6 className="font-semibold text-gray-900">Zambia - Branch Office</h6>
+                      <p className="text-gray-600 text-sm">Woodlands shopping mall, 1st floor</p>
+                      <p className="text-gray-600 text-sm">+260 775 604 455</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="relative h-[400px] rounded-xl overflow-hidden bg-white shadow-lg">
+                <Image
+                  src="/images/maps.jpeg"
+                  alt="Promitto Global Presence Map showing Kenya and Zambia"
+                  fill
+                  className="object-cover"
+                />
+                {/* Custom markers for Kenya and Zambia */}
+                
+                
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Technical Expertise */}
         <section className="py-16">
           <div className="max-w-5xl mx-auto px-4">
