@@ -12,7 +12,7 @@ module.exports = {
           DEFAULT: '#1E40AF',//'#1E88E5', // Black Pearl
         },
         secondary: {
-          DEFAULT: '#f0b80e', // Buttercup
+          DEFAULT: '#F59E0B', // Buttercup #
         },
         gray: {
           DEFAULT: '#7c7c88', // Jumbo

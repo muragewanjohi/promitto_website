@@ -211,7 +211,7 @@ const AboutUs = () => {
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex items-center justify-center mb-12">
               <span className="inline-block bg-orange-100 p-3 rounded-full mr-3">
-                <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4V7a4 4 0 00-8 0v2m8 4a4 4 0 01-8 0" /></svg>
+                <svg className="w-8 h-8 text-[#F59E0B]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4V7a4 4 0 00-8 0v2m8 4a4 4 0 01-8 0" /></svg>
               </span>
               <h4 className="text-3xl font-bold text-gray-900">Board Members</h4>
             </div>
@@ -227,7 +227,7 @@ const AboutUs = () => {
                   />
                 </div>
                 <h4 className="text-xl font-bold text-gray-900 mb-2">Dr. Olufunso Somorin</h4>
-                <p className="text-[#D97706]">Overall Chairman</p>
+                <p className="text-[#F59E0B]">Overall Chairman</p>
               </div>
               {/* Mark Muema */}
               <div className="text-center bg-gray-50 rounded-xl shadow p-6">
@@ -240,7 +240,7 @@ const AboutUs = () => {
                   />
                 </div>
                 <h4 className="text-xl font-bold text-gray-900 mb-2">Mark Muema</h4>
-                <p className="text-[#D97706]">Chairman, Finance and HR Subcommittee</p>
+                <p className="text-[#F59E0B]">Chairman, Finance and HR Subcommittee</p>
               </div>
               {/* Waceke Munene */}
               <div className="text-center bg-gray-50 rounded-xl shadow p-6">
@@ -253,7 +253,7 @@ const AboutUs = () => {
                   />
                 </div>
                 <h4 className="text-xl font-bold text-gray-900 mb-2">Waceke Munene</h4>
-                <p className="text-[#D97706]">IT & Operations Subcommittee</p>
+                <p className="text-[#F59E0B]">IT & Operations Subcommittee</p>
               </div>
               {/* Jimmy Kagoni */}
               <div className="text-center bg-gray-50 rounded-xl shadow p-6">
@@ -266,7 +266,7 @@ const AboutUs = () => {
                   />
                 </div>
                 <h4 className="text-xl font-bold text-gray-900 mb-2">Jimmy Kagoni</h4>
-                <p className="text-[#D97706]">Secretary to the Board</p>
+                <p className="text-[#F59E0B]">Secretary to the Board</p>
               </div>
             </div>
           </div>

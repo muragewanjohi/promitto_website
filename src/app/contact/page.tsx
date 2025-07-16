@@ -116,7 +116,7 @@ const ContactUs = () => {
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-[#F59E0B] hover:bg-[#D97706] text-white px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
+                    className="w-full bg-secondary hover:bg-[#D97706] text-white px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
                     disabled={loading}
                   >
                     {loading ? 'Sending...' : 'Send Message'}

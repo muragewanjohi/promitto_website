@@ -20,7 +20,7 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link
                 href="/properties"
-                className="bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-3 rounded-lg font-medium transition-colors"
+                className="bg-[#D97706] hover:bg-primary text-white px-8 py-3 rounded-lg font-medium transition-colors"
               >
                 Completed Projects
               </Link>
