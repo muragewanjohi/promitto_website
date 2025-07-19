@@ -9,9 +9,11 @@ const LoanCalculator = () => {
   const [downPayment, setDownPayment] = useState<string>('900,000');
   const [loanTerm, setLoanTerm] = useState<string>('7'); // Default 7 years, adjustable
   const [interestRate] = useState<string>('12');
+  const [processingFee] = useState<string>('2.5'); // 2.5% processing fee
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
   const [totalPayment, setTotalPayment] = useState<number>(0);
   const [totalInterest, setTotalInterest] = useState<number>(0);
+  const [processingFeeAmount, setProcessingFeeAmount] = useState<number>(0);
   const [salary, setSalary] = useState<string>('');
   const [recommendation, setRecommendation] = useState<string>('');
   const [isCalculated, setIsCalculated] = useState<boolean>(false);
@@ -41,6 +43,9 @@ const LoanCalculator = () => {
     const monthlyRate = annualRate / 12;
     const numberOfPayments = Number(loanTerm) * 12; // loanTerm is in years
     
+    // Calculate processing fee
+    const processingFeeAmount = Math.round(principal * (Number(processingFee) / 100));
+    
     // Calculate monthly payment using the loan amortization formula
     // PMT = P * (r * (1 + r)^n) / ((1 + r)^n - 1)
     // Where:
@@ -59,6 +64,7 @@ const LoanCalculator = () => {
     setMonthlyPayment(Math.round(monthlyPaymentAmount));
     setTotalPayment(Math.round(totalPaymentAmount));
     setTotalInterest(Math.round(totalInterestAmount));
+    setProcessingFeeAmount(processingFeeAmount);
     setIsCalculated(true);
 
     // Calculate recommendation if salary is provided
@@ -91,18 +97,33 @@ const LoanCalculator = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-secondary/5">
       <Header />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-[#F59E0B] mb-4">Loan Calculator</h1>
-          <h2 className="text-2xl text-gray-700">Jenga Nyumba Loan Calculator</h2>
-          <p className="mt-2 text-lg text-[#1E40AF] font-semibold">Interest Rate: 12% per annum (fixed, reducing balance)</p>
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full mb-6 shadow-lg">
+            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">Loan Calculator</h1>
+          <h2 className="text-2xl text-gray-700 mb-2">Jenga Nyumba Loan Calculator</h2>
+          <p className="text-lg text-gray-600">Calculate your dream home financing with our transparent loan calculator</p>
+          <div className="mt-4 flex items-center justify-center space-x-6 text-sm">
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-primary rounded-full"></div>
+              <span className="text-gray-700">Interest Rate: 12% per annum</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-secondary rounded-full"></div>
+              <span className="text-gray-700">Processing Fee: 2.5%</span>
+            </div>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12">
           {/* Calculator Form */}
-          <div className="bg-[#F5E6CC] p-8 rounded-lg shadow-lg">
+          <div className="bg-gradient-to-br from-white to-secondary/10 p-8 rounded-2xl shadow-xl border border-secondary/20">
             <div className="space-y-6">
               <div>
                 <label className="block text-gray-700 font-medium mb-2">Property Cost (KES)</label>
@@ -149,21 +170,31 @@ const LoanCalculator = () => {
               </div>
 
               <div>
+                <label className="block text-gray-700 font-medium mb-2">Processing Fee (%)</label>
+                <input
+                  type="number"
+                  value={processingFee}
+                  readOnly
+                  className="w-full px-4 py-2 rounded-lg border bg-gray-100"
+                />
+              </div>
+
+              <div>
                 <label className="block text-gray-700 font-medium mb-2">Monthly Salary (Optional)</label>
                 <input
                   type="text"
                   value={salary}
                   onChange={(e) => handleInputChange('salary', e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
+                  className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-secondary"
                   placeholder="Enter your monthly salary"
                 />
               </div>
 
               <button
                 onClick={calculateLoan}
-                className="w-full bg-[#1E40AF] text-white py-3 rounded-lg font-medium hover:bg-[#1E3A8A] transition-colors flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-primary to-secondary text-white py-4 rounded-xl font-semibold hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-3"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
                 <span>Calculate Loan</span>
@@ -171,10 +202,15 @@ const LoanCalculator = () => {
             </div>
           </div>
 
-          {/* Results */}
-          <div className="space-y-8">
-            <div className="bg-white p-8 rounded-lg shadow-lg">
-              <h3 className="text-2xl font-semibold text-[#1E40AF] mb-6">Loan Summary</h3>
+                      {/* Results */}
+            <div className="space-y-8">
+              <div className="bg-gradient-to-br from-white to-primary/5 p-8 rounded-2xl shadow-xl border border-primary/20">
+              <h3 className="text-2xl font-semibold text-primary mb-6 flex items-center">
+                <svg className="w-6 h-6 mr-3 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                Loan Summary
+              </h3>
               <div className="space-y-4">
                 <div>
                   <p className="text-gray-600">Property Cost</p>
@@ -186,21 +222,31 @@ const LoanCalculator = () => {
                 </div>
                 <div>
                   <p className="text-gray-600">Interest Rate</p>
-                  <p className="text-xl font-bold text-[#1E40AF]">12% per annum (reducing balance)</p>
+                  <p className="text-xl font-bold text-primary">12% per annum (reducing balance)</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Processing Fee</p>
+                  <p className="text-xl font-bold text-secondary">{processingFee}% of loan amount</p>
                 </div>
                 <div>
                   <p className="text-gray-600">Loan Term</p>
-                  <p className="text-xl font-bold text-[#1E40AF]">{loanTerm} {loanTerm === '1' ? 'year' : 'years'} ({Number(loanTerm) * 12} months)</p>
+                  <p className="text-xl font-bold text-primary">{loanTerm} {loanTerm === '1' ? 'year' : 'years'} ({Number(loanTerm) * 12} months)</p>
                 </div>
-                <div className="pt-4 border-t">
+                <div className="pt-4 border-t border-gray-200">
                   <p className="text-gray-600">Estimated Monthly Payment</p>
-                  <p className="text-3xl font-bold text-[#1E40AF] mt-2">
+                  <p className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mt-2">
                     KES {isCalculated ? formatNumber(monthlyPayment.toString()) : '---'}
                   </p>
                 </div>
                 {isCalculated && (
                   <>
-                    <div className="pt-4 border-t">
+                    <div className="pt-4 border-t border-gray-200">
+                      <p className="text-gray-600">Processing Fee Amount</p>
+                      <p className="text-xl font-bold text-secondary mt-1">
+                        KES {formatNumber(processingFeeAmount.toString())}
+                      </p>
+                    </div>
+                    <div className="pt-4 border-t border-gray-200">
                       <p className="text-gray-600">Total Interest</p>
                       <p className="text-xl font-bold text-gray-800 mt-1">
                         KES {formatNumber(totalInterest.toString())}
@@ -218,20 +264,31 @@ const LoanCalculator = () => {
             </div>
 
             {isCalculated && recommendation && (
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <h4 className="text-lg font-semibold text-[#1E40AF] mb-2">Recommendation</h4>
+              <div className="bg-gradient-to-r from-secondary/10 to-primary/10 p-6 rounded-xl border border-secondary/30">
+                <h4 className="text-lg font-semibold text-primary mb-2 flex items-center">
+                  <svg className="w-5 h-5 mr-2 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Recommendation
+                </h4>
                 <p className="text-gray-700">{recommendation}</p>
               </div>
             )}
 
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h4 className="text-lg font-semibold text-[#1E40AF] mb-4">Important Notes</h4>
+            <div className="bg-gradient-to-r from-gray-50 to-primary/5 p-6 rounded-xl border border-gray-200">
+              <h4 className="text-lg font-semibold text-primary mb-4 flex items-center">
+                <svg className="w-5 h-5 mr-2 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Important Notes
+              </h4>
               <ul className="list-disc pl-6 text-gray-700 space-y-2">
-                <li>Down payment is fixed at 30% of the property cost</li>
-                <li>Loan term is adjustable</li>
-                <li>Interest rate is fixed at <span className="font-bold">12% per annum</span> on reducing balance</li>
+                <li>Down payment is fixed at <span className="font-bold text-primary">30%</span> of the property cost</li>
+                <li>Loan term is adjustable from <span className="font-bold text-primary">1-7 years</span></li>
+                <li>Interest rate is fixed at <span className="font-bold text-primary">12% per annum</span> on reducing balance</li>
+                <li>Processing fee is <span className="font-bold text-secondary">2.5%</span> of the loan amount</li>
                 <li>Monthly payments start one month after construction begins</li>
-                <li>Construction period is typically 6-12 months</li>
+                <li>Construction period is typically <span className="font-bold text-primary">6-12 months</span></li>
               </ul>
             </div>
           </div>

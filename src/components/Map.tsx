@@ -1,10 +1,15 @@
 'use client';
 import React from 'react';
 
-const Map: React.FC = () => (
+interface MapProps {
+  location: string;
+  title: string;
+}
+
+const Map: React.FC<MapProps> = ({ location, title }) => (
   <div className="relative h-64 rounded-xl overflow-hidden">
     <iframe
-      src="https://www.google.com/maps?q=Pension+Towers,+Loita+St,+Nairobi&output=embed"
+      src={`https://www.google.com/maps?q=${encodeURIComponent(location)}&output=embed`}
       width="100%"
       height="100%"
       style={{ border: 0 }}
@@ -12,7 +17,7 @@ const Map: React.FC = () => (
       loading="lazy"
       referrerPolicy="no-referrer-when-downgrade"
       className="absolute inset-0 w-full h-full"
-      title="Pension Towers Map"
+      title={title}
     ></iframe>
   </div>
 );

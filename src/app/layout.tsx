@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/contexts/AuthContext';
+import ScrollToTop from '@/components/ScrollToTop';
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className={montserrat.className}>
         <AuthProvider>
           {children}
+          <ScrollToTop />
         </AuthProvider>
       </body>
     </html>
