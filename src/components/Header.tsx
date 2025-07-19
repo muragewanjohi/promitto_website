@@ -93,20 +93,30 @@ export default function Header() {
       {/* Bottom Bar: Navigation */}
       <div className="w-full bg-secondary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex justify-center md:justify-start space-x-6 py-3 text-white font-medium font-sans">
-            <Link href="/" className="hover:text-primary transition-colors" prefetch={false}>Home</Link>
-            <Link href="/about" className="hover:text-primary transition-colors" prefetch={false}>About</Link>
-            <Link href="/properties" className="hover:text-primary transition-colors" prefetch={false}>Projects</Link>
-            <Link href="/property-designs" className="hover:text-primary transition-colors" prefetch={false}>Designs</Link>
-            <Link href="/how-to-own" className="hover:text-primary transition-colors" prefetch={false}>How To Own</Link>
-            <Link href="/loan-calculator" className="hover:text-primary transition-colors" prefetch={false}>Loan Calculator</Link>
-            <Link href="/contact" className="hover:text-primary transition-colors" prefetch={false}>Contact</Link>
-            {userProfile?.role === 'admin' && (
-              <Link href="/admin" className="hover:text-primary font-semibold transition-colors" prefetch={false}>Admin Dashboard</Link>
-            )}
-            {user && (
-              <Link href="/profile" className="hover:text-primary font-semibold transition-colors" prefetch={false}>Profile</Link>
-            )}
+          <nav className="flex justify-center md:justify-between items-center space-x-6 py-3 text-white font-medium font-sans">
+            <div className="flex space-x-6">
+              <Link href="/" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>Home</Link>
+              <Link href="/about" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>About</Link>
+              <Link href="/properties" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>Projects</Link>
+              <Link href="/property-designs" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>Designs</Link>
+              <Link href="/how-to-own" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>How To Own</Link>
+              <Link href="/loan-calculator" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>Loan Calculator</Link>
+              <Link href="/contact" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>Contact</Link>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              {userProfile?.role === 'admin' && (
+                <Link href="/admin" className="text-sm md:text-base hover:text-primary font-semibold transition-colors" prefetch={false}>Admin Dashboard</Link>
+              )}
+              {user ? (
+                <Link href="/profile" className="text-sm md:text-base hover:text-primary font-semibold transition-colors" prefetch={false}>Profile</Link>
+              ) : (
+                <>
+                  <Link href="/login" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>Login</Link>
+                  <Link href="/signup" className="text-sm md:text-base bg-primary hover:bg-accent text-white px-4 py-2 rounded-lg transition-colors" prefetch={false}>Sign Up</Link>
+                </>
+              )}
+            </div>
           </nav>
         </div>
       </div>
