@@ -190,7 +190,7 @@ export default function PropertiesPage() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search by location or property name"
+                  placeholder="Search by location or project name"
                   className="w-full pl-12 pr-24 py-4 rounded-xl bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#1E40AF] text-sm"
                 />
                 <button 
