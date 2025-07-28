@@ -25,7 +25,6 @@ interface Property {
 }
 
 interface Filters {
-  propertyType: 'completed' | 'ongoing' | null;
   priceMin: number | null;
   priceMax: number | null;
   type: 'House' | 'Apartment' | 'Villa' | 'Commercial' | '';
@@ -42,6 +41,7 @@ export default function PropertiesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState<'completed' | 'ongoing' | 'all'>('all');
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -89,10 +89,10 @@ export default function PropertiesPage() {
   const handleFilterChange = useCallback((filters: Filters) => {
     let filtered = [...properties];
 
-    // Filter by property type (completed/ongoing)
-    if (filters.propertyType) {
+    // Filter by status (completed/ongoing)
+    if (selectedStatus !== 'all') {
       filtered = filtered.filter(property => 
-        property.status === filters.propertyType
+        property.status === selectedStatus
       );
     }
 
@@ -144,7 +144,20 @@ export default function PropertiesPage() {
     }
 
     setFilteredProperties(filtered);
-  }, [properties]);
+  }, [properties, selectedStatus]);
+
+  // Trigger filtering when selectedStatus changes
+  useEffect(() => {
+    handleFilterChange({
+      priceMin: null,
+      priceMax: null,
+      type: '',
+      location: '',
+      rooms: 0,
+      bathrooms: 0,
+      roofType: ''
+    });
+  }, [selectedStatus, handleFilterChange]);
 
   const handlePropertyClick = (propertyId: string) => {
     router.push(`/properties/${propertyId}`);
@@ -206,6 +219,42 @@ export default function PropertiesPage() {
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Status Tabs */}
+          <div className="mb-8">
+            <div className="flex space-x-4 border-b border-gray-200">
+              <button
+                onClick={() => setSelectedStatus('all')}
+                className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+                  selectedStatus === 'all'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                All Properties
+              </button>
+              <button
+                onClick={() => setSelectedStatus('completed')}
+                className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+                  selectedStatus === 'completed'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Completed
+              </button>
+              <button
+                onClick={() => setSelectedStatus('ongoing')}
+                className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+                  selectedStatus === 'ongoing'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Ongoing
+              </button>
+            </div>
+          </div>
+
           <div className="flex gap-8">
             {/* Filters Sidebar */}
             <div className="w-80 flex-shrink-0">

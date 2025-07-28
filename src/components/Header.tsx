@@ -45,11 +45,11 @@ export default function Header() {
         <div className="flex items-center mb-2 md:mb-0">
           <Link href="/" className="flex items-center" prefetch={false}>
             <Image
-              src="/logo_white.png"
+              src="/logo4.png"
               alt="Promitto Logo"
-              width={200}
-              height={200}
-              className="h-20 w-auto"
+              width={50}
+              height={50}
+              className="h-15 w-auto"
               priority
             />
           </Link>
@@ -95,25 +95,25 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex justify-center md:justify-between items-center space-x-6 py-3 text-white font-medium font-sans">
             <div className="flex space-x-6">
-              <Link href="/" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>Home</Link>
-              <Link href="/about" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>About</Link>
-              <Link href="/properties" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>Projects</Link>
-              <Link href="/property-designs" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>Designs</Link>
-              <Link href="/how-to-own" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>How To Own</Link>
-              <Link href="/loan-calculator" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>Loan Calculator</Link>
-              <Link href="/contact" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>Contact</Link>
+              <Link href="/" className="text-sm md:text-base hover:text-primary transition-colors uppercase" prefetch={false}>Home</Link>
+              <Link href="/about" className="text-sm md:text-base hover:text-primary transition-colors uppercase" prefetch={false}>About</Link>
+              <Link href="/properties" className="text-sm md:text-base hover:text-primary transition-colors uppercase" prefetch={false}>Projects</Link>
+              <Link href="/property-designs" className="text-sm md:text-base hover:text-primary transition-colors uppercase" prefetch={false}>Designs</Link>
+              <Link href="/how-to-own" className="text-sm md:text-base hover:text-primary transition-colors uppercase" prefetch={false}>How To Own</Link>
+              <Link href="/loan-calculator" className="text-sm md:text-base hover:text-primary transition-colors uppercase" prefetch={false}>Loan Calculator</Link>
+              <Link href="/contact" className="text-sm md:text-base hover:text-primary transition-colors uppercase" prefetch={false}>Contact</Link>
             </div>
             
             <div className="flex items-center space-x-4">
               {userProfile?.role === 'admin' && (
-                <Link href="/admin" className="text-sm md:text-base hover:text-primary font-semibold transition-colors" prefetch={false}>Admin Dashboard</Link>
+                <Link href="/admin" className="text-sm md:text-base hover:text-primary font-semibold transition-colors uppercase" prefetch={false}>Admin Dashboard</Link>
               )}
               {user ? (
-                <Link href="/profile" className="text-sm md:text-base hover:text-primary font-semibold transition-colors" prefetch={false}>Profile</Link>
+                <Link href="/profile" className="text-sm md:text-base hover:text-primary font-semibold transition-colors uppercase" prefetch={false}>Profile</Link>
               ) : (
                 <>
-                  <Link href="/login" className="text-sm md:text-base hover:text-primary transition-colors" prefetch={false}>Login</Link>
-                  <Link href="/signup" className="text-sm md:text-base bg-primary hover:bg-accent text-white px-4 py-2 rounded-lg transition-colors" prefetch={false}>Sign Up</Link>
+                  <Link href="/login" className="text-sm md:text-base hover:text-primary transition-colors uppercase" prefetch={false}>Login</Link>
+                  <Link href="/signup" className="text-sm md:text-base bg-primary hover:bg-accent text-white px-4 py-2 rounded-lg transition-colors uppercase" prefetch={false}>Sign Up</Link>
                 </>
               )}
             </div>

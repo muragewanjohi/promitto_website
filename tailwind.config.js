@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#1E40AF',//'#1E88E5', // Black Pearl
+          DEFAULT: '#172554',//'#172554', // 1E40AF
         },
         secondary: {
           DEFAULT: '#F59E0B', // Buttercup #

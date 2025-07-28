@@ -7,7 +7,6 @@ type PropertyType = 'House' | 'Apartment' | 'Villa' | 'Commercial';
 type RoofType = 'Flatroofed' | 'Pitch Roofed' | 'Hybrid Pitch Roof' | 'Hidden Roof';
 
 interface Filters {
-  propertyType: PropertyStatus | null;
   priceMin: number | null;
   priceMax: number | null;
   type: PropertyType | '';
@@ -23,7 +22,6 @@ interface PropertyFiltersProps {
 
 const PropertyFilters = ({ onFilterChange }: PropertyFiltersProps) => {
   const [filters, setFilters] = useState<Filters>({
-    propertyType: null,
     priceMin: null,
     priceMax: null,
     type: '',
@@ -36,13 +34,6 @@ const PropertyFilters = ({ onFilterChange }: PropertyFiltersProps) => {
   useEffect(() => {
     onFilterChange(filters);
   }, [filters]);
-
-  const handlePropertyTypeChange = (type: PropertyStatus) => {
-    setFilters(prev => ({
-      ...prev,
-      propertyType: prev.propertyType === type ? null : type
-    }));
-  };
 
   const handlePriceChange = (field: 'priceMin' | 'priceMax', value: string) => {
     const numValue = value ? parseInt(value) : null;
@@ -89,7 +80,6 @@ const PropertyFilters = ({ onFilterChange }: PropertyFiltersProps) => {
 
   const handleReset = () => {
     setFilters({
-      propertyType: null,
       priceMin: null,
       priceMax: null,
       type: '',
@@ -111,33 +101,6 @@ const PropertyFilters = ({ onFilterChange }: PropertyFiltersProps) => {
           >
             Reset all
           </button>
-        </div>
-
-        {/* Property Status */}
-        <div className="mb-8">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">STATUS</h3>
-          <div className="flex gap-3">
-            <button 
-              onClick={() => handlePropertyTypeChange('completed')}
-              className={`flex-1 px-4 py-2.5 ${
-                filters.propertyType === 'completed' 
-                  ? 'bg-[#1E40AF] text-white' 
-                  : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-              } rounded-lg text-sm font-medium transition-colors`}
-            >
-              Completed
-            </button>
-            <button 
-              onClick={() => handlePropertyTypeChange('ongoing')}
-              className={`flex-1 px-4 py-2.5 ${
-                filters.propertyType === 'ongoing' 
-                  ? 'bg-[#1E40AF] text-white' 
-                  : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-              } rounded-lg text-sm font-medium transition-colors`}
-            >
-              Ongoing
-            </button>
-          </div>
         </div>
 
         {/* Price Range */}
