@@ -26,11 +26,11 @@ const NewHero = () => {
     "Luxury Living Redefined",
     "Quality Homes, Quality Life",
     "Building Dreams Into Reality",
-    "Premium Properties, Premium Service"
+    "Premium Projects, Premium Service"
   ];
 
   const heroDescriptions = [
-    "Discover exceptional properties designed for modern living with Promitto's premium real estate solutions.",
+    "Discover exceptional Projects designed for modern living with Promitto's premium real estate solutions.",
     "Experience luxury and comfort in our carefully crafted residential developments across Kenya and Zambia.",
     "From cozy bungalows to elegant mansions, find your perfect home with our diverse property portfolio.",
     "Transform your homeownership dreams into reality with our innovative financing and construction solutions.",
@@ -55,7 +55,7 @@ const NewHero = () => {
     if (location.trim()) searchParams.append('location', location.trim());
     
     const queryString = searchParams.toString();
-    router.push(`/properties${queryString ? `?${queryString}` : ''}`);
+    router.push(`/Projects${queryString ? `?${queryString}` : ''}`);
   };
 
   return (
@@ -107,7 +107,7 @@ const NewHero = () => {
                         onChange={(e) => setPropertyType(e.target.value)}
                         className="w-full pl-12 pr-4 py-4 rounded-xl bg-transparent text-gray-900 focus:outline-none focus:ring-0 text-base font-medium appearance-none"
                       >
-                        <option value="all">All Properties</option>
+                        <option value="all">All Projects</option>
                         <option value="House">Houses</option>
                         <option value="Apartment">Apartments</option>
                         <option value="Villa">Villas</option>
@@ -134,7 +134,7 @@ const NewHero = () => {
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search properties..."
+                        placeholder="Search Projects..."
                         className="w-full pl-12 pr-4 py-4 rounded-xl bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 text-base font-medium"
                       />
                       <MagnifyingGlassIcon className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
@@ -145,7 +145,7 @@ const NewHero = () => {
                       type="submit"
                       className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-8 py-4 rounded-xl transition-all duration-300 text-base font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
                     >
-                      Search Properties
+                      Search Projects
                     </button>
                   </div>
                 </div>
@@ -156,7 +156,7 @@ const NewHero = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-8 max-w-4xl mx-auto">
               <div className="text-center">
                 <div className="text-3xl md:text-4xl font-black text-secondary mb-2">500+</div>
-                <div className="text-lg font-semibold text-shadow-sm">Properties Sold</div>
+                <div className="text-lg font-semibold text-shadow-sm">Projects Sold</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl md:text-4xl font-black text-secondary mb-2">1000+</div>
@@ -175,10 +175,10 @@ const NewHero = () => {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center pt-6">
               <Link
-                href="/properties"
+                href="/Projects"
                 className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-3xl"
               >
-                Browse Properties
+                Browse Projects
               </Link>
               <Link
                 href="/how-to-own"

@@ -62,7 +62,7 @@ export default function Header() {
             <div className="hidden lg:flex space-x-8">
               <Link href="/" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>Home</Link>
               <Link href="/about" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>About</Link>
-              <Link href="/properties" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>Properties</Link>
+              <Link href="/properties" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>Projects</Link>
               <Link href="/property-designs" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>Designs</Link>
               <Link href="/how-to-own" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>How to own</Link>
               <Link href="/loan-calculator" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>Calculator</Link>
