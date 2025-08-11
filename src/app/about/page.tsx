@@ -2,6 +2,10 @@ import React from 'react';
 import Image from 'next/image';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import CompetitiveAdvantages from '../../components/CompetitiveAdvantages';
+import KeyStatistics from '../../components/KeyStatistics';
+import Services from '../../components/Services';
+import FundingHighlights from '../../components/FundingHighlights';
 
 const AboutUs = () => {
   return (
@@ -74,49 +78,7 @@ const AboutUs = () => {
         </section>
 
         {/* Key Statistics */}
-        <section className="py-16 bg-gradient-to-r from-primary/5 to-secondary/5">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="text-center mb-12">
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">Key Statistics</h3>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">Understanding the scale of Kenya's housing challenge and our impact</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white rounded-2xl shadow-xl p-8 text-center transform hover:scale-105 transition-transform duration-300">
-                <div className="flex flex-col items-center mb-4">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full mb-4 shadow-lg">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 10l1.553-1.553A2 2 0 017.172 8h9.656a2 2 0 011.619.447L21 10m-9 4v6m0 0h4m-4 0H7" />
-                    </svg>
-                  </div>
-                  <div className="text-5xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent mb-2">200,000+</div>
-                </div>
-                <div className="text-gray-700 font-medium">Housing Units Needed Annually</div>
-              </div>
-              <div className="bg-white rounded-2xl shadow-xl p-8 text-center transform hover:scale-105 transition-transform duration-300">
-                <div className="flex flex-col items-center mb-4">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-secondary to-secondary/80 rounded-full mb-4 shadow-lg">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0h6" />
-                    </svg>
-                  </div>
-                  <div className="text-5xl font-bold bg-gradient-to-r from-secondary to-secondary/80 bg-clip-text text-transparent mb-2">50+</div>
-                </div>
-                <div className="text-gray-700 font-medium">Homes Constructed Annually in Kenya</div>
-              </div>
-              <div className="bg-white rounded-2xl shadow-xl p-8 text-center transform hover:scale-105 transition-transform duration-300">
-                <div className="flex flex-col items-center mb-4">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full mb-4 shadow-lg">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 17v-2a4 4 0 014-4h10a4 4 0 014 4v2" />
-                    </svg>
-                  </div>
-                  <div className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">2M+</div>
-                </div>
-                <div className="text-gray-700 font-medium">Total Housing Deficit</div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <KeyStatistics />
 
         {/* Global Presence Map */}
         <section className="py-20 bg-gradient-to-r from-secondary/5 to-primary/5">
@@ -242,6 +204,9 @@ const AboutUs = () => {
           </div>
         </section>
 
+        {/* Competitive Advantages */}
+        <CompetitiveAdvantages />
+
         {/* Management Team */}
         <section className="py-16 bg-gray-50">
           <div className="max-w-6xl mx-auto px-4">
@@ -350,40 +315,8 @@ const AboutUs = () => {
           </div>
         </section>
 
-        {/* Services Breakdown */}
-        <section className="py-16">
-          <div className="max-w-5xl mx-auto px-4">
-            <div className="flex items-center justify-center mb-8">
-              <span className="inline-block bg-orange-100 p-3 rounded-full mr-3">
-                <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0h6" /></svg>
-              </span>
-              <h4 className="text-3xl font-bold text-gray-900">Our Services</h4>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-xl shadow flex flex-col items-center">
-                <span className="inline-block bg-blue-100 p-3 rounded-full mb-2">
-                  <svg className="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0h6" /></svg>
-                </span>
-                <h4 className="text-xl font-bold text-blue-700 mb-2">Construction Project Management</h4>
-                <p className="text-gray-700">We oversee everything about our client's project from site visit, construction monitoring, and even getting all construction approvals.</p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow flex flex-col items-center">
-                <span className="inline-block bg-green-100 p-3 rounded-full mb-2">
-                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg>
-                </span>
-                <h4 className="text-xl font-bold text-blue-700 mb-2">Design Consultancy</h4>
-                <p className="text-gray-700">We offer site analysis, conceptual and schematic design, design development, overseeing of interior design, cost estimation, and creation of a detailed Bill of Quantities to our clients.</p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow flex flex-col items-center">
-                <span className="inline-block bg-orange-100 p-3 rounded-full mb-2">
-                  <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                </span>
-                <h4 className="text-xl font-bold text-blue-700 mb-2">Jenga Nyumba Loan Product</h4>
-                <p className="text-gray-700">We provide affordable and sustainable loan products that fund up to 70% of the total construction cost, geared towards providing affordable housing.</p>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Enhanced Services Section */}
+        <Services />
 
         {/* Registration Requirements */}
         <section className="py-16 bg-gray-50">
@@ -422,25 +355,8 @@ const AboutUs = () => {
           </div>
         </section>
 
-        {/* Funding Model */}
-        <section className="py-16">
-          <div className="max-w-5xl mx-auto px-4">
-            <div className="flex items-center justify-center mb-8">
-              <span className="inline-block bg-green-100 p-3 rounded-full mr-3">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg>
-              </span>
-              <h4 className="text-3xl font-bold text-gray-900">Funding Model</h4>
-            </div>
-            <ul className="list-disc pl-6 text-gray-700 space-y-2">
-              <li><span className="mr-2">💵</span><span className="font-semibold">Deposit Required:</span> At least 30% of the total project cost</li>
-              <li><span className="mr-2">💸</span><span className="font-semibold">Loan to be Advanced:</span> Up to 70% of the total project cost</li>
-              <li><span className="mr-2">⏳</span><span className="font-semibold">Repayment Period:</span> 1-10 years for commercial units & 1-7 years for residential homes</li>
-              <li><span className="mr-2">📉</span><span className="font-semibold">Interest Rate:</span> 12% per annum on reducing balance</li>
-              <li><span className="mr-2">🧾</span><span className="font-semibold">Loan Fees/Charges:</span> 5% of loan advanced to cover insurance, appraisal, and legal costs</li>
-              <li><span className="mr-2">🕒</span><span className="font-semibold">Repayment Grace Period:</span> 30 days from the date of site mobilization</li>
-            </ul>
-          </div>
-        </section>
+        {/* Enhanced Funding Highlights Section */}
+        <FundingHighlights />
 
         {/* Contact Information */}
         {/* <section className="py-16 bg-gray-50">

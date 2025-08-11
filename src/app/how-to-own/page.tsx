@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ConstructionProcess from '../../components/ConstructionProcess';
+import CustomerJourney from '../../components/CustomerJourney';
 import Image from 'next/image';
 import { ArrowRight, CheckCircle, TrendingUp, Home, Shield, BedDouble, Bath, Ruler } from 'lucide-react';
 
@@ -286,6 +287,9 @@ const HowToOwn = () => {
 
         {/* Construction Process Section */}
         <ConstructionProcess />
+
+        {/* Customer Journey Section */}
+        <CustomerJourney />
 
         <div className="mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-12 text-center">Savings</h2>

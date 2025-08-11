@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import PropertyCard from '../../components/PropertyCard';
 import PropertyFilters from '../../components/PropertyFilters';
 import Header from '../../components/Header';
@@ -36,6 +36,7 @@ interface Filters {
 
 export default function PropertiesPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [properties, setProperties] = useState<Property[]>([]);
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,6 +77,20 @@ export default function PropertiesPage() {
     };
     fetchProperties();
   }, []);
+
+  // Read search query from URL on component mount
+  useEffect(() => {
+    const urlSearchQuery = searchParams.get('search');
+    if (urlSearchQuery) {
+      setSearchQuery(urlSearchQuery);
+      // Apply the search immediately
+      const filtered = properties.filter(property =>
+        property.name.toLowerCase().includes(urlSearchQuery.toLowerCase()) ||
+        property.location.toLowerCase().includes(urlSearchQuery.toLowerCase())
+      );
+      setFilteredProperties(filtered);
+    }
+  }, [searchParams, properties]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
