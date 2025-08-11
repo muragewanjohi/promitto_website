@@ -55,7 +55,7 @@ const NewHero = () => {
     if (location.trim()) searchParams.append('location', location.trim());
     
     const queryString = searchParams.toString();
-    router.push(`/Projects${queryString ? `?${queryString}` : ''}`);
+    router.push(`/properties${queryString ? `?${queryString}` : ''}`);
   };
 
   return (
@@ -175,7 +175,7 @@ const NewHero = () => {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center pt-6">
               <Link
-                href="/Projects"
+                href="/properties"
                 className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-3xl"
               >
                 Browse Projects
