@@ -11,6 +11,7 @@ const NewHero = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [propertyType, setPropertyType] = useState('all');
   const [location, setLocation] = useState('');
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   
   const heroImages = [
@@ -37,7 +38,14 @@ const NewHero = () => {
     "Join thousands of satisfied homeowners who chose Promitto for their perfect home investment."
   ];
 
+  // Prevent hydration mismatch
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => 
         prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
@@ -45,7 +53,7 @@ const NewHero = () => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [heroImages.length]);
+  }, [heroImages.length, mounted]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,6 +65,27 @@ const NewHero = () => {
     const queryString = searchParams.toString();
     router.push(`/properties${queryString ? `?${queryString}` : ''}`);
   };
+
+  // Show loading state until component is mounted
+  if (!mounted) {
+    return (
+      <section className="relative min-h-screen overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70" />
+        <div className="relative min-h-screen flex items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="text-center text-white space-y-12">
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <div className="h-16 bg-white/20 rounded animate-pulse"></div>
+                  <div className="h-8 bg-white/20 rounded animate-pulse max-w-2xl mx-auto"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative min-h-screen overflow-hidden">
@@ -151,26 +180,6 @@ const NewHero = () => {
                 </div>
               </form>
             </div>
-
-            {/* Quick Stats
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-8 max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-secondary mb-2">500+</div>
-                <div className="text-lg font-semibold text-shadow-sm">Projects Sold</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-secondary mb-2">1000+</div>
-                <div className="text-lg font-semibold text-shadow-sm">Happy Clients</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-secondary mb-2">15+</div>
-                <div className="text-lg font-semibold text-shadow-sm">Years Experience</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-secondary mb-2">24/7</div>
-                <div className="text-lg font-semibold text-shadow-sm">Support</div>
-              </div>
-            </div> */}
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center pt-6">

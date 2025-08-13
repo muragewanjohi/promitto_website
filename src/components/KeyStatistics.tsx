@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const KeyStatistics = () => {
   const stats = [
@@ -56,11 +57,13 @@ const KeyStatistics = () => {
         </div>
 
         <div className="mt-12 text-center">
-          <div className="bg-blue-600 text-white rounded-full px-8 py-4 inline-block">
-            <p className="text-lg font-semibold">
-              Join us in bridging the housing gap and making homeownership a reality
-            </p>
-          </div>
+          <Link href="/signup">
+            <div className="bg-blue-600 text-white rounded-full px-8 py-4 inline-block hover:bg-blue-700 transition-colors duration-300 cursor-pointer transform hover:scale-105">
+              <p className="text-lg font-semibold">
+                Join us in bridging the housing gap and making homeownership a reality
+              </p>
+            </div>
+          </Link>
         </div>
       </div>
     </section>

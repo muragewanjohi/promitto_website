@@ -9,36 +9,46 @@ import { PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { user, userProfile, signOut } = useAuth();
   const pathname = usePathname();
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [pathname]);
 
-  return (
-    <header className="w-full z-50">
-      {/* Top Contact Bar */}
-      <div className="w-full bg-gray-900 text-white text-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-2">
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <PhoneIcon className="h-4 w-4 text-secondary" />
-                <span className="font-medium">(+254) 729 506 506</span>
-            </div>
-            <div className="flex items-center space-x-2">
-                <EnvelopeIcon className="h-4 w-4 text-secondary" />
-                <span className="font-medium">info@promittoltd.com</span>
-          </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-300">Mon - Fri: 8:00 AM - 6:00 PM</span>
-            </div>
+  // Show loading state until component is mounted
+  if (!mounted) {
+    return (
+      <header className="w-full z-50">
+        <div className="w-full bg-primary">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="flex justify-between items-center py-4 text-white font-medium font-sans">
+              <div className="flex items-center">
+                <div className="h-16 w-24 bg-white/20 rounded animate-pulse"></div>
+              </div>
+              <div className="hidden lg:flex space-x-8">
+                <div className="h-4 w-16 bg-white/20 rounded animate-pulse"></div>
+                <div className="h-4 w-16 bg-white/20 rounded animate-pulse"></div>
+                <div className="h-4 w-16 bg-white/20 rounded animate-pulse"></div>
+              </div>
+              <div className="h-8 w-20 bg-white/20 rounded animate-pulse"></div>
+            </nav>
           </div>
         </div>
-      </div>
+      </header>
+    );
+  }
+
+  return (
+    <header className="w-full z-50">
+     
 
       {/* Navigation Bar */}
       <div className="w-full bg-primary">
@@ -79,7 +89,7 @@ export default function Header() {
               ) : (
                 <>
                   <Link href="/login" className="text-base hover:text-secondary transition-colors capitalize " prefetch={false}>Login</Link>
-                  <Link href="/signup" className="text-base bg-secondary hover:bg-accent text-white px-6 py-3 rounded-lg transition-all duration-300 capitalize shadow-lg hover:shadow-xl transform hover:scale-105" prefetch={false}>Sign up</Link>
+                  <Link href="/signup" className="text-base bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-6 py-3 rounded-lg transition-all duration-300 capitalize shadow-lg hover:shadow-xl transform hover:scale-105" prefetch={false}>Sign up</Link>
                 </>
               )}
             </div>

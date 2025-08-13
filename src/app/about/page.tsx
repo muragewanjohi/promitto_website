@@ -11,33 +11,43 @@ const AboutUs = () => {
   return (
     <main className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-secondary/5 font-sans">
       <Header />
-      <div className="pt-16">
+      <div>
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-br from-primary/10 via-white to-secondary/10 relative overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-5">
-            <div className="absolute top-10 left-10 w-32 h-32 bg-primary rounded-full"></div>
-            <div className="absolute top-32 right-20 w-24 h-24 bg-secondary rounded-full"></div>
-            <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-primary rounded-full"></div>
+        <section className="relative h-[500px] overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src="/about_us_hero_image.jpeg"
+              alt="About Promitto Limited"
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-transparent"></div>
           </div>
           
-          <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-            <div className="flex flex-col items-center mb-8">
-              <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-primary to-secondary rounded-full mb-6 shadow-xl">
-                <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6" />
-                </svg>
+          {/* Content */}
+          <div className="relative z-10 h-full flex items-center">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+              <div className="max-w-3xl">
+                <div className="flex items-center mb-6">
+                  {/* <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mr-6 shadow-xl border border-white/30">
+                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6" />
+                    </svg>
+                  </div>
+                  <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight">
+                    About Promitto Limited
+                  </h1> */}
+                </div>
+                
+                                 <div className="space-y-4">
+                   <p className="text-xl md:text-2xl text-white font-medium leading-relaxed max-w-2xl">
+                     Delivering the promise of homeownership through innovative construction financing and comprehensive project management.
+                   </p>
+                 </div>
               </div>
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6">
-                About Promitto Limited
-              </h1>
             </div>
-            <p className="text-2xl text-gray-800 mb-6 font-medium leading-relaxed">
-              Delivering the promise of homeownership through innovative construction financing and comprehensive project management.
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto">
-              Promitto is your one-stop shop for turning your dream of homeownership into reality. We provide construction cash flow help for both residential and commercial projects, and our comprehensive services include site visits, cost estimates (BQ preparation), 3D architectural and structural drawings, securing approvals, and doing the construction for you.
-            </p>
           </div>
         </section>
 
@@ -179,7 +189,7 @@ const AboutUs = () => {
               <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
                 <h5 className="text-xl font-bold text-primary mb-6 flex items-center">
                   <svg className="w-6 h-6 mr-3 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4V7a4 4 0 00-8 0v2m8 4a4 4 0 01-8 0" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m-4-8h8m-4-4v8m-4-4h8" />
                   </svg>
                   Support Departments
                 </h5>
@@ -212,7 +222,7 @@ const AboutUs = () => {
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex items-center justify-center mb-12">
               <span className="inline-block bg-purple-100 p-3 rounded-full mr-3">
-                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4V7a4 4 0 00-8 0v2m8 4a4 4 0 01-8 0" /></svg>
+                <Image src="/hierarchical-structure_1042060.png" alt="Hierarchical Structure" width={32} height={32} className="w-8 h-8" />
               </span>
               <h4 className="text-3xl font-bold text-gray-900">Our Management Team</h4>
             </div>
@@ -254,7 +264,7 @@ const AboutUs = () => {
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex items-center justify-center mb-12">
               <span className="inline-block bg-orange-100 p-3 rounded-full mr-3">
-                <svg className="w-8 h-8 text-[#F59E0B]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4V7a4 4 0 00-8 0v2m8 4a4 4 0 01-8 0" /></svg>
+                <svg className="w-8 h-8 text-[#F59E0B]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m-4-8h8m-4-4v8m-4-4h8" /></svg>
               </span>
               <h4 className="text-3xl font-bold text-gray-900">Board Members</h4>
             </div>

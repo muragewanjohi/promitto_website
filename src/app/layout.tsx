@@ -3,6 +3,7 @@ import { Montserrat } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/contexts/AuthContext';
 import ScrollToTop from '@/components/ScrollToTop';
+import ClientWrapper from '@/components/ClientWrapper';
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -24,7 +25,9 @@ export default function RootLayout({
       <body className={montserrat.className}>
         <AuthProvider>
           {children}
-          <ScrollToTop />
+          <ClientWrapper>
+            <ScrollToTop />
+          </ClientWrapper>
         </AuthProvider>
       </body>
     </html>

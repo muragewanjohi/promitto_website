@@ -10,8 +10,16 @@ const FeaturedProperties = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const fetchFeaturedProperties = async () => {
       try {
         const { data, error } = await supabase
@@ -44,7 +52,7 @@ const FeaturedProperties = () => {
     };
 
     fetchFeaturedProperties();
-  }, []);
+  }, [mounted]);
 
   const handlePrevious = () => {
     setCurrentIndex(prev => {
@@ -65,6 +73,41 @@ const FeaturedProperties = () => {
   };
 
   const visibleProperties = featuredProperties.slice(currentIndex, currentIndex + 3);
+
+  // Show loading state until component is mounted
+  if (!mounted) {
+    return (
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-12">
+            <div className="flex items-center flex-1">
+              <div className="h-8 w-48 bg-gray-200 rounded animate-pulse mr-4"></div>
+              <div className="flex-1 h-px bg-gray-400"></div>
+            </div>
+            <div className="flex items-center space-x-4 ml-4">
+              <div className="h-4 w-16 bg-gray-200 rounded animate-pulse"></div>
+              <div className="flex space-x-2">
+                <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse"></div>
+                <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div className="h-64 bg-gray-200 animate-pulse"></div>
+                <div className="p-6 space-y-4">
+                  <div className="h-6 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (loading) {
     return (
@@ -102,8 +145,17 @@ const FeaturedProperties = () => {
               </div>
             </div>
           </div>
-          <div className="text-center">
-            <p className="text-gray-600">Loading featured properties...</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div className="h-64 bg-gray-200 animate-pulse"></div>
+                <div className="p-6 space-y-4">
+                  <div className="h-6 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3"></div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

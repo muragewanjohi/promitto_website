@@ -106,17 +106,17 @@ const LoanCalculator = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
             </svg>
           </div>
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">Loan Calculator</h1>
-          <h2 className="text-2xl text-gray-700 mb-2">Jenga Nyumba Loan Calculator</h2>
-          <p className="text-lg text-gray-600">Calculate your dream home financing with our transparent loan calculator</p>
+          <h1 className="text-5xl font-bold text-primary mb-4">Loan Calculator</h1>
+          <h2 className="text-2xl text-gray-700 mb-2 font-semibold">Jenga Nyumba Loan Calculator</h2>
+          <p className="text-lg text-gray-600 font-medium">Calculate your dream home financing with our transparent loan calculator</p>
           <div className="mt-4 flex items-center justify-center space-x-6 text-sm">
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-primary rounded-full"></div>
-              <span className="text-gray-700">Interest Rate: 12% per annum</span>
+              <span className="text-gray-700 font-medium">Interest Rate: 12% per annum</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-secondary rounded-full"></div>
-              <span className="text-gray-700">Processing Fee: 2.5%</span>
+              <span className="text-gray-700 font-medium">Processing Fee: 2.5%</span>
             </div>
           </div>
         </div>

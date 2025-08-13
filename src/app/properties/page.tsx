@@ -78,31 +78,78 @@ function PropertiesContent() {
     fetchProperties();
   }, []);
 
+  const applyFilters = useCallback(() => {
+    let filtered = [...properties];
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const searchLower = searchQuery.toLowerCase();
+      filtered = filtered.filter(property =>
+        property.name.toLowerCase().includes(searchLower) ||
+        property.location.toLowerCase().includes(searchLower) ||
+        property.type.toLowerCase().includes(searchLower) ||
+        (property.description && property.description.toLowerCase().includes(searchLower)) ||
+        (property.features && property.features.some(feature => 
+          feature.toLowerCase().includes(searchLower)
+        ))
+      );
+    }
+
+    // Filter by status (completed/ongoing)
+    if (selectedStatus !== 'all') {
+      filtered = filtered.filter(property => 
+        property.status === selectedStatus
+      );
+    }
+
+    setFilteredProperties(filtered);
+  }, [properties, searchQuery, selectedStatus]);
+
   // Read search query from URL on component mount
   useEffect(() => {
     const urlSearchQuery = searchParams.get('search');
     if (urlSearchQuery) {
       setSearchQuery(urlSearchQuery);
-      // Apply the search immediately
-      const filtered = properties.filter(property =>
-        property.name.toLowerCase().includes(urlSearchQuery.toLowerCase()) ||
-        property.location.toLowerCase().includes(urlSearchQuery.toLowerCase())
-      );
-      setFilteredProperties(filtered);
     }
-  }, [searchParams, properties]);
+  }, [searchParams]);
+
+  // Apply filters when properties, search query, or selected status changes
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const filtered = properties.filter(property =>
-      property.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      property.location.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredProperties(filtered);
+    applyFilters();
+  };
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    // Apply real-time search
+    applyFilters();
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+    applyFilters();
   };
 
   const handleFilterChange = useCallback((filters: Filters) => {
     let filtered = [...properties];
+
+    // Apply search filter first
+    if (searchQuery.trim()) {
+      const searchLower = searchQuery.toLowerCase();
+      filtered = filtered.filter(property =>
+        property.name.toLowerCase().includes(searchLower) ||
+        property.location.toLowerCase().includes(searchLower) ||
+        property.type.toLowerCase().includes(searchLower) ||
+        (property.description && property.description.toLowerCase().includes(searchLower)) ||
+        (property.features && property.features.some(feature => 
+          feature.toLowerCase().includes(searchLower)
+        ))
+      );
+    }
 
     // Filter by status (completed/ongoing)
     if (selectedStatus !== 'all') {
@@ -159,7 +206,7 @@ function PropertiesContent() {
     }
 
     setFilteredProperties(filtered);
-  }, [properties, selectedStatus]);
+  }, [properties, selectedStatus, searchQuery]);
 
   // Trigger filtering when selectedStatus changes
   useEffect(() => {
@@ -198,10 +245,21 @@ function PropertiesContent() {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by location or project name"
+                onChange={handleSearchInputChange}
+                placeholder="Search by location, project name, type, or features..."
                 className="w-full pl-12 pr-24 py-4 rounded-xl bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#1E40AF] text-sm"
               />
+              {searchQuery && (
+                <button 
+                  type="button"
+                  onClick={clearSearch}
+                  className="absolute right-16 top-2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
               <button 
                 type="submit"
                 className="absolute right-2 top-2 bg-[#1E40AF] text-white px-6 py-2 rounded-lg hover:bg-[#1E3A8A] transition-colors text-sm font-medium"
@@ -273,9 +331,25 @@ function PropertiesContent() {
           {/* Properties Grid */}
           <div className="flex-grow">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-900">
-                {loading ? 'Loading...' : `${filteredProperties.length} Projects Available`}
-              </h2>
+              <div className="flex items-center gap-4">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {loading ? 'Loading...' : `${filteredProperties.length} Projects Available`}
+                </h2>
+                {searchQuery && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <span>Search results for:</span>
+                    <span className="font-semibold text-primary">"{searchQuery}"</span>
+                    <button 
+                      onClick={clearSearch}
+                      className="text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </div>
               <div className="flex items-center gap-4">
                 <select
                   className="p-2 border rounded-lg bg-white text-sm focus:ring-1 focus:ring-[#1E40AF] focus:border-[#1E40AF]"

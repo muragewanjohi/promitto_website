@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PropertyDesignCard from '@/components/PropertyDesignCard';
@@ -21,6 +21,7 @@ export default function PropertyDesignsPage() {
   const [designs, setDesigns] = useState<PropertyDesign[]>([]);
   const [filteredDesigns, setFilteredDesigns] = useState<PropertyDesign[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     bedrooms: 0,
     roofType: ''
@@ -455,55 +456,124 @@ export default function PropertyDesignsPage() {
     loadDesigns();
   }, []);
 
-  const handleFilterChange = (newFilters: { bedrooms: number; roofType: string }) => {
-    setFilters(newFilters);
-    
+  const applyFilters = useCallback(() => {
     let filtered = [...designs];
 
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const searchLower = searchQuery.toLowerCase();
+      filtered = filtered.filter(design =>
+        design.name.toLowerCase().includes(searchLower) ||
+        design.roofType.toLowerCase().includes(searchLower) ||
+        (design.description && design.description.toLowerCase().includes(searchLower)) ||
+        (design.features && design.features.some(feature => 
+          feature.toLowerCase().includes(searchLower)
+        ))
+      );
+    }
+
     // Filter by bedrooms
-    if (newFilters.bedrooms > 0) {
-      filtered = filtered.filter(design => design.bedrooms === newFilters.bedrooms);
+    if (filters.bedrooms > 0) {
+      filtered = filtered.filter(design => design.bedrooms === filters.bedrooms);
     }
 
     // Filter by roof type
-    if (newFilters.roofType && newFilters.roofType !== 'All types') {
-      filtered = filtered.filter(design => design.roofType === newFilters.roofType);
+    if (filters.roofType && filters.roofType !== 'All types') {
+      filtered = filtered.filter(design => design.roofType === filters.roofType);
     }
 
     setFilteredDesigns(filtered);
+  }, [designs, searchQuery, filters]);
+
+  // Apply filters when designs, search query, or filters change
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    applyFilters();
+  };
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    // Apply real-time search
+    applyFilters();
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+    applyFilters();
+  };
+
+  const handleFilterChange = (newFilters: { bedrooms: number; roofType: string }) => {
+    setFilters(newFilters);
   };
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-secondary/5 font-sans">
       <Header />
-      <div className="pt-16">
-        {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-br from-primary/10 via-white to-secondary/10 relative overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-5">
-            <div className="absolute top-10 left-10 w-32 h-32 bg-primary rounded-full"></div>
-            <div className="absolute top-32 right-20 w-24 h-24 bg-secondary rounded-full"></div>
-            <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-primary rounded-full"></div>
-          </div>
-          
-          <div className="max-w-6xl mx-auto px-4 text-center relative z-10">
-            <div className="flex flex-col items-center mb-8">
-              <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-primary to-secondary rounded-full mb-6 shadow-xl">
-                <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
+      <div>
+        {/* Hero Section with Search */}
+        <section className="relative h-[400px] bg-cover bg-center" style={{ backgroundImage: 'url(/hero-house.jpg)' }}>
+          <div className="absolute inset-0 bg-black/60"></div>
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+            <div className="text-center mb-8">
+              <div className="flex flex-col items-center mb-6">
+                <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-primary to-secondary rounded-full mb-6 shadow-xl">
+                  <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                </div>
+                <h1 className="text-5xl md:text-6xl font-bold mb-6">
+                  Property Designs
+                </h1>
               </div>
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6">
-                Property Designs
-              </h1>
+              <p className="text-xl md:text-2xl font-medium leading-relaxed max-w-3xl mx-auto mb-8">
+                Explore our comprehensive collection of architectural designs
+              </p>
             </div>
-            <p className="text-2xl text-gray-800 mb-6 font-medium leading-relaxed max-w-3xl mx-auto">
-              Explore our comprehensive collection of architectural designs
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed max-w-4xl mx-auto">
-              From cozy 2-bedroom bungalows to luxurious 5-bedroom mansions, discover the perfect design for your dream home. 
-              Each design combines functionality, aesthetics, and modern construction standards.
-            </p>
+            <div className="w-full max-w-2xl px-4">
+              <form onSubmit={handleSearch} className="relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={handleSearchInputChange}
+                  placeholder="Search by design name, roof type, or features..."
+                  className="w-full pl-12 pr-24 py-4 rounded-xl bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#1E40AF] text-sm"
+                />
+                {searchQuery && (
+                  <button 
+                    type="button"
+                    onClick={clearSearch}
+                    className="absolute right-16 top-2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+                <button 
+                  type="submit"
+                  className="absolute right-2 top-2 bg-[#1E40AF] text-white px-6 py-2 rounded-lg hover:bg-[#1E3A8A] transition-colors text-sm font-medium"
+                >
+                  Search
+                </button>
+                <svg
+                  className="absolute left-4 top-4 w-5 h-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </form>
+            </div>
           </div>
         </section>
 
@@ -521,10 +591,26 @@ export default function PropertyDesignsPage() {
 
               {/* Designs Grid */}
               <div className="flex-grow">
-                <div className="flex justify-between items-center mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900">
-                    {loading ? 'Loading Designs...' : `${filteredDesigns.length} Designs Available`}
-                  </h2>
+                            <div className="flex justify-between items-center mb-8">
+              <div className="flex items-center gap-4">
+                <h2 className="text-3xl font-bold text-gray-900">
+                  {loading ? 'Loading Designs...' : `${filteredDesigns.length} Designs Available`}
+                </h2>
+                {searchQuery && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <span>Search results for:</span>
+                    <span className="font-semibold text-primary">"{searchQuery}"</span>
+                    <button 
+                      onClick={clearSearch}
+                      className="text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </div>
                   <div className="flex items-center gap-4">
                     <select
                       className="p-3 border border-gray-300 rounded-xl bg-white text-sm focus:ring-2 focus:ring-primary focus:border-primary font-medium"
