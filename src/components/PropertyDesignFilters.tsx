@@ -5,6 +5,7 @@ import React from 'react';
 interface Filters {
   bedrooms: number;
   roofType: string;
+  houseType: string;
 }
 
 interface PropertyDesignFiltersProps {
@@ -24,6 +25,13 @@ export default function PropertyDesignFilters({ filters, onFilterChange }: Prope
     onFilterChange({
       ...filters,
       roofType: filters.roofType === roofType ? '' : roofType
+    });
+  };
+
+  const handleHouseTypeChange = (houseType: string) => {
+    onFilterChange({
+      ...filters,
+      houseType: filters.houseType === houseType ? '' : houseType
     });
   };
 
@@ -71,6 +79,43 @@ export default function PropertyDesignFilters({ filters, onFilterChange }: Prope
         </div>
       </div>
 
+      {/* House Type Filter */}
+      <div className="mb-8">
+        <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <svg className="w-5 h-5 mr-2 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+          House Type
+        </h4>
+        <div className="space-y-3">
+          {[
+            { value: 'All types', label: 'All Types' },
+            { value: 'Bungalow', label: 'Bungalow' },
+            { value: 'Mansionette', label: 'Mansionette' },
+            { value: 'Hybrid Mansionette', label: 'Hybrid Mansionette' }
+          ].map((houseType) => (
+            <button
+              key={houseType.value}
+              onClick={() => handleHouseTypeChange(houseType.value)}
+              className={`w-full text-left px-4 py-3 rounded-xl border-2 transition-all duration-200 font-medium ${
+                filters.houseType === houseType.value
+                  ? 'border-primary bg-primary/10 text-primary'
+                  : 'border-gray-200 bg-white text-gray-700 hover:border-primary/50 hover:bg-primary/5'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span>{houseType.label}</span>
+                {filters.houseType === houseType.value && (
+                  <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                )}
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Roof Type Filter */}
       <div className="mb-8">
         <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
@@ -82,9 +127,8 @@ export default function PropertyDesignFilters({ filters, onFilterChange }: Prope
         <div className="space-y-3">
           {[
             { value: 'All types', label: 'All Types' },
-            { value: 'Flat Roofed', label: 'Flat Roofed' },
-            { value: 'Pitch Roofed', label: 'Pitch Roofed' },
-            { value: 'Hybrid Pitch Roof', label: 'Hybrid Pitch Roof' },
+            { value: 'Flat Roof', label: 'Flat Roof' },
+            { value: 'Pitched Roof', label: 'Pitched Roof' },
             { value: 'Hidden Roof', label: 'Hidden Roof' }
           ].map((roofType) => (
             <button
@@ -110,9 +154,9 @@ export default function PropertyDesignFilters({ filters, onFilterChange }: Prope
       </div>
 
       {/* Clear Filters */}
-      {(filters.bedrooms > 0 || filters.roofType) && (
+      {(filters.bedrooms > 0 || filters.roofType || filters.houseType) && (
         <button
-          onClick={() => onFilterChange({ bedrooms: 0, roofType: '' })}
+          onClick={() => onFilterChange({ bedrooms: 0, roofType: '', houseType: '' })}
           className="w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-colors duration-200 flex items-center justify-center"
         >
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -123,7 +167,7 @@ export default function PropertyDesignFilters({ filters, onFilterChange }: Prope
       )}
 
       {/* Active Filters Display */}
-      {(filters.bedrooms > 0 || filters.roofType) && (
+      {(filters.bedrooms > 0 || filters.roofType || filters.houseType) && (
         <div className="mt-6 p-4 bg-primary/5 rounded-xl border border-primary/20">
           <h5 className="text-sm font-semibold text-primary mb-3">Active Filters:</h5>
           <div className="space-y-2">
@@ -132,6 +176,19 @@ export default function PropertyDesignFilters({ filters, onFilterChange }: Prope
                 <span className="text-gray-700">Bedrooms: {filters.bedrooms}</span>
                 <button
                   onClick={() => handleBedroomChange(filters.bedrooms)}
+                  className="text-primary hover:text-primary/80"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            )}
+            {filters.houseType && (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-700">House Type: {filters.houseType}</span>
+                <button
+                  onClick={() => handleHouseTypeChange(filters.houseType)}
                   className="text-primary hover:text-primary/80"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

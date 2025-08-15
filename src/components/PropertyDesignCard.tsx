@@ -9,10 +9,13 @@ interface PropertyDesign {
   name: string;
   bedrooms: number;
   roofType: string;
+  houseType: string;
   imagePath: string;
   area?: string;
   description?: string;
   features?: string[];
+  folderPath: string;
+  images: string[];
 }
 
 interface PropertyDesignCardProps {
@@ -25,14 +28,25 @@ export default function PropertyDesignCard({ design }: PropertyDesignCardProps) 
 
   const getRoofTypeColor = (roofType: string) => {
     switch (roofType) {
-      case 'Flat Roofed':
+      case 'Flat Roof':
         return 'bg-blue-100 text-blue-800';
-      case 'Pitch Roofed':
+      case 'Pitched Roof':
         return 'bg-green-100 text-green-800';
-      case 'Hybrid Pitch Roof':
-        return 'bg-purple-100 text-purple-800';
       case 'Hidden Roof':
         return 'bg-orange-100 text-orange-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getHouseTypeColor = (houseType: string) => {
+    switch (houseType) {
+      case 'Bungalow':
+        return 'bg-primary/10 text-primary';
+      case 'Mansionette':
+        return 'bg-secondary/10 text-secondary';
+      case 'Hybrid Mansionette':
+        return 'bg-purple-100 text-purple-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -78,6 +92,9 @@ export default function PropertyDesignCard({ design }: PropertyDesignCardProps) 
           <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getBedroomColor(design.bedrooms)}`}>
             {design.bedrooms} Bedroom{design.bedrooms > 1 ? 's' : ''}
           </span>
+          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getHouseTypeColor(design.houseType)}`}>
+            {design.houseType}
+          </span>
           <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getRoofTypeColor(design.roofType)}`}>
             {design.roofType}
           </span>
@@ -88,6 +105,15 @@ export default function PropertyDesignCard({ design }: PropertyDesignCardProps) 
           <div className="absolute top-4 right-4">
             <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/90 text-gray-800 backdrop-blur-sm">
               {design.area}
+            </span>
+          </div>
+        )}
+
+        {/* Image count badge */}
+        {design.images && design.images.length > 1 && (
+          <div className="absolute bottom-4 right-4">
+            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-black/70 text-white backdrop-blur-sm">
+              {design.images.length} Photos
             </span>
           </div>
         )}
@@ -143,8 +169,6 @@ export default function PropertyDesignCard({ design }: PropertyDesignCardProps) 
           </svg>
         </button>
       </div>
-
-
     </div>
   );
 } 
