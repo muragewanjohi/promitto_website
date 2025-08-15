@@ -1,4 +1,62 @@
-import React from 'react';
+"use client";
+
+import React, { useState, useEffect, useRef } from 'react';
+
+// Custom hook for counting animation
+const useCountUp = (end: number, duration: number = 2000) => {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime: number;
+    let animationFrame: number;
+
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentCount = Math.floor(easeOutQuart * end);
+      
+      setCount(currentCount);
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
+  }, [end, duration, isVisible]);
+
+  return { count, ref };
+};
 
 const Testimonials = () => {
   const testimonials = [
@@ -31,6 +89,12 @@ const Testimonials = () => {
     },
   ];
 
+  const communityMetrics = [
+    { number: 50, label: 'Homes Built', suffix: '+' },
+    { number: 95, label: 'Satisfaction Rate', suffix: '%' },
+    { number: 15, label: 'Years Experience', suffix: '+' }
+  ];
+
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <svg
@@ -54,21 +118,21 @@ const Testimonials = () => {
             Join Our Growing Community of Happy Homeowners
           </h3>
           <p className="text-lg mb-6 opacity-90">
-            Over 1,00 families have trusted us with their dream homes. Will you be next?
+            Over 100 families have trusted us with their dream homes. Will you be next?
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">50+</div>
-              <div className="text-sm opacity-80">Homes Built</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">95%</div>
-              <div className="text-sm opacity-80">Satisfaction Rate</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">15+</div>
-              <div className="text-sm opacity-80">Years Experience</div>
-            </div>
+            {communityMetrics.map((metric, index) => {
+              const { count, ref } = useCountUp(metric.number, 2500);
+              
+              return (
+                <div key={index} className="text-center" ref={ref}>
+                  <div className="text-3xl font-bold mb-2">
+                    {count}{metric.suffix}
+                  </div>
+                  <div className="text-sm opacity-80">{metric.label}</div>
+                </div>
+              );
+            })}
           </div>
           {/* <button className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
             Read More Reviews

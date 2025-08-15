@@ -1,6 +1,64 @@
-import React from 'react';
+"use client";
+
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { CheckCircle, FileText, Home, Palette, Calculator, Rocket, Hammer, Key } from 'lucide-react';
+
+// Custom hook for counting animation
+const useCountUp = (end: number, duration: number = 2000) => {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime: number;
+    let animationFrame: number;
+
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentCount = Math.floor(easeOutQuart * end);
+
+      setCount(currentCount);
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
+  }, [end, duration, isVisible]);
+
+  return { count, ref };
+};
 
 const CustomerJourney = () => {
   const steps = [
@@ -95,73 +153,141 @@ const CustomerJourney = () => {
           </p>
         </div>
 
-        {/* Timeline Section */}
-        <div className="relative">
-          {/* Main timeline line */}
-          <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-2 h-full bg-gradient-to-b from-primary via-secondary to-primary rounded-full shadow-lg"></div>
-          
-          <div className="space-y-12 lg:space-y-0">
-            {steps.map((step, index) => {
-              const IconComponent = step.icon;
-              return (
-                <div
-                  key={index}
-                  className={`relative flex items-center ${
-                    index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
-                  } flex-col lg:space-x-12 space-y-8`}
-                >
-                  {/* Step Content Card */}
-                  <div className={`lg:w-5/12 ${index % 2 === 0 ? 'lg:text-right' : 'lg:text-left'} text-center lg:text-left`}>
-                    <div className={`${step.bgColor} ${step.borderColor} border-2 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 relative overflow-hidden`}>
-                      {/* Step number badge */}
-                      <div className={`absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-r ${step.color} rounded-full flex items-center justify-center shadow-lg`}>
-                        <span className="text-white font-bold text-lg">{step.step}</span>
+        {/* Grid Layout Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {steps.map((step, index) => {
+            const IconComponent = step.icon;
+            return (
+              <div
+                key={index}
+                className={`group relative rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 ${step.bgColor} ${
+                  step.step === 1 ? 'lg:col-span-2' : ''
+                }`}
+              >
+                {/* Step Number */}
+                <div className={`absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-r ${step.color} rounded-full flex items-center justify-center shadow-lg`}>
+                  <span className="text-white font-bold text-lg">{step.step}</span>
+                </div>
+
+                {/* Icon */}
+                <div className={`w-16 h-16 bg-gradient-to-r ${step.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                  <IconComponent className="w-8 h-8 text-white" />
+                </div>
+
+                {/* Content */}
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-gray-900 leading-tight">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed text-sm">
+                    {step.description}
+                  </p>
+                  
+                  {/* Special content for Account Opening step */}
+                  {step.step === 1 && (
+                    <div className="mt-6 space-y-6">
+                      {/* Deposit Account Section */}
+                      <div className="bg-white/50 rounded-xl p-4 border border-blue-200">
+                        <div className="flex items-center mb-3">
+                          <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center mr-3">
+                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <h4 className="font-semibold text-gray-900">Deposit Account</h4>
+                        </div>
+                        <p className="text-gray-700 text-sm mb-3">
+                          Our clients are allowed to save 30% of their Bills of Quantities in instalments via their members deposit account.
+                        </p>
+                        <div>
+                          <h5 className="font-semibold text-gray-900 text-sm mb-2">Requirements for Opening an Account:</h5>
+                          <ul className="text-gray-600 text-xs space-y-1">
+                            <li>• Registration fees</li>
+                            <li>• Property search fees</li>
+                            <li>• Legal fees</li>
+                            <li>• Property charge</li>
+                          </ul>
+                        </div>
                       </div>
-                      
-                      {/* Icon */}
-                      <div className={`w-16 h-16 bg-gradient-to-r ${step.color} rounded-2xl flex items-center justify-center mb-6 mx-auto lg:mx-0 shadow-lg`}>
-                        <IconComponent className="w-8 h-8 text-white" />
-                      </div>
-                      
-                      {/* Content */}
-                      <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                        {step.title}
-                      </h3>
-                      <p className="text-gray-700 text-lg leading-relaxed">
-                        {step.description}
-                      </p>
-                      
-                      {/* Progress indicator */}
-                      <div className="mt-6 flex items-center justify-center lg:justify-start">
-                        <div className="flex space-x-1">
-                          {steps.map((_, stepIndex) => (
-                            <div
-                              key={stepIndex}
-                              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                                stepIndex <= index 
-                                  ? `bg-gradient-to-r ${step.color}` 
-                                  : 'bg-gray-300'
-                              }`}
-                            />
-                          ))}
+
+                      {/* Document Downloads Section */}
+                      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border-2 border-blue-300 shadow-md">
+                        <div className="flex items-center mb-3">
+                          <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-3">
+                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                          </div>
+                          <h4 className="font-bold text-gray-900">📥 Document Downloads</h4>
+                        </div>
+                        <p className="text-gray-600 text-xs mb-3">Download these essential forms to get started:</p>
+                        <div className="space-y-3">
+                          <a 
+                            href="/documents/PROMITTO_BANK_ACCOUNT_DETAILS.pdf" 
+                            className="flex items-center justify-between bg-white rounded-lg p-3 border border-blue-200 hover:border-blue-400 hover:shadow-md transition-all duration-200 group"
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                          >
+                            <div className="flex items-center">
+                              <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center mr-3">
+                                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                              </div>
+                              <span className="text-sm font-medium text-gray-900">Bank Account Details</span>
+                            </div>
+                            <div className="flex items-center text-blue-600 group-hover:text-blue-800">
+                              <span className="text-xs font-semibold mr-1">DOWNLOAD</span>
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3" />
+                              </svg>
+                            </div>
+                          </a>
+                          <a 
+                            href="/documents/membership_application_form.pdf" 
+                            className="flex items-center justify-between bg-white rounded-lg p-3 border border-blue-200 hover:border-blue-400 hover:shadow-md transition-all duration-200 group"
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                          >
+                            <div className="flex items-center">
+                              <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center mr-3">
+                                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                </svg>
+                              </div>
+                              <span className="text-sm font-medium text-gray-900">Application Form</span>
+                            </div>
+                            <div className="flex items-center text-blue-600 group-hover:text-blue-800">
+                              <span className="text-xs font-semibold mr-1">DOWNLOAD</span>
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3" />
+                              </svg>
+                            </div>
+                          </a>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  )}
+                </div>
 
-                  {/* Timeline Node */}
-                  <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-white border-4 border-primary rounded-full z-20 flex items-center justify-center shadow-xl">
-                    <div className={`w-4 h-4 bg-gradient-to-r ${step.color} rounded-full`}></div>
-                  </div>
-
-                  {/* Mobile Step Number */}
-                  <div className="lg:hidden w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto shadow-xl">
-                    <span className="text-white font-bold text-xl">{step.step}</span>
+                {/* Progress indicator */}
+                <div className="mt-6 flex items-center justify-center">
+                  <div className="flex space-x-1">
+                    {steps.map((_, stepIndex) => (
+                      <div
+                        key={stepIndex}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          stepIndex <= index 
+                            ? `bg-gradient-to-r ${step.color}` 
+                            : 'bg-gray-300'
+                        }`}
+                      />
+                    ))}
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Call to Action Section */}
@@ -185,29 +311,38 @@ const CustomerJourney = () => {
 
         {/* Success Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <CheckCircle className="w-8 h-8 text-white" />
-            </div>
-            <h4 className="text-2xl font-bold text-gray-900 mb-2">95%</h4>
-            <p className="text-gray-600">Success Rate</p>
-          </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <Home className="w-8 h-8 text-white" />
-            </div>
-            <h4 className="text-2xl font-bold text-gray-900 mb-2">500+</h4>
-            <p className="text-gray-600">Homes Delivered</p>
-          </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h4 className="text-2xl font-bold text-gray-900 mb-2">6-12</h4>
-            <p className="text-gray-600">Months Average</p>
-          </div>
+          {(() => {
+            const successRate = useCountUp(95, 2500);
+            const homesDelivered = useCountUp(50, 2500);
+            
+            return (
+              <>
+                <div className="text-center" ref={successRate.ref}>
+                  <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <CheckCircle className="w-8 h-8 text-white" />
+                  </div>
+                  <h4 className="text-2xl font-bold text-gray-900 mb-2">{successRate.count}%</h4>
+                  <p className="text-gray-600">Success Rate</p>
+                </div>
+                <div className="text-center" ref={homesDelivered.ref}>
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <Home className="w-8 h-8 text-white" />
+                  </div>
+                  <h4 className="text-2xl font-bold text-gray-900 mb-2">{homesDelivered.count}+</h4>
+                  <p className="text-gray-600">Homes Delivered</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h4 className="text-2xl font-bold text-gray-900 mb-2">6-12</h4>
+                  <p className="text-gray-600">Months Average</p>
+                </div>
+              </>
+            );
+          })()}
         </div>
       </div>
     </section>

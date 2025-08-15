@@ -7,6 +7,7 @@ import Footer from '../../components/Footer';
 const LoanCalculator = () => {
   const [propertyCost, setPropertyCost] = useState<string>('3,000,000');
   const [downPayment, setDownPayment] = useState<string>('900,000');
+  const [propertyType, setPropertyType] = useState<string>('residential'); // residential or commercial
   const [loanTerm, setLoanTerm] = useState<string>('7'); // Default 7 years, adjustable
   const [interestRate] = useState<string>('12');
   const [processingFee] = useState<string>('2.5'); // 2.5% processing fee
@@ -36,6 +37,16 @@ const LoanCalculator = () => {
     const downPaymentAmount = Math.round(cost * 0.3); // 30% of property cost
     setDownPayment(formatNumber(downPaymentAmount.toString()));
   }, [propertyCost]);
+
+  // Update loan term when property type changes
+  useEffect(() => {
+    if (propertyType === 'residential' && Number(loanTerm) > 7) {
+      setLoanTerm('7');
+    } else if (propertyType === 'commercial' && Number(loanTerm) > 10) {
+      setLoanTerm('10');
+    }
+    setIsCalculated(false);
+  }, [propertyType, loanTerm]);
 
   const calculateLoan = () => {
     const principal = parseNumber(propertyCost) - parseNumber(downPayment);
@@ -126,6 +137,18 @@ const LoanCalculator = () => {
           <div className="bg-gradient-to-br from-white to-secondary/10 p-8 rounded-2xl shadow-xl border border-secondary/20">
             <div className="space-y-6">
               <div>
+                <label className="block text-gray-700 font-medium mb-2">Property Type</label>
+                <select
+                  value={propertyType}
+                  onChange={(e) => { setPropertyType(e.target.value); setIsCalculated(false); }}
+                  className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
+                >
+                  <option value="residential">Residential Property</option>
+                  <option value="commercial">Commercial Property</option>
+                </select>
+              </div>
+
+              <div>
                 <label className="block text-gray-700 font-medium mb-2">Property Cost (KES)</label>
                 <input
                   type="text"
@@ -153,7 +176,7 @@ const LoanCalculator = () => {
                   onChange={(e) => { setLoanTerm(e.target.value); setIsCalculated(false); }}
                   className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#F59E0B]"
                 >
-                  {[...Array(7)].map((_, i) => (
+                  {[...Array(propertyType === 'residential' ? 7 : 10)].map((_, i) => (
                     <option key={i+1} value={i+1}>{i+1} {i+1 === 1 ? 'year' : 'years'} ({(i+1)*12} months)</option>
                   ))}
                 </select>
@@ -229,6 +252,10 @@ const LoanCalculator = () => {
                   <p className="text-xl font-bold text-secondary">{processingFee}% of loan amount</p>
                 </div>
                 <div>
+                  <p className="text-gray-600">Property Type</p>
+                  <p className="text-xl font-bold text-primary capitalize">{propertyType} Property</p>
+                </div>
+                <div>
                   <p className="text-gray-600">Loan Term</p>
                   <p className="text-xl font-bold text-primary">{loanTerm} {loanTerm === '1' ? 'year' : 'years'} ({Number(loanTerm) * 12} months)</p>
                 </div>
@@ -284,7 +311,8 @@ const LoanCalculator = () => {
               </h4>
               <ul className="list-disc pl-6 text-gray-700 space-y-2">
                 <li>Down payment is fixed at <span className="font-bold text-primary">30%</span> of the property cost</li>
-                <li>Loan term is adjustable from <span className="font-bold text-primary">1-7 years</span></li>
+                <li>Loan term is adjustable from <span className="font-bold text-primary">1-7 years</span> for residential properties</li>
+                <li>Loan term is adjustable from <span className="font-bold text-primary">1-10 years</span> for commercial properties</li>
                 <li>Interest rate is fixed at <span className="font-bold text-primary">12% per annum</span> on reducing balance</li>
                 <li>Processing fee is <span className="font-bold text-secondary">2.5%</span> of the loan amount</li>
                 <li>Monthly payments start one month after construction begins</li>

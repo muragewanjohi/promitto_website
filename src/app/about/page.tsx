@@ -27,7 +27,7 @@ const AboutUs = () => {
           </div>
           
           {/* Content */}
-          <div className="relative z-10 h-full flex items-center">
+          <div className="relative z-10 h-full flex items-end pb-5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
               <div className="max-w-3xl">
                 <div className="flex items-center mb-6">
@@ -143,227 +143,17 @@ const AboutUs = () => {
           </div>
         </section>
 
-        {/* Technical Expertise */}
-        <section className="py-20">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="flex items-center justify-center mb-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full mr-4 shadow-lg">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0h6" />
-                </svg>
-              </div>
-              <h4 className="text-3xl font-bold text-gray-900">Our Technical Capacity</h4>
-            </div>
-            <div className="grid md:grid-cols-2 gap-12">
-              <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                <h5 className="text-xl font-bold text-primary mb-6 flex items-center">
-                  <svg className="w-6 h-6 mr-3 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                  Core Departments
-                </h5>
-                <ul className="space-y-4">
-                  <li className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-primary rounded-full flex-shrink-0"></div>
-                    <div>
-                      <span className="font-semibold text-gray-900">Project Management Department:</span>
-                      <span className="text-secondary font-bold ml-2">5 team members</span>
-                    </div>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-primary rounded-full flex-shrink-0"></div>
-                    <div>
-                      <span className="font-semibold text-gray-900">Architectural & Interior Designers:</span>
-                      <span className="text-secondary font-bold ml-2">5 engineers</span>
-                    </div>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-primary rounded-full flex-shrink-0"></div>
-                    <div>
-                      <span className="font-semibold text-gray-900">Quantity Survey Department:</span>
-                      <span className="text-secondary font-bold ml-2">4 Quantity Surveyors</span>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-              <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                <h5 className="text-xl font-bold text-primary mb-6 flex items-center">
-                  <svg className="w-6 h-6 mr-3 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m-4-8h8m-4-4v8m-4-4h8" />
-                  </svg>
-                  Support Departments
-                </h5>
-                <ul className="space-y-4">
-                  <li className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-secondary rounded-full flex-shrink-0"></div>
-                    <div>
-                      <span className="font-semibold text-gray-900">Account Management Department:</span>
-                      <span className="text-primary font-bold ml-2">6 account managers</span>
-                    </div>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-secondary rounded-full flex-shrink-0"></div>
-                    <div>
-                      <span className="font-semibold text-gray-900">Engineering Department:</span>
-                      <span className="text-primary font-bold ml-2">2 Engineers</span>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
+
 
         {/* Competitive Advantages */}
         <CompetitiveAdvantages />
 
-        {/* Management Team */}
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="flex items-center justify-center mb-12">
-              <span className="inline-block bg-purple-100 p-3 rounded-full mr-3">
-                <Image src="/hierarchical-structure_1042060.png" alt="Hierarchical Structure" width={32} height={32} className="w-8 h-8" />
-              </span>
-              <h4 className="text-3xl font-bold text-gray-900">Our Management Team</h4>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { name: 'Jimmy Kagoni', title: 'Chief Executive Officer', img: '/images/board/jimmy-kagoni.png' },
-                { name: 'Innocent Ongeri', title: 'Operations Manager' },
-                { name: 'Machira Minyati', title: 'Project Manager' },
-                { name: 'Steve Kihara', title: 'Chief Finance Officer' },
-                { name: 'Anastaciah Wajohi', title: 'Head of Customer Service' },
-                { name: 'David Mwangi', title: 'Risk Manager' },
-                { name: 'Adreen Gichore', title: 'Chief of Staff & Head of Credit Management' },
-              ].map((member, idx) => (
-                <div key={idx} className="bg-white rounded-xl shadow p-6 text-center">
-                  {member.img ? (
-                    <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-4 border-blue-200">
-                      <Image
-                        src={member.img}
-                        alt={member.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-blue-100 flex items-center justify-center text-3xl text-blue-700 font-bold">
-                      {member.name.split(' ').map(n => n[0]).join('')}
-                    </div>
-                  )}
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h4>
-                  <p className="text-[#F59E0B] text-base">{member.title}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
-        {/* Board Members Section */}
-        <section className="py-16 bg-white">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="flex items-center justify-center mb-12">
-              <span className="inline-block bg-orange-100 p-3 rounded-full mr-3">
-                <svg className="w-8 h-8 text-[#F59E0B]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m-4-8h8m-4-4v8m-4-4h8" /></svg>
-              </span>
-              <h4 className="text-3xl font-bold text-gray-900">Board Members</h4>
-            </div>
-            <div className="grid md:grid-cols-4 gap-8">
-              {/* Dr. Olufunso Somorin */}
-              <div className="text-center bg-gray-50 rounded-xl shadow p-6">
-                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-orange-200">
-                  <Image
-                    src="/images/board/olufunso-somorin.png"
-                    alt="Dr. Olufunso Somorin"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-2">Dr. Olufunso Somorin</h4>
-                <p className="text-[#F59E0B]">Overall Chairman</p>
-              </div>
-              {/* Mark Muema */}
-              <div className="text-center bg-gray-50 rounded-xl shadow p-6">
-                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-orange-200">
-                  <Image
-                    src="/images/board/mark-muema.png"
-                    alt="Mark Muema"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-2">Mark Muema</h4>
-                <p className="text-[#F59E0B]">Chairman, Finance and HR Subcommittee</p>
-              </div>
-              {/* Waceke Munene */}
-              <div className="text-center bg-gray-50 rounded-xl shadow p-6">
-                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-orange-200">
-                  <Image
-                    src="/images/board/waceke-munene.png"
-                    alt="Waceke Munene"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-2">Waceke Munene</h4>
-                <p className="text-[#F59E0B]">IT & Operations Subcommittee</p>
-              </div>
-              {/* Jimmy Kagoni */}
-              <div className="text-center bg-gray-50 rounded-xl shadow p-6">
-                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-orange-200">
-                  <Image
-                    src="/images/board/jimmy-kagoni.png"
-                    alt="Jimmy Kagoni"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-2">Jimmy Kagoni</h4>
-                <p className="text-[#F59E0B]">Secretary to the Board</p>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Enhanced Services Section */}
         <Services />
 
-        {/* Registration Requirements */}
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-5xl mx-auto px-4">
-            <div className="flex items-center justify-center mb-8">
-              <span className="inline-block bg-blue-100 p-3 rounded-full mr-3">
-                <svg className="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-              </span>
-              <h4 className="text-3xl font-bold text-gray-900">Registration Requirements</h4>
-            </div>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h4 className="text-xl font-bold text-blue-700 mb-2 flex items-center"><span className="mr-2">👤</span>Individual</h4>
-                <ul className="list-disc pl-6 text-gray-700 space-y-2">
-                  <li>Passport Photos</li>
-                  <li>National ID</li>
-                  <li>Title Deed</li>
-                  <li>Desired House Plan</li>
-                  <li>Registration Fee of Ksh. 30,000</li>
-                  <li>KRA Certificate</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-xl font-bold text-blue-700 mb-2 flex items-center"><span className="mr-2">🏢</span>Corporate</h4>
-                <ul className="list-disc pl-6 text-gray-700 space-y-2">
-                  <li>Directors Passport Photos</li>
-                  <li>Directors National ID</li>
-                  <li>Directors KRA Certificate</li>
-                  <li>Title Deed copy</li>
-                  <li>Certificate of Incorporation</li>
-                  <li>Company PIN Certificate</li>
-                  <li>CR</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
+
 
         {/* Enhanced Funding Highlights Section */}
         <FundingHighlights />

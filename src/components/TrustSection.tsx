@@ -1,25 +1,83 @@
-import React from 'react';
+"use client";
+
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+
+// Custom hook for counting animation
+const useCountUp = (end: number, duration: number = 2000) => {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime: number;
+    let animationFrame: number;
+
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentCount = Math.floor(easeOutQuart * end);
+      
+      setCount(currentCount);
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
+  }, [end, duration, isVisible]);
+
+  return { count, ref };
+};
 
 const TrustSection = () => {
   const trustMetrics = [
     {
-      number: '100+',
+      number: 100,
       label: 'Homes Built',
       description: 'Successfully completed projects'
     },
     {
-      number: '100+',
+      number: 100,
       label: 'Happy Clients',
       description: 'Satisfied homeowners'
     },
     {
-      number: '15+',
+      number: 15,
       label: 'Years Experience',
       description: 'Industry expertise'
     },
     {
-      number: '95%',
+      number: 95,
       label: 'Approval Rate',
       description: 'Loan application success'
     }
@@ -56,19 +114,24 @@ const TrustSection = () => {
           </p>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {trustMetrics.map((metric, index) => (
-              <div key={index} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                  {metric.number}
+            {trustMetrics.map((metric, index) => {
+              const { count, ref } = useCountUp(metric.number, 2500);
+              const suffix = metric.label === 'Approval Rate' ? '%' : metric.label === 'Years Experience' ? '+' : '+';
+              
+              return (
+                <div key={index} className="text-center" ref={ref}>
+                  <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+                    {count}{suffix}
+                  </div>
+                  <div className="text-lg font-semibold text-gray-900 mb-1">
+                    {metric.label}
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    {metric.description}
+                  </div>
                 </div>
-                <div className="text-lg font-semibold text-gray-900 mb-1">
-                  {metric.label}
-                </div>
-                <div className="text-sm text-gray-600">
-                  {metric.description}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
