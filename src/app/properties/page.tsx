@@ -27,11 +27,11 @@ interface Property {
 interface Filters {
   priceMin: number | null;
   priceMax: number | null;
-  type: 'House' | 'Apartment' | 'Villa' | 'Commercial' | '';
+  type: string;
   location: string;
   rooms: number;
   bathrooms: number;
-  roofType: 'Flatroofed' | 'Pitch Roofed' | 'Hybrid Pitch Roof' | 'Hidden Roof' | '';
+  roofType: string;
 }
 
 function PropertiesContent() {
