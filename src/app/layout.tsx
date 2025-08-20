@@ -4,6 +4,7 @@ import './globals.css';
 import { AuthProvider } from '@/contexts/AuthContext';
 import ScrollToTop from '@/components/ScrollToTop';
 import ClientWrapper from '@/components/ClientWrapper';
+import WhatsAppChat from '@/components/WhatsAppChat';
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -27,6 +28,7 @@ export default function RootLayout({
           {children}
           <ClientWrapper>
             <ScrollToTop />
+            <WhatsAppChat />
           </ClientWrapper>
         </AuthProvider>
       </body>
