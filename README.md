@@ -41,14 +41,25 @@ npm install
 yarn install
 ```
 
-3. Run the development server:
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory with the following variables:
+   ```bash
+   # Supabase Configuration
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url_here
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+   
+   # Email Configuration (if using Resend)
+   RESEND_API_KEY=your_resend_api_key_here
+   ```
+
+4. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Project Structure
 
@@ -72,6 +83,27 @@ promitto/
 ├── package.json
 └── README.md
 ```
+
+## Deployment
+
+### Vercel Deployment
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Add the following environment variables in your Vercel project settings:
+   - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
+   - `RESEND_API_KEY`: Your Resend API key (if using email functionality)
+
+4. Deploy your application
+
+### Environment Variables
+
+Make sure to set these environment variables in your deployment platform:
+
+- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL (starts with `https://`)
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous/public key
+- `RESEND_API_KEY`: Your Resend API key for email functionality
 
 ## Contributing
 
