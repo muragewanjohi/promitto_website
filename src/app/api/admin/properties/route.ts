@@ -1,20 +1,22 @@
 export const dynamic = "force-dynamic";
 import { NextResponse } from 'next/server';
 import { propertyDetails } from '@/data/properties';
-import { createServerSupabaseClient } from '@/lib/supabase';
 
 export async function GET(request: Request) {
-  const authHeader = request.headers.get('authorization');
-  const accessToken = authHeader?.split(' ')[1];
+  try {
+    const authHeader = request.headers.get('authorization');
+    const accessToken = authHeader?.split(' ')[1];
 
-  if (!accessToken) {
-    return NextResponse.json(
-      { error: 'Unauthorized', message: 'No access token provided' },
-      { status: 401 }
-    );
-  }
+    if (!accessToken) {
+      return NextResponse.json(
+        { error: 'Unauthorized', message: 'No access token provided' },
+        { status: 401 }
+      );
+    }
 
-  const supabase = createServerSupabaseClient(accessToken);
+    // Dynamic import to avoid build-time execution
+    const { createServerSupabaseClient } = await import('@/lib/supabase');
+    const supabase = createServerSupabaseClient(accessToken);
 
   // Fetch all properties
   const { data: properties, error } = await supabase
@@ -65,21 +67,31 @@ export async function GET(request: Request) {
     features: featureMapByProperty[property.id] || [],
   }));
 
-  return NextResponse.json(propertiesWithFeatures);
+    return NextResponse.json(propertiesWithFeatures);
+  } catch (error) {
+    console.error('Error in GET /api/admin/properties:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: Request) {
-  const authHeader = request.headers.get('authorization');
-  const accessToken = authHeader?.split(' ')[1];
+  try {
+    const authHeader = request.headers.get('authorization');
+    const accessToken = authHeader?.split(' ')[1];
 
-  if (!accessToken) {
-    return NextResponse.json(
-      { error: 'Unauthorized', message: 'No access token provided' },
-      { status: 401 }
-    );
-  }
+    if (!accessToken) {
+      return NextResponse.json(
+        { error: 'Unauthorized', message: 'No access token provided' },
+        { status: 401 }
+      );
+    }
 
-  const supabase = createServerSupabaseClient(accessToken);
+    // Dynamic import to avoid build-time execution
+    const { createServerSupabaseClient } = await import('@/lib/supabase');
+    const supabase = createServerSupabaseClient(accessToken);
 
   try {
     const data = await request.json();
@@ -123,6 +135,13 @@ export async function POST(request: Request) {
     console.error('Server error:', error);
     return NextResponse.json(
       { error: 'Failed to create property' },
+      { status: 500 }
+    );
+  }
+  } catch (error) {
+    console.error('Error in POST /api/admin/properties:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

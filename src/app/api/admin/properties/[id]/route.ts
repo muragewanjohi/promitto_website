@@ -1,16 +1,20 @@
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase";
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
-  const authHeader = request.headers.get("authorization");
-  const accessToken = authHeader?.split(" ")[1];
+  try {
+    const { id } = params;
+    const authHeader = request.headers.get("authorization");
+    const accessToken = authHeader?.split(" ")[1];
 
-  if (!accessToken) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+    if (!accessToken) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-  const supabase = createServerSupabaseClient(accessToken);
+    // Dynamic import to avoid build-time execution
+    const { createServerSupabaseClient } = await import("@/lib/supabase");
+    const supabase = createServerSupabaseClient(accessToken);
   const data = await request.json();
   const { features, ...propertyData } = data;
 
@@ -48,19 +52,26 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
   }
 
-  return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error in PUT /api/admin/properties/[id]:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
 }
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
-  const authHeader = request.headers.get("authorization");
-  const accessToken = authHeader?.split(" ")[1];
+  try {
+    const { id } = params;
+    const authHeader = request.headers.get("authorization");
+    const accessToken = authHeader?.split(" ")[1];
 
-  if (!accessToken) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+    if (!accessToken) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-  const supabase = createServerSupabaseClient(accessToken);
+    // Dynamic import to avoid build-time execution
+    const { createServerSupabaseClient } = await import("@/lib/supabase");
+    const supabase = createServerSupabaseClient(accessToken);
 
   // Fetch property
   const { data: property, error } = await supabase
@@ -89,14 +100,18 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
   const features = featureRows ? featureRows.map((row: any) => row.feature_id) : [];
 
-  return NextResponse.json({
-    ...property,
-    type_id: property.type_id,
-    type_name: property.property_types?.name || '',
-    status_id: property.status_id,
-    status_name: property.property_statuses?.name || '',
-    roof_type_id: property.roof_type_id,
-    roof_type_name: property.roof_types?.name || '',
-    features
-  });
+    return NextResponse.json({
+      ...property,
+      type_id: property.type_id,
+      type_name: property.property_types?.name || '',
+      status_id: property.status_id,
+      status_name: property.property_statuses?.name || '',
+      roof_type_id: property.roof_type_id,
+      roof_type_name: property.roof_types?.name || '',
+      features
+    });
+  } catch (error) {
+    console.error('Error in GET /api/admin/properties/[id]:', error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
 } 

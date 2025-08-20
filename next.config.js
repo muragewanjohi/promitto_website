@@ -11,6 +11,11 @@ const nextConfig = {
   poweredByHeader: false,
   trailingSlash: true,
   assetPrefix: '/',
+  
+  // Disable static generation for API routes that require environment variables
+  experimental: {
+    serverComponentsExternalPackages: ['@supabase/supabase-js'],
+  },
 };
 
 module.exports = nextConfig; 
