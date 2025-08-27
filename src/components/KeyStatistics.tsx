@@ -85,13 +85,13 @@ const KeyStatistics = () => {
   ];
 
   return (
-    <section className="py-16 bg-gradient-to-r from-blue-50 to-orange-50">
+    <section className="py-16 bg-gradient-to-r from-primary/5 to-secondary/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-primary mb-4">
             The Housing Crisis in Numbers
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-primary/80 max-w-3xl mx-auto">
             While Kenya has made strides in addressing its housing deficit through initiatives like the Affordable Housing Programme, 
             significant challenges remain. This presents a tremendous opportunity for Promitto to expand its reach and help address this crisis.
           </p>
@@ -111,13 +111,13 @@ const KeyStatistics = () => {
                 ref={ref}
               >
                 <div className="text-6xl mb-4">{stat.icon}</div>
-                <div className="text-4xl font-bold text-blue-600 mb-2">
+                <div className="text-4xl font-bold text-primary mb-2">
                   {formattedCount}{stat.suffix}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <h3 className="text-xl font-semibold text-primary mb-2">
                   {stat.label}
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-primary/70">
                   {stat.description}
                 </p>
               </div>
@@ -127,7 +127,7 @@ const KeyStatistics = () => {
 
         <div className="mt-12 text-center">
           <Link href="/signup">
-            <div className="bg-blue-600 text-white rounded-full px-8 py-4 inline-block hover:bg-blue-700 transition-colors duration-300 cursor-pointer transform hover:scale-105">
+            <div className="bg-primary text-white rounded-full px-8 py-4 inline-block hover:bg-primary/90 transition-colors duration-300 cursor-pointer transform hover:scale-105">
               <p className="text-lg font-semibold">
                 Join us in bridging the housing gap and making homeownership a reality
               </p>

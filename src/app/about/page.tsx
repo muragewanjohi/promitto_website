@@ -108,27 +108,29 @@ const AboutUs = () => {
                   Promitto has established a strong presence across East and Southern Africa, with offices in Kenya and Zambia. Our regional footprint allows us to serve clients across multiple markets while maintaining our commitment to quality and innovation.
                 </p>
                 <div className="space-y-6">
-                  <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-primary">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <h6 className="font-bold text-gray-900 text-lg mb-2">Kenya - Main Office</h6>
-                        <p className="text-gray-600 mb-1">Pension Towers, Nairobi Loita street, Floor M2</p>
-                        <p className="text-primary font-semibold">+254 729 506 506</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-secondary">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-4 h-4 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <h6 className="font-bold text-gray-900 text-lg mb-2">Zambia - Branch Office</h6>
-                        <p className="text-gray-600 mb-1">Woodlands shopping mall, 1st floor</p>
-                        <p className="text-secondary font-semibold">+260 775 604 455</p>
-                      </div>
+                <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-primary hover:shadow-xl transition-shadow duration-300">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-lg mb-2">Kenya - Main Office</h4>
+                      <p className="text-gray-600 mb-1"> Nairobi, Loita street, Pension Towers, Floor M2</p>
+                      <p className="text-primary font-semibold">+254 729 506 506</p>
+                      <p className="text-gray-600 text-sm mt-2">Email: info@promittoltd.com</p>
                     </div>
                   </div>
                 </div>
+                <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-secondary hover:shadow-xl transition-shadow duration-300">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-4 h-4 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-lg mb-2">Zambia - Branch Office</h4>
+                      <p className="text-gray-600 mb-1">Lusaka, Chindo Rd, Woodlands shopping mall, 1st floor</p>
+                      <p className="text-secondary font-semibold">+260 775 604 455</p>
+                      <p className="text-gray-600 text-sm mt-2">Email: info@promittoltd.com</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
               </div>
               <div className="relative h-[400px] rounded-2xl overflow-hidden bg-white shadow-xl border border-gray-200">
                 <Image

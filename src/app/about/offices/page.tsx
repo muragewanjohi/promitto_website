@@ -58,7 +58,7 @@ const OfficesPage = () => {
                     <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                     <div>
                       <h4 className="font-bold text-gray-900 text-lg mb-2">Kenya - Main Office</h4>
-                      <p className="text-gray-600 mb-1">Pension Towers, Nairobi Loita street, Floor M2</p>
+                      <p className="text-gray-600 mb-1"> Nairobi, Loita street, Pension Towers, Floor M2</p>
                       <p className="text-primary font-semibold">+254 729 506 506</p>
                       <p className="text-gray-600 text-sm mt-2">Email: info@promittoltd.com</p>
                     </div>
@@ -69,7 +69,7 @@ const OfficesPage = () => {
                     <div className="w-4 h-4 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
                     <div>
                       <h4 className="font-bold text-gray-900 text-lg mb-2">Zambia - Branch Office</h4>
-                      <p className="text-gray-600 mb-1">Woodlands shopping mall, 1st floor</p>
+                      <p className="text-gray-600 mb-1">Lusaka, Chindo Rd, Woodlands shopping mall, 1st floor</p>
                       <p className="text-secondary font-semibold">+260 775 604 455</p>
                       <p className="text-gray-600 text-sm mt-2">Email: info@promittoltd.com</p>
                     </div>
@@ -117,7 +117,7 @@ const OfficesPage = () => {
                 </li>
                 <li className="flex items-center">
                   <span className="mr-3">🏢</span>
-                  <span className="font-semibold">Office:</span> Pension Towers, Nairobi Loita street, Floor M2
+                  <span className="font-semibold">Office:</span> Nairobi, Loita street, Pension Towers, Floor M2
                 </li>
                 <li className="flex items-center">
                   <span className="mr-3">🌐</span>
@@ -141,7 +141,7 @@ const OfficesPage = () => {
                 </li>
                 <li className="flex items-center">
                   <span className="mr-3">🏢</span>
-                  <span className="font-semibold">Office:</span> Woodlands shopping mall, 1st floor
+                  <span className="font-semibold">Office:</span> Lusaka, Chindo Rd, Woodlands shopping mall, 1st floor
                 </li>
                 <li className="flex items-center">
                   <span className="mr-3">🌐</span>

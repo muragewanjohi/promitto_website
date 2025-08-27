@@ -5,6 +5,8 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import ScrollToTop from '@/components/ScrollToTop';
 import ClientWrapper from '@/components/ClientWrapper';
 import WhatsAppChat from '@/components/WhatsAppChat';
+import FloatingCalculator from '@/components/FloatingCalculator';
+import FloatingGetStarted from '@/components/FloatingGetStarted';
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -29,6 +31,8 @@ export default function RootLayout({
           <ClientWrapper>
             <ScrollToTop />
             <WhatsAppChat />
+            <FloatingCalculator />
+            <FloatingGetStarted />
           </ClientWrapper>
         </AuthProvider>
       </body>

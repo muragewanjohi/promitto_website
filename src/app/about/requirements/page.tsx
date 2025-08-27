@@ -181,8 +181,8 @@ const RequirementsPage = () => {
             </div>
             <div className="bg-gray-50 rounded-xl p-6">
               <h4 className="text-xl font-bold text-secondary mb-4">🏢 Visit Our Offices</h4>
-              <p className="text-gray-700 mb-2">Kenya: Pension Towers, Nairobi Loita street, Floor M2</p>
-              <p className="text-gray-700">Zambia: Woodlands shopping mall, 1st floor</p>
+              <p className="text-gray-700 mb-2">Kenya:  Nairobi Loita street, Pension Towers, Floor M2</p>
+              <p className="text-gray-700">Zambia: Lusaka, Chindo Rd, Woodlands shopping mall, 1st floor</p>
             </div>
           </div>
         </div>
