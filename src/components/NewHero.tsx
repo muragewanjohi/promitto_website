@@ -15,11 +15,11 @@ const NewHero = () => {
   const router = useRouter();
   
   const heroImages = [
-    '/hero-house.jpg',
-    '/images/house_designs/4b_hybrid.jpg',
-    '/images/house_designs/3b_bungalowjpg2.jpg',
-    '/images/house_designs/2b_bungalowjpg2.jpg',
-    '/5_br_pitched_roof_mansion.jpeg'
+    '/slider/2bdrm.png',
+    '/slider/3bdrm.png',
+    '/slider/4bdrm.png',
+    '/slider/5bdrm.png',
+    '/slider/5bdrm_2.png'
   ];
 
   const heroTitles = [
