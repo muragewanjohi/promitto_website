@@ -23,9 +23,10 @@ interface PropertyFormProps {
     roof_type_id: string;
   };
   onSubmit: (data: any) => void;
+  isSubmitting?: boolean;
 }
 
-export default function PropertyForm({ initialData, onSubmit }: PropertyFormProps) {
+export default function PropertyForm({ initialData, onSubmit, isSubmitting = false }: PropertyFormProps) {
   const [formData, setFormData] = useState({
     name: initialData?.name || '',
     location: initialData?.location || '',
@@ -148,17 +149,31 @@ export default function PropertyForm({ initialData, onSubmit }: PropertyFormProp
           .getPublicUrl(filePath);
         imageUrls.push(publicUrlData.publicUrl);
       }
+      // Validate required fields
+      if (!formData.type_id) {
+        throw new Error('Please select a property type');
+      }
+      if (!formData.status_id) {
+        throw new Error('Please select a property status');
+      }
+      if (!formData.roof_type_id) {
+        throw new Error('Please select a roof type');
+      }
+
       // Prepare property data
       const propertyData = {
         ...formData,
-        price: formData.price.replace(/,/g, ''), // Remove commas for saving
+        price: formData.price ? formData.price.replace(/,/g, '') : null, // Remove commas for saving, allow null
+        type_id: parseInt(formData.type_id, 10),
+        status_id: parseInt(formData.status_id, 10),
+        roof_type_id: parseInt(formData.roof_type_id, 10),
         features: formData.features.map(f => Number(f)),
         images: imageUrls,
         featuredImage: imageUrls[featuredIndex ?? 0] || null,
       };
       await onSubmit(propertyData);
     } catch (err: any) {
-      setError('Failed to upload images or save property.');
+      setError(err.message || 'Failed to upload images or save property.');
       console.error(err);
     } finally {
       setUploading(false);
@@ -194,13 +209,12 @@ export default function PropertyForm({ initialData, onSubmit }: PropertyFormProp
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 flex items-center gap-1">Price <span className="text-[#F59E0B] font-bold">Ksh</span></label>
+            <label className="block text-sm font-medium text-gray-700 flex items-center gap-1">Price <span className="text-[#F59E0B] font-bold">Ksh</span> <span className="text-gray-400 text-xs">(optional)</span></label>
             <input
               type="text"
               value={formData.price}
               onChange={handlePriceChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#F59E0B] focus:ring-[#F59E0B] focus:outline-none focus:ring-2"
-              required
               inputMode="numeric"
               pattern="[0-9,]*"
               placeholder="e.g. 1,200,000"
@@ -214,9 +228,11 @@ export default function PropertyForm({ initialData, onSubmit }: PropertyFormProp
               onChange={(e) => setFormData({ ...formData, type_id: e.target.value })}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#1E40AF] focus:ring-[#1E40AF] focus:outline-none focus:ring-2"
               disabled={optionsLoading}
+              required
             >
+              <option value="">Select property type...</option>
               {optionsLoading ? (
-                <option>Loading...</option>
+                <option disabled>Loading...</option>
               ) : (
                 typeOptions.map(option => (
                   <option key={option.id} value={option.id.toString()}>{option.name}</option>
@@ -232,9 +248,11 @@ export default function PropertyForm({ initialData, onSubmit }: PropertyFormProp
               onChange={(e) => setFormData({ ...formData, status_id: e.target.value })}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#1E40AF] focus:ring-[#1E40AF] focus:outline-none focus:ring-2"
               disabled={optionsLoading}
+              required
             >
+              <option value="">Select property status...</option>
               {optionsLoading ? (
-                <option>Loading...</option>
+                <option disabled>Loading...</option>
               ) : (
                 statusOptions.map(option => (
                   <option key={option.id} value={option.id.toString()}>{option.name}</option>
@@ -250,9 +268,11 @@ export default function PropertyForm({ initialData, onSubmit }: PropertyFormProp
               onChange={(e) => setFormData({ ...formData, roof_type_id: e.target.value })}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#1E40AF] focus:ring-[#1E40AF] focus:outline-none focus:ring-2"
               disabled={optionsLoading}
+              required
             >
+              <option value="">Select roof type...</option>
               {optionsLoading ? (
-                <option>Loading...</option>
+                <option disabled>Loading...</option>
               ) : (
                 roofTypeOptions.map(option => (
                   <option key={option.id} value={option.id.toString()}>{option.name}</option>
@@ -350,10 +370,20 @@ export default function PropertyForm({ initialData, onSubmit }: PropertyFormProp
       <div className="flex justify-end">
         <button
           type="submit"
-          className="bg-[#1E40AF] hover:bg-[#1E3A8A] text-white px-6 py-2 rounded-lg font-semibold shadow focus:outline-none focus:ring-2 focus:ring-[#1E40AF] focus:ring-offset-2 transition-all"
-          disabled={uploading}
+          className="bg-[#1E40AF] hover:bg-[#1E3A8A] text-white px-6 py-2 rounded-lg font-semibold shadow focus:outline-none focus:ring-2 focus:ring-[#1E40AF] focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={uploading || isSubmitting}
         >
-          {uploading ? 'Saving...' : initialData ? 'Update Property' : 'Add Property'}
+          {uploading || isSubmitting ? (
+            <div className="flex items-center">
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Saving...
+            </div>
+          ) : (
+            initialData ? 'Update Property' : 'Add Property'
+          )}
         </button>
       </div>
     </form>

@@ -239,7 +239,7 @@ function PropertiesContent() {
       <div className="relative h-[300px] bg-cover bg-center" style={{ backgroundImage: 'url(/hero-house.jpg)' }}>
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-          <h1 className="text-4xl md:text-5xl font-bold mb-8">Find Your Dream Home</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-6">Find Your Dream Home</h1>
           <div className="w-full max-w-2xl px-4">
             <form onSubmit={handleSearch} className="relative">
               <input
@@ -247,27 +247,27 @@ function PropertiesContent() {
                 value={searchQuery}
                 onChange={handleSearchInputChange}
                 placeholder="Search by location, project name, type, or features..."
-                className="w-full pl-12 pr-24 py-4 rounded-xl bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#1E40AF] text-sm"
+                className="w-full pl-10 pr-20 py-3 rounded-xl bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#1E40AF] text-sm"
               />
               {searchQuery && (
                 <button 
                   type="button"
                   onClick={clearSearch}
-                  className="absolute right-16 top-2 text-gray-400 hover:text-gray-600 transition-colors"
+                  className="absolute right-14 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               )}
               <button 
                 type="submit"
-                className="absolute right-2 top-2 bg-[#1E40AF] text-white px-6 py-2 rounded-lg hover:bg-[#1E3A8A] transition-colors text-sm font-medium"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#1E40AF] text-white px-4 py-1.5 rounded-lg hover:bg-[#1E3A8A] transition-colors text-sm font-medium"
               >
                 Search
               </button>
               <svg
-                className="absolute left-4 top-4 w-5 h-5 text-gray-400"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -330,29 +330,29 @@ function PropertiesContent() {
 
           {/* Properties Grid */}
           <div className="flex-grow">
-            <div className="flex justify-between items-center mb-8">
-              <div className="flex items-center gap-4">
-                <h2 className="text-2xl font-bold text-gray-900">
+            <div className="flex justify-between items-center mb-6">
+              <div className="flex items-center gap-3">
+                <h2 className="text-xl font-bold text-gray-900">
                   {loading ? 'Loading...' : `${filteredProperties.length} Projects Available`}
                 </h2>
                 {searchQuery && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="flex items-center gap-2 text-xs text-gray-600">
                     <span>Search results for:</span>
                     <span className="font-semibold text-primary">"{searchQuery}"</span>
                     <button 
                       onClick={clearSearch}
                       className="text-gray-400 hover:text-gray-600 transition-colors"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
                   </div>
                 )}
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <select
-                  className="p-2 border rounded-lg bg-white text-sm focus:ring-1 focus:ring-[#1E40AF] focus:border-[#1E40AF]"
+                  className="px-3 py-2 border rounded-lg bg-white text-xs focus:ring-1 focus:ring-[#1E40AF] focus:border-[#1E40AF]"
                   defaultValue="newest"
                 >
                   <option value="newest">Newest First</option>

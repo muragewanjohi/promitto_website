@@ -73,7 +73,16 @@ export default function Header() {
 
             {/* Navigation Links */}
             <div className="hidden lg:flex space-x-8">
-              <Link href="/" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>Home</Link>
+              <Link 
+                href="/" 
+                className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/' ? 'text-secondary' : ''}`}
+                onClick={() => {
+                  setIsAboutDropdownOpen(false);
+                  router.push('/');
+                }}
+              >
+                Home
+              </Link>
               
               {/* About Dropdown */}
               <div className="relative group">
@@ -93,45 +102,135 @@ export default function Header() {
                   onMouseLeave={() => setIsAboutDropdownOpen(false)}
                 >
                   <div className="py-2">
-                    <Link href="/about" className="block px-4 py-3 text-gray-800 hover:bg-primary hover:text-white transition-colors" prefetch={false}>
-                      <div className="font-semibold">Company Overview</div>
-                      <div className="text-sm text-gray-600">Our story and mission</div>
+                    <Link 
+                      href="/about" 
+                      className="block px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                      onClick={() => {
+                        setIsAboutDropdownOpen(false);
+                        router.push('/about');
+                      }}
+                    >
+                      <div className="font-medium text-sm">Company Overview</div>
+                      <div className="text-xs text-gray-600 hover:text-gray-300">Our story and mission</div>
                     </Link>
-                    <Link href="/about/team" className="block px-4 py-3 text-gray-800 hover:bg-primary hover:text-white transition-colors" prefetch={false}>
-                      <div className="font-semibold">Our Team</div>
-                      <div className="text-sm text-gray-600">Management & Board members</div>
+                    <Link 
+                      href="/about/team" 
+                      className="block px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                      onClick={() => {
+                        setIsAboutDropdownOpen(false);
+                        router.push('/about/team');
+                      }}
+                    >
+                      <div className="font-medium text-sm">Our Team</div>
+                      <div className="text-xs text-gray-600 hover:text-gray-300">Management & Board members</div>
                     </Link>
-                    <Link href="/about/offices" className="block px-4 py-3 text-gray-800 hover:bg-primary hover:text-white transition-colors" prefetch={false}>
-                      <div className="font-semibold">Our Offices</div>
-                      <div className="text-sm text-gray-600">Kenya & Zambia locations</div>
+                    <Link 
+                      href="/about/offices" 
+                      className="block px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                      onClick={() => {
+                        setIsAboutDropdownOpen(false);
+                        router.push('/about/offices');
+                      }}
+                    >
+                      <div className="font-medium text-sm">Our Offices</div>
+                      <div className="text-xs text-gray-600 hover:text-gray-300">Kenya & Zambia locations</div>
                     </Link>
-                    <Link href="/about/expertise" className="block px-4 py-3 text-gray-800 hover:bg-primary hover:text-white transition-colors" prefetch={false}>
-                      <div className="font-semibold">Technical Expertise</div>
-                      <div className="text-sm text-gray-600">Our departments & capabilities</div>
+                    <Link 
+                      href="/about/expertise" 
+                      className="block px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                      onClick={() => {
+                        setIsAboutDropdownOpen(false);
+                        router.push('/about/expertise');
+                      }}
+                    >
+                      <div className="font-medium text-sm">Technical Expertise</div>
+                      <div className="text-xs text-gray-600 hover:text-gray-300">Our departments & capabilities</div>
                     </Link>
-                    <Link href="/about/requirements" className="block px-4 py-3 text-gray-800 hover:bg-primary hover:text-white transition-colors" prefetch={false}>
-                      <div className="font-semibold">Registration Requirements</div>
-                      <div className="text-sm text-gray-600">Individual & Corporate</div>
+                    <Link 
+                      href="/about/requirements" 
+                      className="block px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                      onClick={() => {
+                        setIsAboutDropdownOpen(false);
+                        router.push('/about/requirements');
+                      }}
+                    >
+                      <div className="font-medium text-sm">Registration Requirements</div>
+                      <div className="text-xs text-gray-600 hover:text-gray-300">Individual & Corporate</div>
                     </Link>
                   </div>
                 </div>
               </div>
               
-              <Link href="/properties" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>Projects</Link>
-              <Link href="/property-designs" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>Designs</Link>
-              <Link href="/how-to-own" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>How to own</Link>
-              <Link href="/loan-calculator" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>Calculator</Link>
-              <Link href="/contact" className="text-base hover:text-secondary transition-colors capitalize font-semibold" prefetch={false}>Contact</Link>
+              <Link 
+                href="/properties" 
+                className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/properties' ? 'text-secondary' : ''}`}
+                onClick={() => {
+                  setIsAboutDropdownOpen(false);
+                  router.push('/properties');
+                }}
+              >
+                Projects
+              </Link>
+              <Link 
+                href="/property-designs" 
+                className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/property-designs' ? 'text-secondary' : ''}`}
+                onClick={() => {
+                  setIsAboutDropdownOpen(false);
+                  router.push('/property-designs');
+                }}
+              >
+                Designs
+              </Link>
+              <Link 
+                href="/how-to-own" 
+                className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/how-to-own' ? 'text-secondary' : ''}`}
+                onClick={() => {
+                  setIsAboutDropdownOpen(false);
+                  router.push('/how-to-own');
+                }}
+              >
+                How to own
+              </Link>
+              <Link 
+                href="/loan-calculator" 
+                className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/loan-calculator' ? 'text-secondary' : ''}`}
+                onClick={() => {
+                  setIsAboutDropdownOpen(false);
+                  router.push('/loan-calculator');
+                }}
+              >
+                Calculator
+              </Link>
+              <Link 
+                href="/contact" 
+                className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/contact' ? 'text-secondary' : ''}`}
+                onClick={() => {
+                  setIsAboutDropdownOpen(false);
+                  router.push('/contact');
+                }}
+              >
+                Contact
+              </Link>
             </div>
             
             {/* Auth Links */}
             <div className="flex items-center space-x-4">
               {userProfile?.role === 'admin' && (
-                <Link href="/admin" className="text-base hover:text-secondary font-bold transition-colors capitalize" prefetch={false}>Admin</Link>
+                <Link 
+                  href="/admin" 
+                  className="text-base hover:text-secondary font-bold transition-colors capitalize"
+                  onClick={() => router.push('/admin')}
+                >
+                  Admin
+                </Link>
               )}
               {user ? (
                 <div className="flex items-center space-x-4">
-                  <Link href="/profile" className="text-base hover:text-secondary font-bold transition-colors capitalize" prefetch={false}>
+                  <Link 
+                    href="/profile" 
+                    className="text-base hover:text-secondary font-bold transition-colors capitalize"
+                    onClick={() => router.push('/profile')}
+                  >
                     <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -143,15 +242,27 @@ export default function Header() {
                       await signOut();
                       router.push('/');
                     }}
-                    className="text-base bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-3 rounded-lg transition-all duration-300 capitalize shadow-lg hover:shadow-xl transform hover:scale-105"
+                    className="text-sm bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2 rounded-lg transition-all duration-300 capitalize shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
                     Log out
                   </button>
                 </div>
               ) : (
                 <>
-                  <Link href="/login" className="text-base hover:text-secondary transition-colors capitalize " prefetch={false}>Login</Link>
-                  <Link href="/signup" className="text-base bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-6 py-3 rounded-lg transition-all duration-300 capitalize shadow-lg hover:shadow-xl transform hover:scale-105" prefetch={false}>Sign up</Link>
+                  <Link 
+                    href="/login" 
+                    className="text-base hover:text-secondary transition-colors capitalize"
+                    onClick={() => router.push('/login')}
+                  >
+                    Login
+                  </Link>
+                  <Link 
+                    href="/signup" 
+                    className="text-sm bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-4 py-2 rounded-lg transition-all duration-300 capitalize shadow-lg hover:shadow-xl transform hover:scale-105"
+                    onClick={() => router.push('/signup')}
+                  >
+                    Sign up
+                  </Link>
                 </>
               )}
             </div>
@@ -173,17 +284,116 @@ export default function Header() {
           {isMenuOpen && (
             <div className="lg:hidden bg-primary border-t border-white/20">
               <div className="px-2 pt-2 pb-3 space-y-1">
-                <Link href="/" className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize" prefetch={false}>Home</Link>
-                <Link href="/about" className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize" prefetch={false}>About</Link>
-                <Link href="/about/team" className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize" prefetch={false}>Our Team</Link>
-                <Link href="/about/offices" className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize" prefetch={false}>Our Offices</Link>
-                <Link href="/about/expertise" className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize" prefetch={false}>Technical Expertise</Link>
-                <Link href="/about/requirements" className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize" prefetch={false}>Requirements</Link>
-                <Link href="/properties" className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize" prefetch={false}>Properties</Link>
-                <Link href="/property-designs" className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize" prefetch={false}>Designs</Link>
-                <Link href="/how-to-own" className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize" prefetch={false}>How to own</Link>
-                <Link href="/loan-calculator" className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize" prefetch={false}>Calculator</Link>
-                <Link href="/contact" className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize" prefetch={false}>Contact</Link>
+                <Link 
+                  href="/" 
+                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/');
+                  }}
+                >
+                  Home
+                </Link>
+                <Link 
+                  href="/about" 
+                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/about');
+                  }}
+                >
+                  About
+                </Link>
+                <Link 
+                  href="/about/team" 
+                  className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/about/team');
+                  }}
+                >
+                  Our Team
+                </Link>
+                <Link 
+                  href="/about/offices" 
+                  className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/about/offices');
+                  }}
+                >
+                  Our Offices
+                </Link>
+                <Link 
+                  href="/about/expertise" 
+                  className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/about/expertise');
+                  }}
+                >
+                  Technical Expertise
+                </Link>
+                <Link 
+                  href="/about/requirements" 
+                  className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/about/requirements');
+                  }}
+                >
+                  Requirements
+                </Link>
+                <Link 
+                  href="/properties" 
+                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/properties');
+                  }}
+                >
+                  Properties
+                </Link>
+                <Link 
+                  href="/property-designs" 
+                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/property-designs');
+                  }}
+                >
+                  Designs
+                </Link>
+                <Link 
+                  href="/how-to-own" 
+                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/how-to-own');
+                  }}
+                >
+                  How to own
+                </Link>
+                <Link 
+                  href="/loan-calculator" 
+                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/loan-calculator');
+                  }}
+                >
+                  Calculator
+                </Link>
+                <Link 
+                  href="/contact" 
+                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    router.push('/contact');
+                  }}
+                >
+                  Contact
+                </Link>
               </div>
             </div>
           )}

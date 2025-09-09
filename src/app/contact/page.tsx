@@ -52,10 +52,10 @@ const ContactUs = () => {
             <div className="grid md:grid-cols-2 gap-12">
               {/* Contact Form */}
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-8">Send us a Message</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="name" className="block text-xs font-medium text-gray-700 mb-1">
                       Full Name
                     </label>
                     <input
@@ -70,7 +70,7 @@ const ContactUs = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="email" className="block text-xs font-medium text-gray-700 mb-1">
                       Email Address
                     </label>
                     <input
@@ -85,7 +85,7 @@ const ContactUs = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="subject" className="block text-xs font-medium text-gray-700 mb-1">
                       Subject
                     </label>
                     <input
@@ -100,7 +100,7 @@ const ContactUs = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="message" className="block text-xs font-medium text-gray-700 mb-1">
                       Message
                     </label>
                     <textarea
@@ -132,12 +132,12 @@ const ContactUs = () => {
               {/* Contact Information */}
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-8">Contact Information</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h2>
                   
                   {/* Kenya Office */}
                   <div className="mb-8">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                      <svg className="h-5 w-5 text-[#F59E0B] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                      <svg className="h-4 w-4 text-[#F59E0B] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
@@ -152,8 +152,8 @@ const ContactUs = () => {
                           </svg>
                         </div>
                         <div>
-                          <h4 className="text-lg font-medium text-gray-900">Address</h4>
-                          <p className="text-gray-600">Pension Towers, Loita St, Nairobi</p>
+                          <h4 className="text-sm font-medium text-gray-900">Address</h4>
+                          <p className="text-gray-600 text-sm">Pension Towers, Loita St, Nairobi</p>
                         </div>
                       </div>
                       <div className="flex items-start space-x-4">
@@ -163,8 +163,8 @@ const ContactUs = () => {
                           </svg>
                         </div>
                         <div>
-                          <h4 className="text-lg font-medium text-gray-900">Phone</h4>
-                          <p className="text-gray-600">0729 506506</p>
+                          <h4 className="text-sm font-medium text-gray-900">Phone</h4>
+                          <p className="text-gray-600 text-sm">0729 506506</p>
                         </div>
                       </div>
                       <div className="flex items-start space-x-4">
@@ -174,7 +174,7 @@ const ContactUs = () => {
                           </svg>
                         </div>
                         <div>
-                          <h4 className="text-lg font-medium text-gray-900">Email</h4>
+                          <h4 className="text-sm font-medium text-gray-900">Email</h4>
                           <p className="text-gray-600">info@promittoltd.com</p>
                         </div>
                       </div>
@@ -192,8 +192,8 @@ const ContactUs = () => {
 
                   {/* Zambia Office */}
                   <div className="mb-8">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                      <svg className="h-5 w-5 text-[#F59E0B] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                      <svg className="h-4 w-4 text-[#F59E0B] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
@@ -230,7 +230,7 @@ const ContactUs = () => {
                           </svg>
                         </div>
                         <div>
-                          <h4 className="text-lg font-medium text-gray-900">Email</h4>
+                          <h4 className="text-sm font-medium text-gray-900">Email</h4>
                           <p className="text-gray-600">info@promittoltd.com</p>
                         </div>
                       </div>

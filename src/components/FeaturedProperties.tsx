@@ -206,13 +206,13 @@ const FeaturedProperties = () => {
         {/* Header with "On Show" title, separator, VIEW ALL link, and navigation */}
         <div className="flex items-center justify-between mb-12">
           <div className="flex items-center flex-1">
-            <h2 className="text-3xl font-bold text-primary mr-4">On Show</h2>
+            <h2 className="text-2xl font-bold text-primary mr-4">On Show</h2>
             <div className="flex-1 h-px bg-gray-400"></div>
           </div>
           <div className="flex items-center space-x-4 ml-4">
             <Link
               href="/properties"
-              className="text-primary font-semibold uppercase hover:text-secondary transition-colors border-b-2 border-red-500 pb-1"
+              className="text-primary font-semibold uppercase hover:text-secondary transition-colors border-b-2 border-red-500 pb-1 text-sm"
             >
               VIEW ALL
             </Link>
