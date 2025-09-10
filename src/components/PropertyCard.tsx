@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface Property {
   id: string;
@@ -27,9 +28,12 @@ interface PropertyCardProps {
 }
 
 const PropertyCard = ({ property }: PropertyCardProps) => {
+  const router = useRouter();
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  // Force display of first image only
+  const displayImageIndex = 0;
   const [isHovering, setIsHovering] = useState(false);
   const [autoSlideInterval, setAutoSlideInterval] = useState<NodeJS.Timeout | null>(null);
 
@@ -74,19 +78,19 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
     return allImages;
   }, [featuredImage, mainImage, images, id]);
 
-  // Auto-slide functionality
-  useEffect(() => {
-    if (imageArray.length > 1 && !isHovering) {
-      const interval = setInterval(() => {
-        setCurrentImageIndex((prev) => (prev + 1) % imageArray.length);
-      }, 4000);
-      setAutoSlideInterval(interval);
-      return () => clearInterval(interval);
-    } else if (autoSlideInterval) {
-      clearInterval(autoSlideInterval);
-      setAutoSlideInterval(null);
-    }
-  }, [imageArray.length, isHovering, autoSlideInterval]);
+  // Auto-slide functionality disabled
+  // useEffect(() => {
+  //   if (imageArray.length > 1 && !isHovering) {
+  //     const interval = setInterval(() => {
+  //       setCurrentImageIndex((prev) => (prev + 1) % imageArray.length);
+  //     }, 4000);
+  //     setAutoSlideInterval(interval);
+  //     return () => clearInterval(interval);
+  //   } else if (autoSlideInterval) {
+  //     clearInterval(autoSlideInterval);
+  //     setAutoSlideInterval(null);
+  //   }
+  // }, [imageArray.length, isHovering, autoSlideInterval]);
 
   // Navigation functions
   const nextImage = (e: React.MouseEvent) => {
@@ -179,17 +183,24 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
     }
   };
 
-  const handleViewDetails = () => {
+  const handleViewDetails = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setIsLoading(true);
-    // Navigate to property details page
-    window.location.href = `/properties/${id}`;
+    // Navigate to property details page using Next.js router
+    router.push(`/properties/${id}`);
   };
 
   return (
     <div 
-      className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] group"
+      className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] group cursor-pointer"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        router.push(`/properties/${id}`);
+      }}
     >
       {/* Enhanced Image Slider Section */}
       <div className="relative h-72 overflow-hidden">
@@ -198,13 +209,13 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             {/* Main Image Display */}
             <div className="relative h-full w-full">
               <Image
-                src={imageArray[currentImageIndex]}
-                alt={`${name} - Image ${currentImageIndex + 1}`}
+                src={imageArray[displayImageIndex]}
+                alt={`${name} - Main Image`}
                 fill
                 className="object-cover transition-all duration-700 ease-in-out transform group-hover:scale-110"
                 onError={() => setImageError(true)}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                priority={currentImageIndex === 0}
+                priority={true}
               />
               
               {/* Enhanced Gradient Overlay */}
@@ -212,8 +223,8 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
               <div className="absolute inset-0 bg-gradient-to-br from-[#1E40AF]/20 via-transparent to-[#F59E0B]/20"></div>
             </div>
 
-            {/* Navigation Arrows */}
-            {imageArray.length > 1 && (
+            {/* Navigation Arrows - Disabled */}
+            {/* {imageArray.length > 1 && (
               <>
                 <button
                   onClick={prevImage}
@@ -232,10 +243,10 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
                   </svg>
                 </button>
               </>
-            )}
+            )} */}
 
-            {/* Image Indicators */}
-            {imageArray.length > 1 && (
+            {/* Image Indicators - Disabled */}
+            {/* {imageArray.length > 1 && (
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
                 {imageArray.map((_, index) => (
                   <button
@@ -249,16 +260,16 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
                   />
                 ))}
               </div>
-            )}
+            )} */}
 
-            {/* Image Counter */}
-            {imageArray.length > 1 && (
+            {/* Image Counter - Disabled */}
+            {/* {imageArray.length > 1 && (
               <div className="absolute top-4 left-4">
                 <span className="px-2 py-1 rounded-full text-xs font-medium bg-black/50 text-white backdrop-blur-sm">
                   {currentImageIndex + 1} / {imageArray.length}
                 </span>
               </div>
-            )}
+            )} */}
           </>
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#1E40AF]/20 via-gray-100 to-[#F59E0B]/20 flex items-center justify-center">

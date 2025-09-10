@@ -29,10 +29,10 @@ const FloatingGetStarted: React.FC<FloatingGetStartedProps> = ({ className = '' 
     
     // Try navigation
     try {
-      router.push('/signup/');
+      router.push('/signup');
     } catch (error) {
       console.error('Navigation failed:', error);
-      window.location.href = '/signup/';
+      window.location.href = '/signup';
     }
   };
 

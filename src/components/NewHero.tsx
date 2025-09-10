@@ -69,9 +69,9 @@ const NewHero = () => {
   // Show loading state until component is mounted
   if (!mounted) {
     return (
-      <section className="relative min-h-screen overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70" />
-        <div className="relative min-h-screen flex items-center">
+      <section className="relative min-h-screen overflow-hidden" style={{ zIndex: 1 }}>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70" style={{ zIndex: 1 }} />
+        <div className="relative min-h-screen flex items-center" style={{ zIndex: 2 }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="text-center text-white space-y-12">
               <div className="space-y-6">
@@ -88,7 +88,7 @@ const NewHero = () => {
   }
 
   return (
-    <section className="relative min-h-screen overflow-hidden">
+    <section className="relative min-h-screen overflow-hidden" style={{ zIndex: 1 }}>
       {/* Background Images with Fade Transition */}
       {heroImages.map((image, index) => (
         <div
@@ -96,6 +96,7 @@ const NewHero = () => {
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             index === currentImageIndex ? 'opacity-100' : 'opacity-0'
           }`}
+          style={{ zIndex: 1 }}
         >
           <Image
             src={image}
@@ -109,16 +110,16 @@ const NewHero = () => {
       ))}
 
       {/* Content */}
-      <div className="relative min-h-screen flex items-center">
+      <div className="relative min-h-screen flex items-center" style={{ zIndex: 2 }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="text-center text-white space-y-12">
             {/* Main Content */}
             <div className="space-y-6">
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight text-shadow-lg">
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight text-shadow-lg">
                   {heroTitles[currentImageIndex]}
                 </h1>
-                <p className="text-lg md:text-xl lg:text-2xl font-light leading-relaxed max-w-4xl mx-auto text-shadow-md">
+                <p className="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed max-w-5xl mx-auto text-shadow-md">
                   {heroDescriptions[currentImageIndex]}
                 </p>
               </div>
@@ -134,7 +135,7 @@ const NewHero = () => {
                       <select
                         value={propertyType}
                         onChange={(e) => setPropertyType(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-transparent text-gray-900 focus:outline-none focus:ring-0 text-sm font-medium appearance-none"
+                        className="w-full pl-12 pr-4 py-4 rounded-xl bg-transparent text-gray-900 focus:outline-none focus:ring-0 text-base font-medium appearance-none"
                       >
                         <option value="all">All Projects</option>
                         <option value="House">Houses</option>
@@ -142,7 +143,7 @@ const NewHero = () => {
                         <option value="Villa">Villas</option>
                         <option value="Commercial">Commercial</option>
                       </select>
-                      <HomeIcon className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
+                      <HomeIcon className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
                     </div>
 
                     {/* Location */}
@@ -152,9 +153,9 @@ const NewHero = () => {
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
                         placeholder="Location"
-                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 text-sm font-medium"
+                        className="w-full pl-12 pr-4 py-4 rounded-xl bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 text-base font-medium"
                       />
-                      <MapPinIcon className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
+                      <MapPinIcon className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
                     </div>
 
                     {/* Search Query */}
@@ -164,15 +165,15 @@ const NewHero = () => {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search Projects..."
-                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 text-sm font-medium"
+                        className="w-full pl-12 pr-4 py-4 rounded-xl bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 text-base font-medium"
                       />
-                      <MagnifyingGlassIcon className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
+                      <MagnifyingGlassIcon className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
                     </div>
 
                     {/* Search Button */}
                     <button 
                       type="submit"
-                      className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-6 py-3 rounded-xl transition-all duration-300 text-sm font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
+                      className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-8 py-4 rounded-xl transition-all duration-300 text-base font-bold shadow-lg hover:shadow-xl transform hover:scale-105"
                     >
                       Search Projects
                     </button>
@@ -182,16 +183,16 @@ const NewHero = () => {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center pt-6">
               <Link
                 href="/properties"
-                className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-3xl"
+                className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-3xl"
               >
                 Browse Projects
               </Link>
               <Link
                 href="/how-to-own"
-                className="bg-white/10 backdrop-blur-sm border-2 border-white/30 hover:bg-white hover:text-primary text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl"
+                className="bg-white/10 backdrop-blur-sm border-2 border-white/30 hover:bg-white hover:text-primary text-white px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl"
               >
                 How to Own
               </Link>

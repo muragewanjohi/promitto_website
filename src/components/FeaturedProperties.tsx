@@ -9,7 +9,6 @@ const FeaturedProperties = () => {
   const [featuredProperties, setFeaturedProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
 
   // Prevent hydration mismatch
@@ -54,25 +53,8 @@ const FeaturedProperties = () => {
     fetchFeaturedProperties();
   }, [mounted]);
 
-  const handlePrevious = () => {
-    setCurrentIndex(prev => {
-      if (prev === 0) {
-        return Math.max(0, featuredProperties.length - 3);
-      }
-      return Math.max(0, prev - 3);
-    });
-  };
-
-  const handleNext = () => {
-    setCurrentIndex(prev => {
-      if (prev + 3 >= featuredProperties.length) {
-        return 0;
-      }
-      return prev + 3;
-    });
-  };
-
-  const visibleProperties = featuredProperties.slice(currentIndex, currentIndex + 3);
+  // Show all featured properties (limit to 6)
+  const visibleProperties = featuredProperties.slice(0, 6);
 
   // Show loading state until component is mounted
   if (!mounted) {
@@ -86,10 +68,6 @@ const FeaturedProperties = () => {
             </div>
             <div className="flex items-center space-x-4 ml-4">
               <div className="h-4 w-16 bg-gray-200 rounded animate-pulse"></div>
-              <div className="flex space-x-2">
-                <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse"></div>
-                <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse"></div>
-              </div>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -125,24 +103,6 @@ const FeaturedProperties = () => {
               >
                 VIEW ALL
               </Link>
-              <div className="flex space-x-2">
-                <button 
-                  className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={featuredProperties.length <= 3}
-                >
-                  <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <button 
-                  className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={featuredProperties.length <= 3}
-                >
-                  <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -178,18 +138,6 @@ const FeaturedProperties = () => {
               >
                 VIEW ALL
               </Link>
-              <div className="flex space-x-2">
-                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                  <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                  <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
             </div>
           </div>
           <div className="text-center">
@@ -206,36 +154,16 @@ const FeaturedProperties = () => {
         {/* Header with "On Show" title, separator, VIEW ALL link, and navigation */}
         <div className="flex items-center justify-between mb-12">
           <div className="flex items-center flex-1">
-            <h2 className="text-2xl font-bold text-primary mr-4">On Show</h2>
+            <h2 className="text-3xl font-bold text-primary mr-4">On Show</h2>
             <div className="flex-1 h-px bg-gray-400"></div>
           </div>
           <div className="flex items-center space-x-4 ml-4">
             <Link
               href="/properties"
-              className="text-primary font-semibold uppercase hover:text-secondary transition-colors border-b-2 border-red-500 pb-1 text-sm"
+              className="text-primary font-semibold uppercase hover:text-secondary transition-colors border-b-2 border-red-500 pb-1"
             >
               VIEW ALL
             </Link>
-            <div className="flex space-x-2">
-              <button 
-                onClick={handlePrevious}
-                className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={featuredProperties.length <= 3}
-              >
-                <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button 
-                onClick={handleNext}
-                className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={featuredProperties.length <= 3}
-              >
-                <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
           </div>
         </div>
 

@@ -29,7 +29,7 @@ export default function Header() {
   // Show loading state until component is mounted
   if (!mounted) {
     return (
-      <header className="w-full z-50">
+      <header className="w-full z-50 relative">
         <div className="w-full bg-primary">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex justify-between items-center py-4 text-white font-medium font-sans">
@@ -50,7 +50,7 @@ export default function Header() {
   }
 
   return (
-    <header className="w-full z-50">
+    <header className="w-full z-50 relative">
      
 
       {/* Navigation Bar */}
@@ -78,7 +78,6 @@ export default function Header() {
                 className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/' ? 'text-secondary' : ''}`}
                 onClick={() => {
                   setIsAboutDropdownOpen(false);
-                  router.push('/');
                 }}
               >
                 Home
@@ -107,7 +106,6 @@ export default function Header() {
                       className="block px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
                       onClick={() => {
                         setIsAboutDropdownOpen(false);
-                        router.push('/about');
                       }}
                     >
                       <div className="font-medium text-sm">Company Overview</div>
@@ -118,7 +116,6 @@ export default function Header() {
                       className="block px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
                       onClick={() => {
                         setIsAboutDropdownOpen(false);
-                        router.push('/about/team');
                       }}
                     >
                       <div className="font-medium text-sm">Our Team</div>
@@ -129,7 +126,6 @@ export default function Header() {
                       className="block px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
                       onClick={() => {
                         setIsAboutDropdownOpen(false);
-                        router.push('/about/offices');
                       }}
                     >
                       <div className="font-medium text-sm">Our Offices</div>
@@ -140,7 +136,6 @@ export default function Header() {
                       className="block px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
                       onClick={() => {
                         setIsAboutDropdownOpen(false);
-                        router.push('/about/expertise');
                       }}
                     >
                       <div className="font-medium text-sm">Technical Expertise</div>
@@ -151,7 +146,6 @@ export default function Header() {
                       className="block px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
                       onClick={() => {
                         setIsAboutDropdownOpen(false);
-                        router.push('/about/requirements');
                       }}
                     >
                       <div className="font-medium text-sm">Registration Requirements</div>
@@ -166,7 +160,6 @@ export default function Header() {
                 className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/properties' ? 'text-secondary' : ''}`}
                 onClick={() => {
                   setIsAboutDropdownOpen(false);
-                  router.push('/properties');
                 }}
               >
                 Projects
@@ -176,7 +169,6 @@ export default function Header() {
                 className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/property-designs' ? 'text-secondary' : ''}`}
                 onClick={() => {
                   setIsAboutDropdownOpen(false);
-                  router.push('/property-designs');
                 }}
               >
                 Designs
@@ -186,7 +178,6 @@ export default function Header() {
                 className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/how-to-own' ? 'text-secondary' : ''}`}
                 onClick={() => {
                   setIsAboutDropdownOpen(false);
-                  router.push('/how-to-own');
                 }}
               >
                 How to own
@@ -196,7 +187,6 @@ export default function Header() {
                 className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/loan-calculator' ? 'text-secondary' : ''}`}
                 onClick={() => {
                   setIsAboutDropdownOpen(false);
-                  router.push('/loan-calculator');
                 }}
               >
                 Calculator
@@ -206,7 +196,6 @@ export default function Header() {
                 className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/contact' ? 'text-secondary' : ''}`}
                 onClick={() => {
                   setIsAboutDropdownOpen(false);
-                  router.push('/contact');
                 }}
               >
                 Contact
@@ -219,7 +208,6 @@ export default function Header() {
                 <Link 
                   href="/admin" 
                   className="text-base hover:text-secondary font-bold transition-colors capitalize"
-                  onClick={() => router.push('/admin')}
                 >
                   Admin
                 </Link>
@@ -229,7 +217,6 @@ export default function Header() {
                   <Link 
                     href="/profile" 
                     className="text-base hover:text-secondary font-bold transition-colors capitalize"
-                    onClick={() => router.push('/profile')}
                   >
                     <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -252,14 +239,12 @@ export default function Header() {
                   <Link 
                     href="/login" 
                     className="text-base hover:text-secondary transition-colors capitalize"
-                    onClick={() => router.push('/login')}
                   >
                     Login
                   </Link>
                   <Link 
                     href="/signup" 
                     className="text-sm bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-4 py-2 rounded-lg transition-all duration-300 capitalize shadow-lg hover:shadow-xl transform hover:scale-105"
-                    onClick={() => router.push('/signup')}
                   >
                     Sign up
                   </Link>
@@ -289,7 +274,6 @@ export default function Header() {
                   className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
                   onClick={() => {
                     setIsMenuOpen(false);
-                    router.push('/');
                   }}
                 >
                   Home
@@ -299,7 +283,6 @@ export default function Header() {
                   className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
                   onClick={() => {
                     setIsMenuOpen(false);
-                    router.push('/about');
                   }}
                 >
                   About
@@ -309,7 +292,6 @@ export default function Header() {
                   className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize"
                   onClick={() => {
                     setIsMenuOpen(false);
-                    router.push('/about/team');
                   }}
                 >
                   Our Team
@@ -319,7 +301,6 @@ export default function Header() {
                   className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize"
                   onClick={() => {
                     setIsMenuOpen(false);
-                    router.push('/about/offices');
                   }}
                 >
                   Our Offices
@@ -329,7 +310,6 @@ export default function Header() {
                   className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize"
                   onClick={() => {
                     setIsMenuOpen(false);
-                    router.push('/about/expertise');
                   }}
                 >
                   Technical Expertise
@@ -339,7 +319,6 @@ export default function Header() {
                   className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize"
                   onClick={() => {
                     setIsMenuOpen(false);
-                    router.push('/about/requirements');
                   }}
                 >
                   Requirements
@@ -349,7 +328,6 @@ export default function Header() {
                   className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
                   onClick={() => {
                     setIsMenuOpen(false);
-                    router.push('/properties');
                   }}
                 >
                   Properties
@@ -359,7 +337,6 @@ export default function Header() {
                   className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
                   onClick={() => {
                     setIsMenuOpen(false);
-                    router.push('/property-designs');
                   }}
                 >
                   Designs
@@ -369,7 +346,6 @@ export default function Header() {
                   className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
                   onClick={() => {
                     setIsMenuOpen(false);
-                    router.push('/how-to-own');
                   }}
                 >
                   How to own
@@ -379,7 +355,6 @@ export default function Header() {
                   className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
                   onClick={() => {
                     setIsMenuOpen(false);
-                    router.push('/loan-calculator');
                   }}
                 >
                   Calculator
@@ -389,7 +364,6 @@ export default function Header() {
                   className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
                   onClick={() => {
                     setIsMenuOpen(false);
-                    router.push('/contact');
                   }}
                 >
                   Contact
