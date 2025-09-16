@@ -70,21 +70,21 @@ const CompetitiveAdvantages = () => {
         </div>
 
         <div className="text-center">
-          <div className="bg-gradient-to-r from-blue-600 to-orange-500 rounded-2xl p-8">
-            <h4 className="text-3xl font-bold mb-4">
+          <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8">
+            <h4 className="text-3xl font-bold mb-4 text-white">
               Ready to Experience the Difference?
             </h4>
-            <p className="text-xl mb-6 text-blue-100">
+            <p className="text-xl mb-6 text-white/90">
               Join thousands of satisfied homeowners who have turned their dreams into reality with Promitto.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/customer-journey">
-                <button className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+                <button className="bg-white text-primary px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
                   Start Your Project
                 </button>
               </Link>
               <Link href="/how-to-own">
-                <button className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+                <button className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-primary transition-colors">
                   View Our Portfolio
                 </button>
               </Link>

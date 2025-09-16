@@ -16,6 +16,8 @@ interface Property {
   bedrooms: number;
   bathrooms: number;
   mainImage?: string;
+  images?: string[];
+  featuredImage?: string;
   status: 'completed' | 'ongoing';
   type: 'House' | 'Apartment' | 'Villa' | 'Commercial';
   area?: string;
@@ -64,6 +66,8 @@ function PropertiesContent() {
         bedrooms: property.bedrooms,
         bathrooms: property.bathrooms,
         mainImage: property.featuredImage || (property.images && property.images[0]) || '/images/placeholder.png',
+        images: property.images || [],
+        featuredImage: property.featuredImage,
         status: property.property_statuses?.name || 'completed',
         type: property.property_types?.name || 'House',
         area: property.area,
@@ -363,17 +367,19 @@ function PropertiesContent() {
             </div>
 
             {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[1, 2, 3, 4, 5, 6].map((_, index) => (
                   <PropertyCard key={index} property={null} />
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredProperties.map((property) => (
-                  <div key={property.id} onClick={() => handlePropertyClick(property.id)} className="cursor-pointer">
-                    <PropertyCard property={property} />
-                  </div>
+                  <PropertyCard 
+                    key={property.id} 
+                    property={property} 
+                    onPropertyClick={() => handlePropertyClick(property.id)}
+                  />
                 ))}
               </div>
             )}

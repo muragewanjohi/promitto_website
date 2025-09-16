@@ -25,22 +25,21 @@ interface Property {
 
 interface PropertyCardProps {
   property: Property | null;
+  onPropertyClick?: () => void;
 }
 
-const PropertyCard = ({ property }: PropertyCardProps) => {
+const PropertyCard = ({ property, onPropertyClick }: PropertyCardProps) => {
   const router = useRouter();
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  // Force display of first image only
-  const displayImageIndex = 0;
   const [isHovering, setIsHovering] = useState(false);
   const [autoSlideInterval, setAutoSlideInterval] = useState<NodeJS.Timeout | null>(null);
 
   if (!property) {
     return (
-      <div className="bg-white rounded-3xl shadow-lg p-6 animate-pulse border border-gray-100">
-        <div className="bg-gray-200 h-72 rounded-2xl mb-4"></div>
+      <div className="bg-white rounded-xl shadow-lg p-6 animate-pulse border border-gray-100">
+        <div className="bg-gray-200 h-72 rounded-lg mb-4"></div>
         <div className="bg-gray-200 h-5 rounded-lg mb-3"></div>
         <div className="bg-gray-200 h-4 rounded-lg w-3/4 mb-2"></div>
         <div className="bg-gray-200 h-4 rounded-lg w-1/2 mb-4"></div>
@@ -78,32 +77,44 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
     return allImages;
   }, [featuredImage, mainImage, images, id]);
 
-  // Auto-slide functionality disabled
-  // useEffect(() => {
-  //   if (imageArray.length > 1 && !isHovering) {
-  //     const interval = setInterval(() => {
-  //       setCurrentImageIndex((prev) => (prev + 1) % imageArray.length);
-  //     }, 4000);
-  //     setAutoSlideInterval(interval);
-  //     return () => clearInterval(interval);
-  //   } else if (autoSlideInterval) {
-  //     clearInterval(autoSlideInterval);
-  //     setAutoSlideInterval(null);
-  //   }
-  // }, [imageArray.length, isHovering, autoSlideInterval]);
+  // Auto-slide functionality
+  useEffect(() => {
+    if (imageArray.length > 1 && !isHovering) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % imageArray.length);
+      }, 4000);
+      setAutoSlideInterval(interval);
+      return () => clearInterval(interval);
+    } else if (autoSlideInterval) {
+      clearInterval(autoSlideInterval);
+      setAutoSlideInterval(null);
+    }
+  }, [imageArray.length, isHovering]);
+
+  // Cleanup interval on unmount
+  useEffect(() => {
+    return () => {
+      if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+      }
+    };
+  }, []);
 
   // Navigation functions
   const nextImage = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setCurrentImageIndex((prev) => (prev + 1) % imageArray.length);
   };
 
   const prevImage = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setCurrentImageIndex((prev) => (prev - 1 + imageArray.length) % imageArray.length);
   };
 
   const goToImage = (index: number, e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setCurrentImageIndex(index);
   };
@@ -193,24 +204,28 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
 
   return (
     <div 
-      className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] group cursor-pointer"
+      className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] group cursor-pointer"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        router.push(`/properties/${id}`);
+        if (onPropertyClick) {
+          onPropertyClick();
+        } else {
+          router.push(`/properties/${id}`);
+        }
       }}
     >
       {/* Enhanced Image Slider Section */}
-      <div className="relative h-72 overflow-hidden">
+      <div className="relative h-72 overflow-hidden isolate">
         {!imageError ? (
           <>
             {/* Main Image Display */}
             <div className="relative h-full w-full">
               <Image
-                src={imageArray[displayImageIndex]}
-                alt={`${name} - Main Image`}
+                src={imageArray[currentImageIndex]}
+                alt={`${name} - Image ${currentImageIndex + 1}`}
                 fill
                 className="object-cover transition-all duration-700 ease-in-out transform group-hover:scale-110"
                 onError={() => setImageError(true)}
@@ -223,12 +238,12 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
               <div className="absolute inset-0 bg-gradient-to-br from-[#1E40AF]/20 via-transparent to-[#F59E0B]/20"></div>
             </div>
 
-            {/* Navigation Arrows - Disabled */}
-            {/* {imageArray.length > 1 && (
+            {/* Navigation Arrows */}
+            {imageArray.length > 1 && (
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 shadow-lg backdrop-blur-sm"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 shadow-lg backdrop-blur-sm pointer-events-none group-hover:pointer-events-auto"
                 >
                   <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -236,18 +251,18 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 shadow-lg backdrop-blur-sm"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110 shadow-lg backdrop-blur-sm pointer-events-none group-hover:pointer-events-auto"
                 >
                   <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
               </>
-            )} */}
+            )}
 
-            {/* Image Indicators - Disabled */}
-            {/* {imageArray.length > 1 && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+            {/* Image Indicators */}
+            {imageArray.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 pointer-events-none group-hover:pointer-events-auto">
                 {imageArray.map((_, index) => (
                   <button
                     key={index}
@@ -260,16 +275,16 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
                   />
                 ))}
               </div>
-            )} */}
+            )}
 
-            {/* Image Counter - Disabled */}
-            {/* {imageArray.length > 1 && (
-              <div className="absolute top-4 left-4">
+            {/* Image Counter */}
+            {imageArray.length > 1 && (
+              <div className="absolute top-4 left-4 z-0">
                 <span className="px-2 py-1 rounded-full text-xs font-medium bg-black/50 text-white backdrop-blur-sm">
                   {currentImageIndex + 1} / {imageArray.length}
                 </span>
               </div>
-            )} */}
+            )}
           </>
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#1E40AF]/20 via-gray-100 to-[#F59E0B]/20 flex items-center justify-center">
@@ -321,8 +336,8 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
         {/* Location with enhanced styling */}
         {location && (
           <div className="flex items-center text-gray-600 text-xs">
-            <div className="w-6 h-6 bg-[#F59E0B]/10 rounded-full flex items-center justify-center mr-2">
-              <svg className="w-3 h-3 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-6 h-6 bg-[#D97706]/10 rounded-full flex items-center justify-center mr-2">
+              <svg className="w-3 h-3 text-[#D97706]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
@@ -352,11 +367,11 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             </div>
           )}
           {bathrooms && (
-            <div className="flex items-center bg-gradient-to-r from-[#F59E0B]/10 to-[#F59E0B]/5 px-2 py-1.5 rounded-lg">
-              <svg className="w-3 h-3 text-[#F59E0B] mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-center bg-gradient-to-r from-[#D97706]/10 to-[#D97706]/5 px-2 py-1.5 rounded-lg">
+              <svg className="w-3 h-3 text-[#D97706] mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M20 10v11" />
               </svg>
-              <span className="text-xs font-semibold text-[#F59E0B]">
+              <span className="text-xs font-semibold text-[#D97706]">
                 {bathrooms} Bath{bathrooms > 1 ? 's' : ''}
               </span>
             </div>
@@ -377,7 +392,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             <div className="grid grid-cols-1 gap-1.5">
               {features.slice(0, 3).map((feature, index) => (
                 <div key={index} className="flex items-center text-xs text-gray-700 bg-gray-50 px-2 py-1.5 rounded-md">
-                  <div className="w-1.5 h-1.5 bg-[#F59E0B] rounded-full mr-2 flex-shrink-0"></div>
+                  <div className="w-1.5 h-1.5 bg-[#D97706] rounded-full mr-2 flex-shrink-0"></div>
                   <span className="font-medium">{feature}</span>
                 </div>
               ))}
@@ -390,26 +405,42 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
           </div>
         )}
 
-        {/* Enhanced Action Button */}
-        <button 
-          onClick={handleViewDetails}
-          disabled={isLoading}
-          className="w-full bg-gradient-to-r from-[#1E40AF] via-[#1E40AF] to-[#1E3A8A] text-white py-3 px-4 rounded-xl font-semibold hover:from-[#1E3A8A] hover:to-[#1E40AF] transition-all duration-300 flex items-center justify-center group disabled:opacity-75 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm"
-        >
-          {isLoading ? (
-            <>
-              <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
-              <span>Loading...</span>
-            </>
-          ) : (
-            <>
-              <span>View Property Details</span>
-              <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </>
-          )}
-        </button>
+        {/* Action Buttons */}
+        <div className="space-y-3">
+          <button 
+            onClick={handleViewDetails}
+            disabled={isLoading}
+            className="w-full bg-gradient-to-r from-[#1E40AF] via-[#1E40AF] to-[#1E3A8A] text-white py-3 px-4 rounded-lg font-semibold hover:from-[#1E3A8A] hover:to-[#1E40AF] transition-all duration-300 flex items-center justify-center group disabled:opacity-75 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm"
+          >
+            {isLoading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
+                <span>Loading...</span>
+              </>
+            ) : (
+              <>
+                <span>View Property Details</span>
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </>
+            )}
+          </button>
+          
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              window.location.href = `/contact?property=${id}`;
+            }}
+            className="w-full bg-gradient-to-r from-primary to-secondary text-white py-3 px-4 rounded-lg font-semibold hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 flex items-center justify-center group shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm"
+          >
+            <span>Inquire About This Project</span>
+            <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   );

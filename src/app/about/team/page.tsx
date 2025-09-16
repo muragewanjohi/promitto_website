@@ -47,7 +47,6 @@ const TeamPage = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { name: 'Jimmy Kagoni', title: 'Chief Executive Officer', img: '/images/board/jimmy-kagoni.png' },
-              { name: 'Innocent Ongeri', title: 'Operations Manager' },
               { name: 'Machira Minyati', title: 'Project Manager' },
               { name: 'Steve Kihara', title: 'Chief Finance Officer' },
               { name: 'Anastaciah Wajohi', title: 'Head of Customer Service' },
@@ -81,17 +80,12 @@ const TeamPage = () => {
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-center mb-12">
-            <span className="inline-block bg-orange-100 p-3 rounded-full mr-3">
-              <svg className="w-8 h-8 text-secondary" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m-4-8h8m-4-4v8m-4-4h8" />
-              </svg>
-            </span>
             <h2 className="text-3xl font-bold text-gray-900">Board Members</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Dr. Olufunso Somorin */}
             <div className="text-center bg-gray-50 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-              <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-orange-200">
+              <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-secondary/30">
                 <Image
                   src="/images/board/olufunso-somorin.png"
                   alt="Dr. Olufunso Somorin"
@@ -104,7 +98,7 @@ const TeamPage = () => {
             </div>
             {/* Mark Muema */}
             <div className="text-center bg-gray-50 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-              <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-orange-200">
+              <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-primary/30">
                 <Image
                   src="/images/board/mark-muema.png"
                   alt="Mark Muema"
@@ -117,7 +111,7 @@ const TeamPage = () => {
             </div>
             {/* Waceke Munene */}
             <div className="text-center bg-gray-50 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-              <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-orange-200">
+              <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-secondary/30">
                 <Image
                   src="/images/board/waceke-munene.png"
                   alt="Waceke Munene"
@@ -130,7 +124,7 @@ const TeamPage = () => {
             </div>
             {/* Jimmy Kagoni */}
             <div className="text-center bg-gray-50 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-              <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-orange-200">
+              <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-primary/30">
                 <Image
                   src="/images/board/jimmy-kagoni.png"
                   alt="Jimmy Kagoni"

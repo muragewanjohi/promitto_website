@@ -127,7 +127,7 @@ const FeaturedDesigns = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div key={i} className="bg-white rounded-xl shadow-lg overflow-hidden">
                 <div className="h-64 bg-gray-200 animate-pulse"></div>
                 <div className="p-6 space-y-4">
                   <div className="h-6 bg-gray-200 rounded animate-pulse"></div>
@@ -184,7 +184,7 @@ const FeaturedDesigns = () => {
         {/* Designs Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {visibleDesigns.map((design) => (
-            <div key={design.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div key={design.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               {/* Image */}
               <div className="relative h-64">
                 <Image

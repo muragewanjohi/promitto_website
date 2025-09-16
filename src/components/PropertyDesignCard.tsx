@@ -68,7 +68,7 @@ export default function PropertyDesignCard({ design }: PropertyDesignCardProps) 
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+    <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
       {/* Image Section */}
       <div className="relative h-64 overflow-hidden">
         {!imageError ? (
@@ -161,7 +161,7 @@ export default function PropertyDesignCard({ design }: PropertyDesignCardProps) 
         {/* Action Button */}
         <button 
           onClick={() => router.push(`/property-designs/${design.id}`)}
-          className="w-full bg-gradient-to-r from-primary to-primary/90 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary/90 hover:to-primary transition-all duration-200 flex items-center justify-center group"
+          className="w-full bg-gradient-to-r from-primary to-primary/90 text-white py-3 px-4 rounded-lg font-semibold hover:from-primary/90 hover:to-primary transition-all duration-200 flex items-center justify-center group"
         >
           <span>View Details</span>
           <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">

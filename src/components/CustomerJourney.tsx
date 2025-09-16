@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { CheckCircle, FileText, Home, Palette, Calculator, Rocket, Hammer, Key } from 'lucide-react';
+import { CheckCircle, Home } from 'lucide-react';
 
 // Custom hook for counting animation
 const useCountUp = (end: number, duration: number = 2000) => {
@@ -66,64 +66,57 @@ const CustomerJourney = () => {
       step: 1,
       title: 'Account Opening',
       description: 'Start your journey by opening an account with us and completing your registration process.',
-      icon: FileText,
-      color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50',
-      borderColor: 'border-blue-200'
+      color: 'from-primary to-primary/90',
+      bgColor: 'bg-primary/5',
+      borderColor: 'border-primary/20'
     },
     {
       step: 2,
       title: 'Site Visit',
       description: 'Our professional team conducts a comprehensive site assessment and feasibility study.',
-      icon: Home,
-      color: 'from-green-500 to-green-600',
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200'
+      color: 'from-primary to-primary/90',
+      bgColor: 'bg-primary/5',
+      borderColor: 'border-primary/20'
     },
     {
       step: 3,
       title: 'Design Discussion',
       description: 'Collaborate with our architects to customize your dream home design and layout.',
-      icon: Palette,
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50',
-      borderColor: 'border-purple-200'
+      color: 'from-primary to-primary/90',
+      bgColor: 'bg-primary/5',
+      borderColor: 'border-primary/20'
     },
     {
       step: 4,
       title: 'Bill of Quantity',
       description: 'Detailed cost estimation, material planning, and comprehensive project budgeting.',
-      icon: Calculator,
-      color: 'from-orange-500 to-orange-600',
-      bgColor: 'bg-orange-50',
-      borderColor: 'border-orange-200'
+      color: 'from-primary to-primary/90',
+      bgColor: 'bg-primary/5',
+      borderColor: 'border-primary/20'
     },
     {
       step: 5,
       title: 'Project Mobilization',
       description: 'Site preparation, contractor mobilization, and construction timeline establishment.',
-      icon: Rocket,
-      color: 'from-red-500 to-red-600',
-      bgColor: 'bg-red-50',
-      borderColor: 'border-red-200'
+      color: 'from-primary to-primary/90',
+      bgColor: 'bg-primary/5',
+      borderColor: 'border-primary/20'
     },
     {
       step: 6,
       title: 'Project Implementation',
       description: 'Professional construction work begins with quality assurance and progress monitoring.',
-      icon: Hammer,
-      color: 'from-indigo-500 to-indigo-600',
-      bgColor: 'bg-indigo-50',
-      borderColor: 'border-indigo-200'
+      color: 'from-primary to-primary/90',
+      bgColor: 'bg-primary/5',
+      borderColor: 'border-primary/20'
     },
     {
       step: 7,
       title: 'Project Handover',
       description: 'Final inspection, quality checks, and handover of your completed dream home.',
-      icon: Key,
-      color: 'from-emerald-500 to-emerald-600',
-      bgColor: 'bg-emerald-50',
-      borderColor: 'border-emerald-200'
+      color: 'from-primary to-primary/90',
+      bgColor: 'bg-primary/5',
+      borderColor: 'border-primary/20'
     }
   ];
 
@@ -156,22 +149,16 @@ const CustomerJourney = () => {
         {/* Grid Layout Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {steps.map((step, index) => {
-            const IconComponent = step.icon;
             return (
               <div
                 key={index}
-                className={`group relative rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 ${step.bgColor} ${
+                className={`group relative rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border ${step.borderColor} ${step.bgColor} ${
                   step.step === 1 ? 'lg:col-span-2' : ''
                 }`}
               >
                 {/* Step Number */}
-                <div className={`absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-r ${step.color} rounded-full flex items-center justify-center shadow-lg`}>
-                  <span className="text-white font-bold text-lg">{step.step}</span>
-                </div>
-
-                {/* Icon */}
-                <div className={`w-16 h-16 bg-gradient-to-r ${step.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                  <IconComponent className="w-8 h-8 text-white" />
+                <div className={`w-16 h-16 bg-gradient-to-r ${step.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                  <span className="text-white font-bold text-xl">{step.step}</span>
                 </div>
 
                 {/* Content */}

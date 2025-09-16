@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Montserrat } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/contexts/AuthContext';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -8,9 +8,10 @@ import WhatsAppChat from '@/components/WhatsAppChat';
 import FloatingCalculator from '@/components/FloatingCalculator';
 import FloatingGetStarted from '@/components/FloatingGetStarted';
 
-const montserrat = Montserrat({ 
+const inter = Inter({ 
   subsets: ['latin'],
-  variable: '--font-montserrat',
+  variable: '--font-inter',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -25,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body className={inter.className}>
         <AuthProvider>
           {children}
           <ClientWrapper>
