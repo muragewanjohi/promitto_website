@@ -6,8 +6,16 @@ import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import BoardMemberModal from '../../../components/BoardMemberModal';
 
+interface BoardMember {
+  name: string;
+  title: string;
+  image: string;
+  about: string;
+  careerHistory: string;
+}
+
 const TeamPage = () => {
-  const [selectedMember, setSelectedMember] = useState(null);
+  const [selectedMember, setSelectedMember] = useState<BoardMember | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const boardMembers = [
@@ -41,7 +49,7 @@ const TeamPage = () => {
     }
   ];
 
-  const handleMemberClick = (member) => {
+  const handleMemberClick = (member: BoardMember) => {
     setSelectedMember(member);
     setIsModalOpen(true);
   };
