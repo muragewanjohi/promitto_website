@@ -90,9 +90,9 @@ const Testimonials = () => {
   ];
 
   const communityMetrics = [
-    { number: 60, label: 'Homes Built', suffix: '+' },
-    { number: 100, label: 'Satisfaction Rate', suffix: '%' },
-    { number: 15, label: 'Years Experience', suffix: '+' }
+    { number: 400, label: 'Homes Built', suffix: '+' },
+    { number: 400, label: 'Happy Clients', suffix: '+' },
+    { number: 100, label: 'Approval Rate', suffix: '%' }
   ];
 
   const renderStars = (rating: number) => {
@@ -118,7 +118,7 @@ const Testimonials = () => {
             Join Our Growing Community of Happy Homeowners
           </h3>
           <p className="text-lg mb-6 opacity-90">
-            Over 100 families have trusted us with their dream homes. Will you be next?
+            Over 3,000 families have trusted us with their dream homes. Will you be next?
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             {communityMetrics.map((metric, index) => {

@@ -410,7 +410,7 @@ const PropertyCard = ({ property, onPropertyClick }: PropertyCardProps) => {
           <button 
             onClick={handleViewDetails}
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-[#1E40AF] via-[#1E40AF] to-[#1E3A8A] text-white py-3 px-4 rounded-lg font-semibold hover:from-[#1E3A8A] hover:to-[#1E40AF] transition-all duration-300 flex items-center justify-center group disabled:opacity-75 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm"
+            className="w-full bg-white border-2 border-primary text-primary py-3 px-4 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center group disabled:opacity-75 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm"
           >
             {isLoading ? (
               <>

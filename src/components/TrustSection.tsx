@@ -63,12 +63,12 @@ const useCountUp = (end: number, duration: number = 2000) => {
 const TrustSection = () => {
   const trustMetrics = [
     {
-      number: 100,
+      number: 400,
       label: 'Homes Built',
       description: 'Successfully completed projects'
     },
     {
-      number: 100,
+      number: 400,
       label: 'Happy Clients',
       description: 'Satisfied homeowners'
     },
@@ -78,7 +78,7 @@ const TrustSection = () => {
       description: 'Industry expertise'
     },
     {
-      number: 95,
+      number: 100,
       label: 'Approval Rate',
       description: 'Loan application success'
     }

@@ -42,11 +42,7 @@ const OfficesPage = () => {
       <section className="py-20 bg-gradient-to-r from-secondary/5 to-primary/5">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full mr-4 shadow-lg">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
+            
             <h2 className="text-3xl font-bold text-gray-900">Our Global Presence</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-16 items-center">

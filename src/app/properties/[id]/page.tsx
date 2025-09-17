@@ -91,7 +91,7 @@ function ImageSlider({ images, propertyName }: { images: string[], propertyName:
 
           {/* Gradient Overlays */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1E40AF]/10 via-transparent to-[#F59E0B]/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10"></div>
 
           {/* Navigation Arrows */}
           {images.length > 1 && (
@@ -160,7 +160,7 @@ function ImageSlider({ images, propertyName }: { images: string[], propertyName:
               onClick={() => goToImage(index)}
               className={`relative flex-shrink-0 w-24 h-16 rounded-xl overflow-hidden transition-all duration-200 ${
                 index === currentIndex 
-                  ? 'ring-4 ring-[#1E40AF] scale-105' 
+                  ? 'ring-4 ring-primary scale-105' 
                   : 'opacity-70 hover:opacity-100'
               }`}
             >
@@ -280,22 +280,22 @@ function InquiryCard({ propertyId, propertyName }: { propertyId: string, propert
 
   if (!user) {
     return (
-      <div className="bg-gradient-to-br from-[#1E40AF]/5 via-blue-50 to-[#F59E0B]/5 border border-blue-200/50 rounded-3xl p-8 shadow-xl backdrop-blur-sm mb-8">
+      <div className="bg-gradient-to-br from-primary/5 via-blue-50 to-secondary/5 border border-blue-200/50 rounded-3xl p-8 shadow-xl backdrop-blur-sm mb-8">
         <div className="flex items-center mb-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-[#1E40AF] to-[#1E3A8A] rounded-2xl flex items-center justify-center mr-4">
+          <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center mr-4">
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-[#1E40AF] mb-1">Interested in a Similar Design?</h3>
-            <p className="text-[#F59E0B] font-medium">Let's build your dream home</p>
+            <h3 className="text-2xl font-bold text-primary mb-1">Interested in a Similar Design?</h3>
+            <p className="text-secondary font-medium">Let's build your dream home</p>
           </div>
         </div>
         <p className="mb-6 text-gray-700 leading-relaxed">Start your journey to owning a similar house design. Learn more about the process and get started with our personalized consultation.</p>
         <div className="flex flex-col sm:flex-row gap-4">
           <Link href="/customer-journey">
-            <span className="inline-flex items-center justify-center bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white font-bold px-8 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+            <span className="inline-flex items-center justify-center bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg">
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -303,7 +303,7 @@ function InquiryCard({ propertyId, propertyName }: { propertyId: string, propert
             </span>
           </Link>
           <Link href="/auth/login">
-            <span className="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-[#1E40AF] font-semibold px-8 py-4 rounded-2xl transition-all duration-300 border-2 border-[#1E40AF]/20 hover:border-[#1E40AF]/40">
+            <span className="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-primary font-semibold px-8 py-4 rounded-2xl transition-all duration-300 border-2 border-primary/20 hover:border-primary/40">
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
               </svg>
@@ -316,20 +316,20 @@ function InquiryCard({ propertyId, propertyName }: { propertyId: string, propert
   }
 
   return (
-    <div className="bg-gradient-to-br from-[#1E40AF]/5 via-blue-50 to-[#F59E0B]/5 border border-blue-200/50 rounded-3xl p-8 shadow-xl backdrop-blur-sm mb-8">
+    <div className="bg-gradient-to-br from-primary/5 via-blue-50 to-secondary/5 border border-blue-200/50 rounded-3xl p-8 shadow-xl backdrop-blur-sm mb-8">
       <div className="flex items-center mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-[#1E40AF] to-[#1E3A8A] rounded-2xl flex items-center justify-center mr-4">
+        <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center mr-4">
           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
           </svg>
         </div>
         <div>
-          <h3 className="text-2xl font-bold text-[#1E40AF] mb-1">Interested in a Similar Design?</h3>
-          <p className="text-[#F59E0B] font-medium">Let's discuss your dream home project</p>
+          <h3 className="text-2xl font-bold text-primary mb-1">Interested in a Similar Design?</h3>
+          <p className="text-secondary font-medium">Let's discuss your dream home project</p>
         </div>
       </div>
       <p className="mb-6 text-gray-700 leading-relaxed">
-        Tell us about your interest in <span className="font-bold text-[#1E40AF]">{propertyName}</span>. 
+        Tell us about your interest in <span className="font-bold text-primary">{propertyName}</span>. 
         Our team will get in touch to discuss your needs, timeline, and how we can bring your vision to life.
       </p>
       
@@ -345,7 +345,7 @@ function InquiryCard({ propertyId, propertyName }: { propertyId: string, propert
               </div>
               <input
                 type="tel"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent transition-all duration-200"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
                 placeholder="+254 700 000 000"
                 value={phone}
                 onChange={e => setPhone(e.target.value)}
@@ -375,7 +375,7 @@ function InquiryCard({ propertyId, propertyName }: { propertyId: string, propert
         <div>
           <label className="block text-sm font-bold text-gray-700 mb-2">Tell us about your project (optional)</label>
           <textarea
-            className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent transition-all duration-200 resize-none"
+            className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 resize-none"
             rows={4}
             placeholder="Share details about your plot size, budget range, timeline, or any specific requirements..."
             value={message}
@@ -387,7 +387,7 @@ function InquiryCard({ propertyId, propertyName }: { propertyId: string, propert
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 bg-gradient-to-r from-[#1E40AF] to-[#1E3A8A] hover:from-[#1E3A8A] hover:to-[#1E40AF] text-white font-bold px-8 py-4 rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 shadow-lg flex items-center justify-center"
+            className="flex-1 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 shadow-lg flex items-center justify-center"
           >
             {loading ? (
               <>
@@ -510,7 +510,7 @@ export default function PropertyPage({ params }: PropertyPageProps) {
             </svg>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Property Not Found</h1>
             <p className="text-gray-600 mb-6">{error || 'The property you are looking for does not exist.'}</p>
-            <Link href="/properties" className="inline-flex items-center bg-[#1E40AF] hover:bg-[#1E3A8A] text-white px-6 py-3 rounded-xl font-medium transition-colors duration-200">
+            <Link href="/properties" className="inline-flex items-center bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-medium transition-colors duration-200">
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
@@ -542,11 +542,11 @@ export default function PropertyPage({ params }: PropertyPageProps) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
             {/* Breadcrumb Navigation */}
             <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-8">
-              <Link href="/" className="hover:text-[#1E40AF] transition-colors">Home</Link>
+              <Link href="/" className="hover:text-primary transition-colors">Home</Link>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
-              <Link href="/properties" className="hover:text-[#1E40AF] transition-colors">Properties</Link>
+              <Link href="/properties" className="hover:text-primary transition-colors">Properties</Link>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -561,8 +561,8 @@ export default function PropertyPage({ params }: PropertyPageProps) {
                   
                   {/* Location */}
                   <div className="flex items-center text-lg text-gray-600 mb-6">
-                    <div className="w-8 h-8 bg-[#F59E0B]/10 rounded-full flex items-center justify-center mr-3">
-                      <svg className="w-4 h-4 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-8 h-8 bg-secondary/10 rounded-full flex items-center justify-center mr-3">
+                      <svg className="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
@@ -582,12 +582,12 @@ export default function PropertyPage({ params }: PropertyPageProps) {
                       </span>
                     )}
                     {(property.property_types?.name || property.type) && (
-                      <span className="px-4 py-2 rounded-full text-sm font-semibold bg-[#1E40AF]/10 text-[#1E40AF]">
+                      <span className="px-4 py-2 rounded-full text-sm font-semibold bg-primary/10 text-primary">
                         {property.property_types?.name || property.type}
                       </span>
                     )}
                     {(property.roof_types?.name || property.roofType) && (
-                      <span className="px-4 py-2 rounded-full text-sm font-semibold bg-[#F59E0B]/10 text-[#F59E0B]">
+                      <span className="px-4 py-2 rounded-full text-sm font-semibold bg-secondary/10 text-secondary">
                         {property.roof_types?.name || property.roofType}
                       </span>
                     )}
@@ -598,8 +598,8 @@ export default function PropertyPage({ params }: PropertyPageProps) {
                 <div className="bg-white rounded-3xl shadow-xl p-6 border border-gray-200">
                   <div className="text-center">
                     <p className="text-sm font-medium text-gray-500 mb-2">Starting from</p>
-                    <p className="text-2xl font-bold text-[#1E40AF] mb-4">{formatPrice(property.price)}</p>
-                    <Link href="#inquiry" className="inline-flex items-center bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg text-sm">
+                    <p className="text-2xl font-bold text-primary mb-4">{formatPrice(property.price)}</p>
+                    <Link href="#inquiry" className="inline-flex items-center bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg text-sm">
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                       </svg>
@@ -618,8 +618,8 @@ export default function PropertyPage({ params }: PropertyPageProps) {
               {property.bedrooms && (
                 <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
                   <div className="flex items-center">
-                    <div className="w-10 h-10 bg-[#1E40AF]/10 rounded-xl flex items-center justify-center mr-3">
-                      <svg className="w-5 h-5 text-[#1E40AF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mr-3">
+                      <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 21v-4a2 2 0 012-2h2a2 2 0 012 2v4" />
                       </svg>
@@ -635,8 +635,8 @@ export default function PropertyPage({ params }: PropertyPageProps) {
               {property.bathrooms && (
                 <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
                   <div className="flex items-center">
-                    <div className="w-10 h-10 bg-[#F59E0B]/10 rounded-xl flex items-center justify-center mr-3">
-                      <svg className="w-5 h-5 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-10 h-10 bg-secondary/10 rounded-xl flex items-center justify-center mr-3">
+                      <svg className="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M20 10v11" />
                       </svg>
                     </div>
@@ -689,8 +689,8 @@ export default function PropertyPage({ params }: PropertyPageProps) {
               {/* Description */}
               <div className="lg:col-span-2 bg-white rounded-3xl shadow-xl p-8 border border-gray-200">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <div className="w-8 h-8 bg-[#1E40AF]/10 rounded-xl flex items-center justify-center mr-3">
-                    <svg className="w-4 h-4 text-[#1E40AF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-8 h-8 bg-primary/10 rounded-xl flex items-center justify-center mr-3">
+                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
@@ -714,7 +714,7 @@ export default function PropertyPage({ params }: PropertyPageProps) {
                     <div className="grid md:grid-cols-2 gap-3">
                       {property.features.map((feature: string, index: number) => (
                         <div key={index} className="flex items-center bg-gray-50 p-3 rounded-lg">
-                          <div className="w-1.5 h-1.5 bg-[#F59E0B] rounded-full mr-3 flex-shrink-0"></div>
+                          <div className="w-1.5 h-1.5 bg-secondary rounded-full mr-3 flex-shrink-0"></div>
                           <span className="text-gray-700 text-sm font-medium">{feature}</span>
                         </div>
                       ))}
@@ -726,8 +726,8 @@ export default function PropertyPage({ params }: PropertyPageProps) {
               {/* Contact Information */}
               <div className="bg-white rounded-3xl shadow-xl p-6 border border-gray-200 h-fit">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                  <div className="w-8 h-8 bg-[#F59E0B]/10 rounded-xl flex items-center justify-center mr-3">
-                    <svg className="w-4 h-4 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-8 h-8 bg-secondary/10 rounded-xl flex items-center justify-center mr-3">
+                    <svg className="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                   </div>
@@ -748,7 +748,7 @@ export default function PropertyPage({ params }: PropertyPageProps) {
                   </a>
 
                   <a href="mailto:info@promitto.com" className="flex items-center p-3 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors duration-200 group">
-                    <div className="w-10 h-10 bg-[#1E40AF] rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                    <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>

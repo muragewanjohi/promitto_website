@@ -299,7 +299,7 @@ const CustomerJourney = () => {
         {/* Success Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
           {(() => {
-            const successRate = useCountUp(95, 2500);
+            const successRate = useCountUp(100, 2500);
             const homesDelivered = useCountUp(60, 2500);
             
             return (
@@ -316,7 +316,7 @@ const CustomerJourney = () => {
                     <Home className="w-8 h-8 text-white" />
                   </div>
                   <h4 className="text-2xl font-bold text-gray-900 mb-2">{homesDelivered.count}+</h4>
-                  <p className="text-gray-600">Homes Delivered</p>
+                  <p className="text-gray-600">Homes Delivered Per Year</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">

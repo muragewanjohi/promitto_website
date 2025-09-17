@@ -3,10 +3,10 @@ import React from 'react';
 const ProductPackages = () => {
   const packages = [
     {
-      title: 'Residential/Commercial Package',
+      title: 'Residential/Commercial',
       description: 'We fund the construction of both residential and commercial/rental projects',
       features: [
-        'Up to 70% funding of total project cost',
+        'Up to 70% funding of project cost',
         '1-7 years repayment period',
         '12% interest rate per annum',
         'Comprehensive construction services',
@@ -109,9 +109,10 @@ const ProductPackages = () => {
             <p className="text-gray-600 mb-6">
               Our team of experts is here to help you choose the perfect solution for your construction needs.
             </p>
-            <button className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors">
+            <button className="bg-gradient-to-r from-primary to-secondary text-white py-3 px-8 rounded-lg font-semibold hover:opacity-90 transition-opacity">
               Speak to an Expert
             </button>
+          
           </div>
         </div>
       </div>
