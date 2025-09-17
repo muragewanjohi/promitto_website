@@ -45,8 +45,8 @@ export default function RootLayout({
         <AuthProvider>
           {children}
           <ClientWrapper>
-            <ScrollToTop />
             <WhatsAppChat />
+            <ScrollToTop />
             <FloatingCalculator />
             <FloatingGetStarted />
           </ClientWrapper>
