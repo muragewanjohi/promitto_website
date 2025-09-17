@@ -24,9 +24,12 @@ const OfficesPage = () => {
         <div className="relative z-10 h-full flex items-end pb-5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                Our Offices
-              </h1>
+              <div className="flex items-center mb-4">
+                <div className="w-1 h-16 bg-secondary mr-6"></div>
+                <h1 className="text-4xl md:text-5xl font-bold text-white">
+                  Our Offices
+                </h1>
+              </div>
               <p className="text-xl text-white font-medium leading-relaxed">
                 Serving East and Southern Africa with strategic locations
               </p>
@@ -59,7 +62,7 @@ const OfficesPage = () => {
                     <div>
                       <h4 className="font-bold text-gray-900 text-lg mb-2">Kenya - Main Office</h4>
                       <p className="text-gray-600 mb-1"> Nairobi, Loita street, Pension Towers, Floor M2</p>
-                      <p className="text-primary font-semibold">+254 729 506 506</p>
+                      <p className="text-secondary font-semibold">+254 729 506 506</p>
                       <p className="text-gray-600 text-sm mt-2">Email: info@promittoltd.com</p>
                     </div>
                   </div>
@@ -94,33 +97,29 @@ const OfficesPage = () => {
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center justify-center mb-8">
-            <span className="inline-block bg-blue-100 p-3 rounded-full mr-3">
-              <svg className="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M16 2a2 2 0 012 2v16a2 2 0 01-2 2H8a2 2 0 01-2-2V4a2 2 0 012-2h8zm-4 18v-2m0-4v-4m0-4V4" />
-              </svg>
-            </span>
+            
             <h3 className="text-3xl font-bold text-gray-900">Contact Information</h3>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-gray-50 rounded-xl p-6">
               <h4 className="text-xl font-bold text-primary mb-4 flex items-center">
-                <span className="mr-2">🇰🇪</span>Main Office (Kenya)
+                <span className="mr-2 text-primary">🏢</span>Main Office (Kenya)
               </h4>
               <ul className="text-gray-700 space-y-3">
                 <li className="flex items-center">
-                  <span className="mr-3">📞</span>
+                  <span className="mr-3 text-primary">📞</span>
                   <span className="font-semibold">Phone:</span> +254 729 506 506
                 </li>
                 <li className="flex items-center">
-                  <span className="mr-3">✉️</span>
+                  <span className="mr-3 text-primary">✉️</span>
                   <span className="font-semibold">Email:</span> info@promittoltd.com
                 </li>
                 <li className="flex items-center">
-                  <span className="mr-3">🏢</span>
+                  <span className="mr-3 text-primary">🏢</span>
                   <span className="font-semibold">Office:</span> Nairobi, Loita street, Pension Towers, Floor M2
                 </li>
                 <li className="flex items-center">
-                  <span className="mr-3">🌐</span>
+                  <span className="mr-3 text-primary">🌐</span>
                   <span className="font-semibold">Website:</span> 
                   <a href="http://www.promittoltd.com" className="text-primary underline ml-1">www.promittoltd.com</a>
                 </li>
@@ -128,23 +127,23 @@ const OfficesPage = () => {
             </div>
             <div className="bg-gray-50 rounded-xl p-6">
               <h4 className="text-xl font-bold text-secondary mb-4 flex items-center">
-                <span className="mr-2">🇿🇲</span>Zambia Branch
+                <span className="mr-2 text-secondary">🏢</span>Zambia Branch
               </h4>
               <ul className="text-gray-700 space-y-3">
                 <li className="flex items-center">
-                  <span className="mr-3">📞</span>
+                  <span className="mr-3 text-secondary">📞</span>
                   <span className="font-semibold">Phone:</span> +260 775 604 455
                 </li>
                 <li className="flex items-center">
-                  <span className="mr-3">✉️</span>
+                  <span className="mr-3 text-secondary">✉️</span>
                   <span className="font-semibold">Email:</span> info@promittoltd.com
                 </li>
                 <li className="flex items-center">
-                  <span className="mr-3">🏢</span>
+                  <span className="mr-3 text-secondary">🏢</span>
                   <span className="font-semibold">Office:</span> Lusaka, Chindo Rd, Woodlands shopping mall, 1st floor
                 </li>
                 <li className="flex items-center">
-                  <span className="mr-3">🌐</span>
+                  <span className="mr-3 text-secondary">🌐</span>
                   <span className="font-semibold">Website:</span> 
                   <a href="http://www.promittoltd.com" className="text-secondary underline ml-1">www.promittoltd.com</a>
                 </li>

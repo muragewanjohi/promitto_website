@@ -17,6 +17,21 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Promitto - Your Dream Home Awaits',
   description: 'Find your perfect home with Promitto. Browse properties, calculate loans, and make your dream home a reality.',
+  icons: {
+    icon: [
+      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon/favicon.ico', sizes: 'any' }
+    ],
+    apple: [
+      { url: '/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+    ],
+    other: [
+      { url: '/favicon/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' }
+    ]
+  },
+  manifest: '/favicon/site.webmanifest'
 };
 
 export default function RootLayout({

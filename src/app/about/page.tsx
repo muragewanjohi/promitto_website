@@ -42,6 +42,12 @@ const AboutUs = () => {
                 </div>
                 
                                  <div className="space-y-4">
+                  <div className="flex items-center">
+                    <div className="w-1 h-16 bg-secondary mr-6"></div>
+                    <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight">
+                      About Us
+                    </h1>
+                  </div>
                    <p className="text-xl md:text-2xl text-white font-medium leading-relaxed max-w-2xl">
                      Delivering the promise of homeownership through innovative construction financing and comprehensive project management.
                    </p>

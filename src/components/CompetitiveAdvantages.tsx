@@ -7,29 +7,29 @@ const CompetitiveAdvantages = () => {
       title: 'Affordable Construction Financing',
       description: 'We provide construction loans covering 70% of project costs, enabling clients to build homes with minimal upfront investment, addressing financial barriers in homeownership.',
       icon: '💳',
-      color: 'bg-blue-500',
-      gradient: 'from-blue-500 to-blue-600'
+      color: 'bg-gray-500',
+      gradient: 'from-gray-500 to-gray-600'
     },
     {
       title: 'Comprehensive Construction Services',
       description: 'We offer comprehensive construction services beyond financing, ensuring quality and consistency throughout the building process.',
       icon: '🏗️',
-      color: 'bg-green-500',
-      gradient: 'from-green-500 to-green-600'
+      color: 'bg-gray-500',
+      gradient: 'from-gray-500 to-gray-600'
     },
     {
       title: 'Client-Centric Approach',
       description: 'We enhance customer satisfaction by tailoring projects to individual preferences by allowing clients to select their preferred features.',
       icon: '👥',
-      color: 'bg-purple-500',
-      gradient: 'from-purple-500 to-purple-600'
+      color: 'bg-gray-500',
+      gradient: 'from-gray-500 to-gray-600'
     },
     {
       title: 'Strategic Partnerships',
       description: 'Our partnerships with suppliers and contractors enable us to provide competitive pricing and maintain high standards in materials and workmanship.',
       icon: '🤝',
-      color: 'bg-orange-500',
-      gradient: 'from-orange-500 to-orange-600'
+      color: 'bg-gray-500',
+      gradient: 'from-gray-500 to-gray-600'
     }
   ];
 

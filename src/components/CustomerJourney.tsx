@@ -300,31 +300,31 @@ const CustomerJourney = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
           {(() => {
             const successRate = useCountUp(95, 2500);
-            const homesDelivered = useCountUp(50, 2500);
+            const homesDelivered = useCountUp(60, 2500);
             
             return (
               <>
                 <div className="text-center" ref={successRate.ref}>
-                  <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                     <CheckCircle className="w-8 h-8 text-white" />
                   </div>
                   <h4 className="text-2xl font-bold text-gray-900 mb-2">{successRate.count}%</h4>
                   <p className="text-gray-600">Success Rate</p>
                 </div>
                 <div className="text-center" ref={homesDelivered.ref}>
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                     <Home className="w-8 h-8 text-white" />
                   </div>
                   <h4 className="text-2xl font-bold text-gray-900 mb-2">{homesDelivered.count}+</h4>
                   <p className="text-gray-600">Homes Delivered</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h4 className="text-2xl font-bold text-gray-900 mb-2">6-12</h4>
+                  <h4 className="text-2xl font-bold text-gray-900 mb-2">4-6</h4>
                   <p className="text-gray-600">Months Average</p>
                 </div>
               </>

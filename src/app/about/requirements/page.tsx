@@ -24,9 +24,12 @@ const RequirementsPage = () => {
         <div className="relative z-10 h-full flex items-end pb-5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                Registration Requirements
-              </h1>
+              <div className="flex items-center mb-4">
+                <div className="w-1 h-16 bg-secondary mr-6"></div>
+                <h1 className="text-4xl md:text-5xl font-bold text-white">
+                  Registration Requirements
+                </h1>
+              </div>
               <p className="text-xl text-white font-medium leading-relaxed">
                 Everything you need to get started with your construction project
               </p>

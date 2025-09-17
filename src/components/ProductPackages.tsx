@@ -13,7 +13,7 @@ const ProductPackages = () => {
         'Project management included'
       ],
       icon: '🏢',
-      color: 'from-blue-500 to-blue-600',
+      color: 'from-primary to-secondary',
       popular: false
     },
     {
@@ -27,7 +27,7 @@ const ProductPackages = () => {
         'Quality finishing materials'
       ],
       icon: '🔨',
-      color: 'from-orange-500 to-orange-600',
+      color: 'from-primary to-secondary',
       popular: true
     },
     {
@@ -41,7 +41,7 @@ const ProductPackages = () => {
         'Quality materials and workmanship'
       ],
       icon: '🧱',
-      color: 'from-green-500 to-green-600',
+      color: 'from-primary to-secondary',
       popular: false
     }
   ];

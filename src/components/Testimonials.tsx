@@ -90,8 +90,8 @@ const Testimonials = () => {
   ];
 
   const communityMetrics = [
-    { number: 50, label: 'Homes Built', suffix: '+' },
-    { number: 95, label: 'Satisfaction Rate', suffix: '%' },
+    { number: 60, label: 'Homes Built', suffix: '+' },
+    { number: 100, label: 'Satisfaction Rate', suffix: '%' },
     { number: 15, label: 'Years Experience', suffix: '+' }
   ];
 

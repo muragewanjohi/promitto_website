@@ -93,7 +93,7 @@ const HowToOwn = () => {
                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                    </svg>
                  </div>
-                 <span className="text-primary text-4xl md:text-5xl font-black mb-2">95%</span>
+                 <span className="text-primary text-4xl md:text-5xl font-black mb-2">100%</span>
                  <span className="text-gray-800 text-lg md:text-xl font-semibold mb-2">Approval Rate</span>
                  <p className="text-gray-600 text-sm md:text-base">
                    Join thousands of satisfied homeowners who achieved their dreams with Promitto

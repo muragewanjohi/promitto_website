@@ -69,11 +69,11 @@ const KeyStatistics = () => {
       suffix: ''
     },
     {
-      number: 50,
+      number: 60,
       label: 'Homes Constructed Annually',
       icon: '🏗️',
       description: 'By Promitto in Kenya',
-      suffix: ''
+      suffix: '+'
     },
     {
       number: 2000000,

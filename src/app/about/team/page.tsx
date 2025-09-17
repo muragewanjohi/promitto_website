@@ -1,9 +1,56 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import BoardMemberModal from '../../../components/BoardMemberModal';
 
 const TeamPage = () => {
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const boardMembers = [
+    {
+      name: 'Dr. Olufunso Somorin',
+      title: 'Overall Chairman',
+      image: '/images/board/olufunso-somorin.png',
+      about: 'Dr. Olufunso Somorin is a Regional Principal Officer at the African Development Bank.',
+      careerHistory: 'He leads the Bank\'s work on climate change and green growth in the 13 countries of the Bank\'s East African region. This includes supporting countries\' access to climate finance for implementing their climate actions, and mainstreaming climate change in all Bank policies and programs.'
+    },
+    {
+      name: 'Mark Muema',
+      title: 'Chairman, Finance and HR Subcommittee',
+      image: '/images/board/mark-muema.png',
+      about: 'Mark Muema is the CEO of Selfund.',
+      careerHistory: 'Mark employs design thinking to develop economic and financial models that drive growth in the markets we operate in, including global markets. With a Bachelor\'s degree in Economics and Mathematics from Egerton University, he is passionate about applying best practices in economics and financial modeling locally and on an international scale.'
+    },
+    {
+      name: 'Waceke Munene',
+      title: 'IT & Operations Subcommittee',
+      image: '/images/board/waceke-munene.png',
+      about: 'Waceke Munene is a database developer at Apple Inc.',
+      careerHistory: 'She is versatile Business Data Analyst with Over 4 years\' experience in interpreting, analyzing and visualization data to help business make informed data-backed decisions and solutions. She has excellent understanding of business operations & analytics tools such as Tableau Business intelligence solutions (Virtual Studio), Power BI, Microsoft SQL Server, and a host of other analytical tools to help businesses make important decisions that adds value. She is an alumni of JKUAT & Grand Canyon University with Master\'s of Science in Business Analytics.'
+    },
+    {
+      name: 'Jimmy Kagoni',
+      title: 'Secretary to the Board',
+      image: '/images/board/jimmy-kagoni.png',
+      about: 'Jimmy Kagoni is a thought leader in building Africa Home grown solutions.He posses great innovative and analytical skills that enables him to build block by block design thinking strategies.',
+      careerHistory: 'As a former Investment Banker with a Bachelor of Commerce in Finance and pursuing a Masters of business Administration at Strathmore University. He has served as an Investment Banker, Portfolio Manager and Investments Advisor with some of the leading investment banks as well as Stockbridge Investments where he managed Billions of shillings worth of portfolio with clear growth trajectory'
+    }
+  ];
+
+  const handleMemberClick = (member) => {
+    setSelectedMember(member);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedMember(null);
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-secondary/5 font-sans">
       <Header />
@@ -24,9 +71,12 @@ const TeamPage = () => {
         <div className="relative z-10 h-full flex items-end pb-5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                Our Team
-              </h1>
+              <div className="flex items-center mb-4">
+                <div className="w-1 h-16 bg-secondary mr-6"></div>
+                <h1 className="text-4xl md:text-5xl font-bold text-white">
+                  Our Team
+                </h1>
+              </div>
               <p className="text-xl text-white font-medium leading-relaxed">
                 Meet the dedicated professionals behind Promitto's success
               </p>
@@ -35,27 +85,59 @@ const TeamPage = () => {
         </div>
       </section>
 
+      {/* Board Members Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-center mb-12">
+            <h2 className="text-3xl font-bold text-primary">Board Members</h2>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {boardMembers.map((member, idx) => (
+              <div 
+                key={idx}
+                className="text-center bg-gray-50 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105"
+                onClick={() => handleMemberClick(member)}
+              >
+                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <h4 className="text-xl font-bold text-primary mb-2">{member.name}</h4>
+                <p className="text-secondary font-semibold">{member.title}</p>
+                <div className="mt-3 text-sm text-gray-500">
+                  Click to learn more
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Management Team */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-center mb-12">
-            <span className="inline-block bg-purple-100 p-3 rounded-full mr-3">
+            <span className="inline-block bg-secondary/20 p-3 rounded-full mr-3">
               <Image src="/hierarchical-structure_1042060.png" alt="Hierarchical Structure" width={32} height={32} className="w-8 h-8" />
             </span>
-            <h2 className="text-3xl font-bold text-gray-900">Our Management Team</h2>
+            <h2 className="text-3xl font-bold text-primary">Our Management Team</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { name: 'Jimmy Kagoni', title: 'Chief Executive Officer', img: '/images/board/jimmy-kagoni.png' },
-              { name: 'Machira Minyati', title: 'Project Manager' },
-              { name: 'Steve Kihara', title: 'Chief Finance Officer' },
-              { name: 'Anastaciah Wajohi', title: 'Head of Customer Service' },
-              { name: 'David Mwangi', title: 'Risk Manager' },
-              { name: 'Adreen Gichore', title: 'Chief of Staff & Head of Credit Management' },
+              { name: 'Machira Minyati', title: 'Project Manager', img: '/machira.jpg' },
+              { name: 'Steve Kihara', title: 'Chief Finance Officer', img: '/steve.jpeg' },
+              { name: 'Anastaciah Wajohi', title: 'Head of Customer Service', img: '/anastaciah.jpg' },
+              { name: 'David Mwangi', title: 'Risk Manager', img: '/david.png' },
+              { name: 'Adreen Gichore', title: 'Chief of Staff & Head of Credit Management', img: '/adreen.jpeg' },
             ].map((member, idx) => (
               <div key={idx} className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
                 {member.img ? (
-                  <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-4 border-blue-200">
+                  <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden ">
                     <Image
                       src={member.img}
                       alt={member.name}
@@ -68,76 +150,20 @@ const TeamPage = () => {
                     {member.name.split(' ').map(n => n[0]).join('')}
                   </div>
                 )}
-                <h4 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h4>
-                <p className="text-secondary text-base">{member.title}</p>
+                <h4 className="text-xl font-bold text-primary mb-2">{member.name}</h4>
+                <p className="text-secondary font-semibold">{member.title}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Board Members Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">Board Members</h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Dr. Olufunso Somorin */}
-            <div className="text-center bg-gray-50 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-              <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-secondary/30">
-                <Image
-                  src="/images/board/olufunso-somorin.png"
-                  alt="Dr. Olufunso Somorin"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h4 className="text-xl font-bold text-gray-900 mb-2">Dr. Olufunso Somorin</h4>
-              <p className="text-secondary font-semibold">Overall Chairman</p>
-            </div>
-            {/* Mark Muema */}
-            <div className="text-center bg-gray-50 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-              <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-primary/30">
-                <Image
-                  src="/images/board/mark-muema.png"
-                  alt="Mark Muema"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h4 className="text-xl font-bold text-gray-900 mb-2">Mark Muema</h4>
-              <p className="text-secondary font-semibold">Chairman, Finance and HR Subcommittee</p>
-            </div>
-            {/* Waceke Munene */}
-            <div className="text-center bg-gray-50 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-              <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-secondary/30">
-                <Image
-                  src="/images/board/waceke-munene.png"
-                  alt="Waceke Munene"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h4 className="text-xl font-bold text-gray-900 mb-2">Waceke Munene</h4>
-              <p className="text-secondary font-semibold">IT & Operations Subcommittee</p>
-            </div>
-            {/* Jimmy Kagoni */}
-            <div className="text-center bg-gray-50 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-              <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-primary/30">
-                <Image
-                  src="/images/board/jimmy-kagoni.png"
-                  alt="Jimmy Kagoni"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h4 className="text-xl font-bold text-gray-900 mb-2">Jimmy Kagoni</h4>
-              <p className="text-secondary font-semibold">Secretary to the Board</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Board Member Modal */}
+      <BoardMemberModal
+        member={selectedMember}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
 
       <Footer />
     </main>

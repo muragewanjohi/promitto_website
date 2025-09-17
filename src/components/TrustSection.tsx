@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // Custom hook for counting animation
 const useCountUp = (end: number, duration: number = 2000) => {
@@ -83,21 +84,26 @@ const TrustSection = () => {
     }
   ];
 
-  const certifications = [
+  const awards = [
     {
-      name: 'NCA Registered',
-      description: 'National Construction Authority',
-      icon: '🏗️'
+      name: 'East Africa Star Brands 2025-2026',
+      image: '/awards/EastAfricaStarBrands2025-2026.jpeg',
+      description: 'Recognized for excellence in construction financing'
     },
     {
-      name: 'ISO Certified',
-      description: 'Quality Management System',
-      icon: '✅'
+      name: 'Excellence in Real Estate Dynamics',
+      image: '/awards/ExcellenceInRealEstateDynamics.jpeg',
+      description: 'Outstanding performance in real estate sector'
     },
     {
-      name: 'Licensed Builder',
-      description: 'Government Approved',
-      icon: '📋'
+      name: 'Real Estate Mortgage Company of the Year 2023',
+      image: '/awards/RealEstateMorgageCompanyOfTheYear2023.jpeg',
+      description: 'Industry leadership in mortgage solutions'
+    },
+    {
+      name: 'The Real Estate Mortgage Company of the Year 2023',
+      image: '/awards/TheRealEstateMorgageCompanyOfTheYear2023.jpeg',
+      description: 'Premier mortgage company recognition'
     }
   ];
 
@@ -135,26 +141,33 @@ const TrustSection = () => {
           </div>
         </div>
 
-        {/* Certifications & Awards */}
+        {/* Awards & Recognition */}
         <div className="bg-white rounded-2xl shadow-lg p-8">
           <div className="text-center mb-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-2">
-              Certifications & Licenses
+              Awards & Recognition
             </h3>
             <p className="text-gray-600">
-              We maintain the highest standards of quality and compliance
+              Recognized for excellence and industry leadership
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-6">
-            {certifications.map((cert, index) => (
-              <div key={index} className="text-center p-6 bg-gray-50 rounded-xl">
-                <div className="text-4xl mb-3">{cert.icon}</div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                  {cert.name}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {awards.map((award, index) => (
+              <div key={index} className="text-center p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow duration-300 group">
+                <div className="relative w-20 h-20 mx-auto mb-4 rounded-lg overflow-hidden bg-white shadow-md group-hover:scale-105 transition-transform duration-300">
+                  <Image
+                    src={award.image}
+                    alt={award.name}
+                    fill
+                    className="object-contain p-2"
+                  />
+                </div>
+                <h4 className="text-sm font-semibold text-gray-900 mb-2 leading-tight">
+                  {award.name}
                 </h4>
-                <p className="text-gray-600 text-sm">
-                  {cert.description}
+                <p className="text-gray-600 text-xs leading-relaxed">
+                  {award.description}
                 </p>
               </div>
             ))}
