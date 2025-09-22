@@ -55,8 +55,8 @@ export default function Header() {
 
       {/* Navigation Bar */}
       <div className="w-full bg-primary">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex justify-between items-center py-4 text-white font-medium font-sans">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+          <nav className="flex justify-between items-center py-3 sm:py-4 text-white font-medium font-sans">
             {/* Logo */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center" prefetch={false}>
@@ -65,7 +65,7 @@ export default function Header() {
                   alt="Promitto Logo"
                   width={100}
                   height={100}
-                  className="h-16 w-auto"
+                  className="h-12 sm:h-14 lg:h-16 w-auto"
                   priority
                 />
               </Link>
@@ -203,23 +203,23 @@ export default function Header() {
             </div>
             
             {/* Auth Links */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {userProfile?.role === 'admin' && (
                 <Link 
                   href="/admin" 
-                  className="text-base hover:text-secondary font-bold transition-colors capitalize"
+                  className="hidden sm:block text-sm lg:text-base hover:text-secondary font-bold transition-colors capitalize"
                 >
                   Admin
                 </Link>
               )}
               {user ? (
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 sm:space-x-4">
                   <Link 
                     href="/profile" 
-                    className="text-base hover:text-secondary font-bold transition-colors capitalize"
+                    className="text-sm lg:text-base hover:text-secondary font-bold transition-colors capitalize"
                   >
-                    <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
-                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </div>
@@ -229,37 +229,45 @@ export default function Header() {
                       await signOut();
                       router.push('/');
                     }}
-                    className="text-sm bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2 rounded-lg transition-all duration-300 capitalize shadow-lg hover:shadow-xl transform hover:scale-105"
+                    className="text-xs sm:text-sm bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-300 capitalize shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
-                    Log out
+                    <span className="hidden sm:inline">Log out</span>
+                    <span className="sm:hidden">Logout</span>
                   </button>
                 </div>
               ) : (
                 <>
                   <Link 
                     href="/login" 
-                    className="text-base hover:text-secondary transition-colors capitalize"
+                    className="text-sm lg:text-base hover:text-secondary transition-colors capitalize px-2 py-1 rounded hover:bg-white/10 transition-colors"
                   >
                     Login
                   </Link>
                   <Link 
                     href="/signup" 
-                    className="text-sm bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-4 py-2 rounded-lg transition-all duration-300 capitalize shadow-lg hover:shadow-xl transform hover:scale-105"
+                    className="text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-300 capitalize shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
-                    Sign up
+                    <span className="hidden sm:inline">Sign up</span>
+                    <span className="sm:hidden">Sign up</span>
                   </Link>
                 </>
               )}
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="lg:hidden">
+            <div className="lg:hidden ml-2">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-white hover:text-secondary transition-colors"
+                className="text-white hover:text-secondary transition-colors p-2 -m-2 rounded-lg hover:bg-white/10"
+                aria-label="Toggle mobile menu"
+                aria-expanded={isMenuOpen}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  {isMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  )}
                 </svg>
               </button>
             </div>
@@ -267,107 +275,182 @@ export default function Header() {
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="lg:hidden bg-primary border-t border-white/20">
-              <div className="px-2 pt-2 pb-3 space-y-1">
-                <Link 
-                  href="/" 
-                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Home
-                </Link>
-                <Link 
-                  href="/about" 
-                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  About
-                </Link>
-                <Link 
-                  href="/about/team" 
-                  className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Our Team
-                </Link>
-                <Link 
-                  href="/about/offices" 
-                  className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Our Offices
-                </Link>
-                <Link 
-                  href="/about/expertise" 
-                  className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Technical Expertise
-                </Link>
-                <Link 
-                  href="/about/requirements" 
-                  className="block px-3 py-2 pl-6 text-white hover:text-secondary transition-colors capitalize"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Requirements
-                </Link>
-                <Link 
-                  href="/properties" 
-                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Properties
-                </Link>
-                <Link 
-                  href="/property-designs" 
-                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Designs
-                </Link>
-                <Link 
-                  href="/how-to-own" 
-                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  How to own
-                </Link>
-                <Link 
-                  href="/loan-calculator" 
-                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Calculator
-                </Link>
-                <Link 
-                  href="/contact" 
-                  className="block px-3 py-2 text-white hover:text-secondary transition-colors capitalize"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Contact
-                </Link>
+            <div className="lg:hidden bg-primary border-t border-white/20 shadow-lg">
+              <div className="px-4 pt-4 pb-6 space-y-1">
+                {/* Main Navigation */}
+                <div className="space-y-1">
+                  <Link 
+                    href="/" 
+                    className={`block px-4 py-3 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 font-medium ${pathname === '/' ? 'text-secondary bg-white/10' : ''}`}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Home
+                  </Link>
+                  
+                  {/* About Section with Submenu */}
+                  <div className="space-y-1">
+                    <div className="px-4 py-2 text-white/80 text-sm font-semibold uppercase tracking-wider">
+                      About
+                    </div>
+                    <Link 
+                      href="/about" 
+                      className={`block px-6 py-2 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 ${pathname === '/about' ? 'text-secondary bg-white/10' : ''}`}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Company Overview
+                    </Link>
+                    <Link 
+                      href="/about/team" 
+                      className={`block px-6 py-2 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 ${pathname === '/about/team' ? 'text-secondary bg-white/10' : ''}`}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Our Team
+                    </Link>
+                    <Link 
+                      href="/about/offices" 
+                      className={`block px-6 py-2 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 ${pathname === '/about/offices' ? 'text-secondary bg-white/10' : ''}`}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Our Offices
+                    </Link>
+                    <Link 
+                      href="/about/expertise" 
+                      className={`block px-6 py-2 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 ${pathname === '/about/expertise' ? 'text-secondary bg-white/10' : ''}`}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Technical Expertise
+                    </Link>
+                    <Link 
+                      href="/about/requirements" 
+                      className={`block px-6 py-2 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 ${pathname === '/about/requirements' ? 'text-secondary bg-white/10' : ''}`}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Requirements
+                    </Link>
+                  </div>
+                  
+                  <Link 
+                    href="/properties" 
+                    className={`block px-4 py-3 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 font-medium ${pathname === '/properties' ? 'text-secondary bg-white/10' : ''}`}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Projects
+                  </Link>
+                  <Link 
+                    href="/property-designs" 
+                    className={`block px-4 py-3 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 font-medium ${pathname === '/property-designs' ? 'text-secondary bg-white/10' : ''}`}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Designs
+                  </Link>
+                  <Link 
+                    href="/how-to-own" 
+                    className={`block px-4 py-3 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 font-medium ${pathname === '/how-to-own' ? 'text-secondary bg-white/10' : ''}`}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    How to Own
+                  </Link>
+                  <Link 
+                    href="/loan-calculator" 
+                    className={`block px-4 py-3 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 font-medium ${pathname === '/loan-calculator' ? 'text-secondary bg-white/10' : ''}`}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Calculator
+                  </Link>
+                  <Link 
+                    href="/contact" 
+                    className={`block px-4 py-3 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 font-medium ${pathname === '/contact' ? 'text-secondary bg-white/10' : ''}`}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Contact
+                  </Link>
+                </div>
+                
+                {/* Mobile Auth Section */}
+                <div className="pt-4 border-t border-white/20">
+                  {userProfile?.role === 'admin' && (
+                    <Link 
+                      href="/admin" 
+                      className="block px-4 py-3 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 font-medium"
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
+                  {user ? (
+                    <div className="space-y-2">
+                      <Link 
+                        href="/profile" 
+                        className="flex items-center px-4 py-3 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 font-medium"
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center mr-3">
+                          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                        </div>
+                        Profile
+                      </Link>
+                      <button
+                        onClick={async () => {
+                          await signOut();
+                          router.push('/');
+                          setIsMenuOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-3 text-red-300 hover:text-red-200 transition-colors capitalize rounded-lg hover:bg-red-500/20 font-medium"
+                      >
+                        Log Out
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <Link 
+                        href="/login" 
+                        className="block px-4 py-3 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 font-medium"
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        Login
+                      </Link>
+                      <Link 
+                        href="/signup" 
+                        className="block px-4 py-3 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-lg transition-all duration-300 capitalize font-medium text-center"
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        Sign Up
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}

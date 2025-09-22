@@ -5,10 +5,8 @@ import NewHero from '../components/NewHero';
 import ProductPackages from '../components/ProductPackages';
 import FeaturedProperties from '../components/FeaturedProperties';
 import FeaturedDesigns from '../components/FeaturedDesigns';
-import TrustSection from '../components/TrustSection';
 import CTASection from '../components/CTASection';
 import WhyChooseUs from '../components/WhyChooseUs';
-import Testimonials from '../components/Testimonials';
 import Footer from '../components/Footer';
 
 export default function Home() {
@@ -19,9 +17,6 @@ export default function Home() {
         {/* Hero Section with Search */}
         <NewHero />
         
-        {/* Trust & Credibility */}
-        <TrustSection />
-        
         {/* Featured Properties */}
         <FeaturedProperties />
         
@@ -30,9 +25,6 @@ export default function Home() {
         
         {/* Product Packages */}
         <ProductPackages />
-        
-        {/* Testimonials */}
-        <Testimonials />
         
         {/* Final CTA */}
         <CTASection />

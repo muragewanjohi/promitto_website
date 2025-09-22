@@ -6,6 +6,8 @@ import CompetitiveAdvantages from '../../components/CompetitiveAdvantages';
 import KeyStatistics from '../../components/KeyStatistics';
 import Services from '../../components/Services';
 import FundingHighlights from '../../components/FundingHighlights';
+import TrustSection from '../../components/TrustSection';
+import Testimonials from '../../components/Testimonials';
 
 const AboutUs = () => {
   return (
@@ -157,6 +159,12 @@ const AboutUs = () => {
 
         {/* Enhanced Funding Highlights Section */}
         <FundingHighlights />
+
+        {/* Trust & Credibility */}
+        <TrustSection />
+
+        {/* Testimonials */}
+        <Testimonials />
 
         {/* Contact Information */}
         {/* <section className="py-16 bg-gray-50">
