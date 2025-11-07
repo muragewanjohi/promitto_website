@@ -15,12 +15,20 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
-  const { signIn, loading: authLoading } = useAuth();
+  const { signIn, loading: authLoading, user } = useAuth();
 
   // Prevent hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (mounted && user && !authLoading) {
+      console.log('User already authenticated, redirecting to home...');
+      router.push('/');
+    }
+  }, [mounted, user, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,24 +39,33 @@ export default function LoginPage() {
     try {
       console.log('Before signIn');
       const { data, error } = await signIn(email, password);
-      console.log('After signIn', { data, error });
+      console.log('After signIn', { data, error, hasUser: !!data?.user });
+      
       if (error) {
+        console.error('Sign in error:', error);
         setError(error.message || 'An error occurred during sign in');
-      } else if (data && data.user) {
+        setLoading(false);
+      } else if (data?.user) {
+        console.log('Sign in successful, redirecting...');
+        // Wait a moment for AuthContext to update
+        await new Promise(resolve => setTimeout(resolve, 100));
         router.push('/');
+        // Don't set loading to false here - let the redirect happen
       } else {
+        console.warn('Sign in returned no user data');
         setError('Sign in failed: No user returned.');
+        setLoading(false);
       }
     } catch (err) {
       console.error('Error in handleSubmit:', err);
       setError(err instanceof Error ? err.message : 'An error occurred during sign in');
-    } finally {
       setLoading(false);
     }
   };
 
   // Show loading state until component is mounted
-  if (!mounted || authLoading) {
+  // Don't block on authLoading if we're in the middle of a login attempt
+  if (!mounted || (authLoading && !loading)) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50">
         <Header />
@@ -114,9 +131,17 @@ export default function LoginPage() {
 
               {/* Password Field */}
               <div className="space-y-2">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    Password
+                  </label>
+                  <Link 
+                    href="/forgot-password" 
+                    className="text-sm text-primary hover:text-secondary transition-colors font-medium"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <Lock className="h-5 w-5 text-gray-400" />

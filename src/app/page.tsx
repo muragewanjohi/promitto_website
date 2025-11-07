@@ -5,6 +5,7 @@ import NewHero from '../components/NewHero';
 import ProductPackages from '../components/ProductPackages';
 import FeaturedProperties from '../components/FeaturedProperties';
 import FeaturedDesigns from '../components/FeaturedDesigns';
+import FeaturedMedia from '../components/FeaturedMedia';
 import CTASection from '../components/CTASection';
 import WhyChooseUs from '../components/WhyChooseUs';
 import Footer from '../components/Footer';
@@ -25,6 +26,9 @@ export default function Home() {
         
         {/* Product Packages */}
         <ProductPackages />
+        
+        {/* Featured Media (News, Resources, Events, Blogs) */}
+        <FeaturedMedia />
         
         {/* Final CTA */}
         <CTASection />

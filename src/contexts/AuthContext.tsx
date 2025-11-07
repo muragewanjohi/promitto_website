@@ -17,6 +17,8 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ data: any; error: any }>;
   signUp: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
+  resetPasswordForEmail: (email: string) => Promise<{ error: any }>;
+  updatePassword: (newPassword: string) => Promise<{ error: any }>;
   loading: boolean;
 }
 
@@ -32,12 +34,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       setUser(session?.user ?? null);
       if (session?.user) {
-        const { data: profile, error } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-        setUserProfile(profile ?? null);
+        try {
+          const { data: profile, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+          
+          // If profile doesn't exist, that's okay - user might not have a profile yet
+          if (error && error.code !== 'PGRST116') {
+            console.warn('Error fetching user profile:', error);
+          }
+          setUserProfile(profile ?? null);
+        } catch (err) {
+          console.warn('Exception fetching user profile:', err);
+          setUserProfile(null);
+        }
       } else {
         setUserProfile(null);
       }
@@ -45,15 +57,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     // Listen for changes on auth state (sign in, sign out, etc.)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       setUser(session?.user ?? null);
       if (session?.user) {
-        const { data: profile, error } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-        setUserProfile(profile ?? null);
+        try {
+          const { data: profile, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+          
+          // If profile doesn't exist, that's okay - user might not have a profile yet
+          if (error && error.code !== 'PGRST116') {
+            console.warn('Error fetching user profile:', error);
+          }
+          setUserProfile(profile ?? null);
+        } catch (err) {
+          console.warn('Exception fetching user profile:', err);
+          setUserProfile(null);
+        }
       } else {
         setUserProfile(null);
       }
@@ -84,12 +106,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
+  const resetPasswordForEmail = async (email: string) => {
+    const redirectTo = typeof window !== 'undefined' 
+      ? `${window.location.origin}/reset-password`
+      : '/reset-password';
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo,
+    });
+    return { error };
+  };
+
+  const updatePassword = async (newPassword: string) => {
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+    return { error };
+  };
+
   const value = {
     user,
     userProfile,
     signIn,
     signUp,
     signOut,
+    resetPasswordForEmail,
+    updatePassword,
     loading,
   };
 

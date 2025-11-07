@@ -1,9 +1,24 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import Header from '@/components/Header';
+import { 
+  LayoutDashboard, 
+  Home, 
+  Building2, 
+  PlusCircle, 
+  Tag, 
+  FileText, 
+  Layers, 
+  Star, 
+  Settings, 
+  Users, 
+  LogOut,
+  ChevronRight,
+  Newspaper
+} from 'lucide-react';
 
 export default function AdminLayout({
   children,
@@ -11,6 +26,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -19,112 +35,145 @@ export default function AdminLayout({
     }
   };
 
+  const isActive = (path: string) => {
+    if (path === '/admin') {
+      return pathname === '/admin';
+    }
+    return pathname?.startsWith(path);
+  };
+
+  const NavLink = ({ href, icon: Icon, children, badge }: { href: string; icon: React.ElementType; children: React.ReactNode; badge?: string }) => {
+    const active = isActive(href);
+    return (
+      <Link 
+        href={href} 
+        className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
+          active 
+            ? 'bg-gradient-to-r from-primary to-primary/90 text-white shadow-md' 
+            : 'text-gray-700 hover:bg-gray-100 hover:text-primary'
+        }`}
+      >
+        <Icon className={`w-5 h-5 ${active ? 'text-white' : 'text-gray-500 group-hover:text-primary'}`} />
+        <span className="flex-1 font-medium text-sm">{children}</span>
+        {badge && (
+          <span className={`px-2 py-0.5 text-xs rounded-full ${
+            active ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'
+          }`}>
+            {badge}
+          </span>
+        )}
+        {active && <ChevronRight className="w-4 h-4 text-white" />}
+      </Link>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
       <div className="flex pt-16">
         {/* Sidebar */}
-        <aside className="w-64 bg-white text-gray-900 min-h-screen border-r border-gray-200 flex flex-col">
-          <div className="p-4 flex-grow">
-            <nav>
-              <ul className="space-y-1">
-                {/* Dashboard Section */}
-                <li className="mb-2">
-                  <span className="block text-sm font-bold text-gray-900 mb-1">Dashboard</span>
-                  <ul className="ml-2 space-y-1">
-                    <li>
-                      <Link href="/admin" className="block px-2 py-1 text-[#1E40AF] hover:text-[#D97706] rounded transition-colors">Overview</Link>
-                    </li>
-                    {/* <li>
-                      <Link href="/admin/analytics" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Analytics</Link>
-                    </li> */}
-                  </ul>
-                </li>
-                <li><hr className="my-3 border-gray-200" /></li>
-                {/* Property Management Section */}
-                <li className="mb-2">
-                  <span className="block text-sm font-bold text-gray-900 mb-1">Property Management</span>
-                  <ul className="ml-2 space-y-1">
-                    <li>
-                      <Link href="/admin/properties" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">All Properties</Link>
-                    </li>
-                    <li>
-                      <Link href="/admin/properties/new" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Add Property</Link>
-                    </li>
-                    <li>
-                      <Link href="/admin/property-types" className="block px-2 py-1 hover:text-[#F59E0B] rounded transition-colors font-semibold">Property Types</Link>
-                    </li>
-                    <li>
-                      <Link href="/admin/property-statuses" className="block px-2 py-1 hover:text-[#F59E0B] rounded transition-colors font-semibold">Property Statuses</Link>
-                    </li>
-                    <li>
-                      <Link href="/admin/roof-types" className="block px-2 py-1 hover:text-[#F59E0B] rounded transition-colors font-semibold">Roof Types</Link>
-                    </li>
-                    {/* <li>
-                      <Link href="/admin/documents" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Documents</Link>
-                    </li> */}
-                    <li>
-                      <Link href="/admin/features" className="block px-2 py-1 hover:text-[#F59E0B] rounded transition-colors font-semibold">Features Management</Link>
-                    </li>
-                  </ul>
-                </li>
-                <li><hr className="my-3 border-gray-200" /></li>
-                {/* Content Management Section */}
-                {/* <li className="mb-2">
-                  <span className="block text-sm font-bold text-gray-900 mb-1">Content Management</span>
-                  <ul className="ml-2 space-y-1">
-                    <li>
-                      <Link href="/admin/blog-posts" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Blog Posts</Link>
-                    </li>
-                    <li>
-                      <Link href="/admin/property-descriptions" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Property Descriptions</Link>
-                    </li>
-                    <li>
-                      <Link href="/admin/news-updates" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">News & Updates</Link>
-                    </li>
-                    <li>
-                      <Link href="/admin/faqs" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">FAQs</Link>
-                    </li>
-                    <li>
-                      <Link href="/admin/testimonials" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Testimonials</Link>
-                    </li>
-                    <li>
-                      <Link href="/admin/email-templates" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Email Templates</Link>
-                    </li>
-                  </ul>
-                </li> */}
-                <li><hr className="my-3 border-gray-200" /></li>
-                {/* Settings Section */}
-                <li className="mb-2">
-                  <span className="block text-sm font-bold text-gray-900 mb-1">Settings</span>
-                  <ul className="ml-2 space-y-1">
-                    {/* <li>
-                      <Link href="/admin/user-management" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">User Management</Link>
-                    </li>
-                    <li>
-                      <Link href="/admin/system-settings" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">System Settings</Link>
-                    </li>
-                    <li>
-                      <Link href="/admin/backup-recovery" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Backup & Recovery</Link>
-                    </li> */}
-                    <li>
-                      <Link href="/admin/membership-management" className="block px-2 py-1 hover:text-[#1E40AF] rounded transition-colors">Membership Management</Link>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+        <aside className="w-64 bg-white text-gray-900 min-h-screen border-r border-gray-200 flex flex-col shadow-sm">
+          <div className="p-4 flex-grow overflow-y-auto">
+            <nav className="space-y-6">
+              {/* Dashboard Section */}
+              <div>
+                <div className="flex items-center gap-2 mb-3 px-3">
+                  <LayoutDashboard className="w-4 h-4 text-gray-500" />
+                  <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Dashboard</span>
+                </div>
+                <ul className="space-y-1">
+                  <li>
+                    <NavLink href="/admin" icon={Home}>
+                      Overview
+                    </NavLink>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Property Management Section */}
+              <div>
+                <div className="flex items-center gap-2 mb-3 px-3">
+                  <Building2 className="w-4 h-4 text-gray-500" />
+                  <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Property Management</span>
+                </div>
+                <ul className="space-y-1">
+                  <li>
+                    <NavLink href="/admin/properties" icon={Building2}>
+                      All Properties
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink href="/admin/properties/new" icon={PlusCircle}>
+                      Add Property
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink href="/admin/property-types" icon={Tag}>
+                      Property Types
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink href="/admin/property-statuses" icon={FileText}>
+                      Property Statuses
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink href="/admin/roof-types" icon={Layers}>
+                      Roof Types
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink href="/admin/features" icon={Star}>
+                      Features Management
+                    </NavLink>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Media Management Section */}
+              <div>
+                <div className="flex items-center gap-2 mb-3 px-3">
+                  <Newspaper className="w-4 h-4 text-gray-500" />
+                  <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Media Management</span>
+                </div>
+                <ul className="space-y-1">
+                  <li>
+                    <NavLink href="/admin/media" icon={Newspaper}>
+                      All Media
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink href="/admin/media/new" icon={PlusCircle}>
+                      Add Media Item
+                    </NavLink>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Settings Section */}
+              <div>
+                <div className="flex items-center gap-2 mb-3 px-3">
+                  <Settings className="w-4 h-4 text-gray-500" />
+                  <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Settings</span>
+                </div>
+                <ul className="space-y-1">
+                  <li>
+                    <NavLink href="/admin/membership-management" icon={Users}>
+                      Membership Management
+                    </NavLink>
+                  </li>
+                </ul>
+              </div>
             </nav>
           </div>
           
           {/* Sign Out Button */}
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-4 border-t border-gray-200 bg-gray-50">
             <button
               onClick={handleSignOut}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-[1.02]"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
+              <LogOut className="w-5 h-5" />
               Sign Out
             </button>
           </div>

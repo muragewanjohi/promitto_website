@@ -6,10 +6,12 @@ import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { PhoneIcon, EnvelopeIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { Newspaper, FileText, Calendar, BookOpen } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
+  const [isMediaDropdownOpen, setIsMediaDropdownOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { user, userProfile, signOut } = useAuth();
   const pathname = usePathname();
@@ -24,6 +26,7 @@ export default function Header() {
   useEffect(() => {
     setIsMenuOpen(false);
     setIsAboutDropdownOpen(false);
+    setIsMediaDropdownOpen(false);
   }, [pathname]);
 
   // Show loading state until component is mounted
@@ -78,6 +81,7 @@ export default function Header() {
                 className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/' ? 'text-secondary' : ''}`}
                 onClick={() => {
                   setIsAboutDropdownOpen(false);
+                  setIsMediaDropdownOpen(false);
                 }}
               >
                 Home
@@ -154,12 +158,87 @@ export default function Header() {
                   </div>
                 </div>
               </div>
+
+              {/* Media Dropdown */}
+              <div className="relative group">
+                <button 
+                  className={`text-base hover:text-secondary transition-colors capitalize font-semibold flex items-center ${pathname?.startsWith('/news') || pathname?.startsWith('/resources') || pathname?.startsWith('/events') || pathname?.startsWith('/blogs') ? 'text-secondary' : ''}`}
+                  onMouseEnter={() => setIsMediaDropdownOpen(true)}
+                  onMouseLeave={() => setIsMediaDropdownOpen(false)}
+                >
+                  Media
+                  <ChevronDownIcon className="w-4 h-4 ml-1" />
+                </button>
+                
+                {/* Dropdown Menu */}
+                <div 
+                  className={`absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 transition-all duration-300 z-50 ${isMediaDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                  onMouseEnter={() => setIsMediaDropdownOpen(true)}
+                  onMouseLeave={() => setIsMediaDropdownOpen(false)}
+                >
+                  <div className="py-2">
+                    <Link 
+                      href="/news" 
+                      className="flex items-center px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                      onClick={() => {
+                        setIsMediaDropdownOpen(false);
+                      }}
+                    >
+                      <Newspaper className="w-4 h-4 mr-3" />
+                      <div>
+                        <div className="font-medium text-sm">News</div>
+                        <div className="text-xs text-gray-600 hover:text-gray-300">Latest news and updates</div>
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/resources" 
+                      className="flex items-center px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                      onClick={() => {
+                        setIsMediaDropdownOpen(false);
+                      }}
+                    >
+                      <FileText className="w-4 h-4 mr-3" />
+                      <div>
+                        <div className="font-medium text-sm">Resources</div>
+                        <div className="text-xs text-gray-600 hover:text-gray-300">Helpful guides and resources</div>
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/events" 
+                      className="flex items-center px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                      onClick={() => {
+                        setIsMediaDropdownOpen(false);
+                      }}
+                    >
+                      <Calendar className="w-4 h-4 mr-3" />
+                      <div>
+                        <div className="font-medium text-sm">Events</div>
+                        <div className="text-xs text-gray-600 hover:text-gray-300">Upcoming events and activities</div>
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/blogs" 
+                      className="flex items-center px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                      onClick={() => {
+                        setIsMediaDropdownOpen(false);
+                      }}
+                    >
+                      <BookOpen className="w-4 h-4 mr-3" />
+                      <div>
+                        <div className="font-medium text-sm">Blogs</div>
+                        <div className="text-xs text-gray-600 hover:text-gray-300">Latest blog posts and insights</div>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              </div>
               
               <Link 
                 href="/properties" 
                 className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/properties' ? 'text-secondary' : ''}`}
                 onClick={() => {
                   setIsAboutDropdownOpen(false);
+                  setIsMediaDropdownOpen(false);
                 }}
               >
                 Projects
@@ -338,6 +417,53 @@ export default function Header() {
                       }}
                     >
                       Requirements
+                    </Link>
+                  </div>
+
+                  {/* Media Section with Submenu */}
+                  <div className="space-y-1">
+                    <div className="px-4 py-2 text-white/80 text-sm font-semibold uppercase tracking-wider">
+                      Media
+                    </div>
+                    <Link 
+                      href="/news" 
+                      className={`flex items-center px-6 py-2 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 ${pathname?.startsWith('/news') ? 'text-secondary bg-white/10' : ''}`}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      <Newspaper className="w-4 h-4 mr-3" />
+                      News
+                    </Link>
+                    <Link 
+                      href="/resources" 
+                      className={`flex items-center px-6 py-2 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 ${pathname?.startsWith('/resources') ? 'text-secondary bg-white/10' : ''}`}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      <FileText className="w-4 h-4 mr-3" />
+                      Resources
+                    </Link>
+                    <Link 
+                      href="/events" 
+                      className={`flex items-center px-6 py-2 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 ${pathname?.startsWith('/events') ? 'text-secondary bg-white/10' : ''}`}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      <Calendar className="w-4 h-4 mr-3" />
+                      Events
+                    </Link>
+                    <Link 
+                      href="/blogs" 
+                      className={`flex items-center px-6 py-2 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 ${pathname?.startsWith('/blogs') ? 'text-secondary bg-white/10' : ''}`}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      <BookOpen className="w-4 h-4 mr-3" />
+                      Blogs
                     </Link>
                   </div>
                   

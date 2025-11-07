@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { Calculator, X, ChevronRight, Info } from 'lucide-react';
 
 interface FloatingCalculatorProps {
@@ -10,6 +11,7 @@ interface FloatingCalculatorProps {
 type ViewState = 'form' | 'notes' | 'results';
 
 const FloatingCalculator: React.FC<FloatingCalculatorProps> = ({ className = '' }) => {
+  const pathname = usePathname();
   const [isExpanded, setIsExpanded] = useState(false);
   const [viewState, setViewState] = useState<ViewState>('form');
   const [propertyCost, setPropertyCost] = useState<string>('3,000,000');
@@ -27,9 +29,13 @@ const FloatingCalculator: React.FC<FloatingCalculatorProps> = ({ className = '' 
   const [isCalculated, setIsCalculated] = useState<boolean>(false);
   
   const calculatorRef = useRef<HTMLDivElement>(null);
+  
+  // Hide calculator on admin pages
+  const isAdminPage = pathname?.startsWith('/admin');
 
   // Close calculator when clicking outside
   useEffect(() => {
+    if (isAdminPage) return; // Early return inside useEffect is fine
     const handleClickOutside = (event: MouseEvent) => {
       if (calculatorRef.current && !calculatorRef.current.contains(event.target as Node)) {
         setIsExpanded(false);
@@ -48,6 +54,8 @@ const FloatingCalculator: React.FC<FloatingCalculatorProps> = ({ className = '' 
 
   // Close calculator on escape key
   useEffect(() => {
+    if (isAdminPage) return; // Early return inside useEffect is fine
+    
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isExpanded) {
         setIsExpanded(false);
@@ -62,7 +70,7 @@ const FloatingCalculator: React.FC<FloatingCalculatorProps> = ({ className = '' 
     return () => {
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [isExpanded]);
+  }, [isExpanded, isAdminPage]);
 
   const formatNumber = (value: string): string => {
     const numericValue = value.replace(/[^0-9]/g, '');
@@ -130,20 +138,22 @@ const FloatingCalculator: React.FC<FloatingCalculatorProps> = ({ className = '' 
 
   // Update down payment whenever property cost changes
   React.useEffect(() => {
+    if (isAdminPage) return;
     const cost = parseNumber(propertyCost);
     const downPaymentAmount = Math.round(cost * 0.3);
     setDownPayment(formatNumber(downPaymentAmount.toString()));
-  }, [propertyCost]);
+  }, [propertyCost, isAdminPage]);
 
   // Update loan term when property type changes
   React.useEffect(() => {
+    if (isAdminPage) return;
     if (propertyType === 'residential' && Number(loanTerm) > 7) {
       setLoanTerm('7');
     } else if (propertyType === 'commercial' && Number(loanTerm) > 10) {
       setLoanTerm('10');
     }
     setIsCalculated(false);
-  }, [propertyType, loanTerm]);
+  }, [propertyType, loanTerm, isAdminPage]);
 
   const renderForm = () => (
     <div className="space-y-3 sm:space-y-4">
@@ -380,6 +390,11 @@ const FloatingCalculator: React.FC<FloatingCalculatorProps> = ({ className = '' 
       </div>
     </div>
   );
+
+  // Hide calculator on admin pages - return null after all hooks
+  if (isAdminPage) {
+    return null;
+  }
 
   return (
     <div ref={calculatorRef} className={`fixed left-0 top-1/2 transform -translate-y-1/2 z-50 ${className}`}>
