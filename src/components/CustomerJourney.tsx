@@ -300,7 +300,7 @@ const CustomerJourney = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
           {(() => {
             const successRate = useCountUp(100, 2500);
-            const homesDelivered = useCountUp(60, 2500);
+            const homesDelivered = useCountUp(200, 2500);
             
             return (
               <>

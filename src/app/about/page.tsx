@@ -76,16 +76,15 @@ const AboutUs = () => {
                 </p>
               </div>
               <div className="relative h-[400px] rounded-xl overflow-hidden flex items-center justify-center bg-black">
-                <iframe
+                <video
                   width="100%"
                   height="100%"
-                  src="https://www.youtube.com/embed/FMRvwAfwk48"
-                  title="Promitto Story Video"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full"
-                ></iframe>
+                  controls
+                  className="absolute inset-0 w-full h-full object-cover"
+                >
+                  <source src="/media/about_us_vid.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
             </div>
           </div>

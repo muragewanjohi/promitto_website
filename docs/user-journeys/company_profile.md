@@ -7,7 +7,7 @@ Promitto is your one-stop shop for turning your dream of homeownership into real
 ### Key Statistics
 
 - **200,000** housing units needed annually
-- **50** Homes constructed Annually in Kenya
+- **200** Homes constructed Annually in Kenya
 - **Over 2 million units** of housing deficit
 
 While Kenya has made strides in addressing its housing deficit through initiatives like the Affordable Housing Programme, significant challenges remain. Addressing issues related to cost, financing, and regulatory inefficiencies. This significant housing gap presents a tremendous opportunity to expand its reach and help address this crisis.

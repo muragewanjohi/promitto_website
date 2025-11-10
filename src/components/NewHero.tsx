@@ -197,6 +197,22 @@ const NewHero = () => {
                 How to Own
               </Link>
             </div>
+
+            {/* YouTube Video */}
+            <div className="w-full max-w-3xl mx-auto pt-12">
+              <div className="relative h-[240px] md:h-[320px] rounded-xl overflow-hidden flex items-center justify-center bg-black shadow-2xl">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/FMRvwAfwk48"
+                  title="Promitto Story Video"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                ></iframe>
+              </div>
+            </div>
           </div>
         </div>
       </div>
