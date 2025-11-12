@@ -199,7 +199,7 @@ const NewHero = () => {
             </div>
 
             {/* YouTube Video */}
-            <div className="w-full max-w-3xl mx-auto pt-12">
+            <div className="w-full max-w-[460px] ml-auto pt-12">
               <div className="relative h-[240px] md:h-[320px] rounded-xl overflow-hidden flex items-center justify-center bg-black shadow-2xl">
                 <iframe
                   width="100%"

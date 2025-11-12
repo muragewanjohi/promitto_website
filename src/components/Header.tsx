@@ -6,12 +6,13 @@ import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { PhoneIcon, EnvelopeIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { Newspaper, FileText, Calendar, BookOpen } from 'lucide-react';
+import { Newspaper, FileText, Calendar, BookOpen, HelpCircle, Lightbulb, Building2, Calculator } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const [isMediaDropdownOpen, setIsMediaDropdownOpen] = useState(false);
+  const [isInsightsDropdownOpen, setIsInsightsDropdownOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { user, userProfile, signOut } = useAuth();
   const pathname = usePathname();
@@ -27,6 +28,7 @@ export default function Header() {
     setIsMenuOpen(false);
     setIsAboutDropdownOpen(false);
     setIsMediaDropdownOpen(false);
+    setIsInsightsDropdownOpen(false);
   }, [pathname]);
 
   // Show loading state until component is mounted
@@ -162,9 +164,12 @@ export default function Header() {
               {/* Media Dropdown */}
               <div className="relative group">
                 <button 
-                  className={`text-base hover:text-secondary transition-colors capitalize font-semibold flex items-center ${pathname?.startsWith('/news') || pathname?.startsWith('/resources') || pathname?.startsWith('/events') || pathname?.startsWith('/blogs') ? 'text-secondary' : ''}`}
+                  className={`text-base hover:text-secondary transition-colors capitalize font-semibold flex items-center ${pathname?.startsWith('/news') || pathname?.startsWith('/resources') || pathname?.startsWith('/events') || pathname?.startsWith('/blogs') || pathname?.startsWith('/faq') || pathname?.startsWith('/about') || pathname?.startsWith('/how-to-own') || pathname?.startsWith('/loan-calculator') ? 'text-secondary' : ''}`}
                   onMouseEnter={() => setIsMediaDropdownOpen(true)}
-                  onMouseLeave={() => setIsMediaDropdownOpen(false)}
+                  onMouseLeave={() => {
+                    setIsMediaDropdownOpen(false);
+                    setIsInsightsDropdownOpen(false);
+                  }}
                 >
                   Media
                   <ChevronDownIcon className="w-4 h-4 ml-1" />
@@ -174,7 +179,10 @@ export default function Header() {
                 <div 
                   className={`absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 transition-all duration-300 z-50 ${isMediaDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
                   onMouseEnter={() => setIsMediaDropdownOpen(true)}
-                  onMouseLeave={() => setIsMediaDropdownOpen(false)}
+                  onMouseLeave={() => {
+                    setIsMediaDropdownOpen(false);
+                    setIsInsightsDropdownOpen(false);
+                  }}
                 >
                   <div className="py-2">
                     <Link 
@@ -229,6 +237,87 @@ export default function Header() {
                         <div className="text-xs text-gray-600 hover:text-gray-300">Latest blog posts and insights</div>
                       </div>
                     </Link>
+                    <Link 
+                      href="/faq" 
+                      className="flex items-center px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                      onClick={() => {
+                        setIsMediaDropdownOpen(false);
+                      }}
+                    >
+                      <HelpCircle className="w-4 h-4 mr-3" />
+                      <div>
+                        <div className="font-medium text-sm">FAQ</div>
+                        <div className="text-xs text-gray-600 hover:text-gray-300">Frequently asked questions</div>
+                      </div>
+                    </Link>
+                    {/* Insights with nested dropdown */}
+                    <div 
+                      className="relative"
+                      onMouseEnter={() => setIsInsightsDropdownOpen(true)}
+                      onMouseLeave={() => setIsInsightsDropdownOpen(false)}
+                    >
+                      <div className="flex items-center px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors cursor-pointer">
+                        <Lightbulb className="w-4 h-4 mr-3" />
+                        <div className="flex-1">
+                          <div className="font-medium text-sm">Insights</div>
+                          <div className="text-xs text-gray-600 hover:text-gray-300">Learn more about Promitto</div>
+                        </div>
+                        <ChevronDownIcon className="w-4 h-4 ml-2" />
+                      </div>
+                      {/* Nested Dropdown */}
+                      {isInsightsDropdownOpen && (
+                        <div 
+                          className="absolute left-full top-0 ml-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+                          onMouseEnter={() => setIsInsightsDropdownOpen(true)}
+                          onMouseLeave={() => setIsInsightsDropdownOpen(false)}
+                        >
+                          <div className="py-2">
+                            <Link 
+                              href="/about" 
+                              className="flex items-center px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                              onClick={() => {
+                                setIsMediaDropdownOpen(false);
+                                setIsInsightsDropdownOpen(false);
+                              }}
+                            >
+                              <Building2 className="w-4 h-4 mr-3" />
+                              <div>
+                                <div className="font-medium text-sm">Who is Promitto?</div>
+                                <div className="text-xs text-gray-600 hover:text-gray-300">Learn about our company</div>
+                              </div>
+                            </Link>
+                            <Link 
+                              href="/how-to-own#journey-to-homeownership" 
+                              className="flex items-center px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                              onClick={() => {
+                                setIsMediaDropdownOpen(false);
+                                setIsInsightsDropdownOpen(false);
+                              }}
+                            >
+                              <FileText className="w-4 h-4 mr-3" />
+                              <div>
+                                <div className="font-medium text-sm">Steps to Home Ownership</div>
+                                <div className="text-xs text-gray-600 hover:text-gray-300">Your journey to homeownership</div>
+                              </div>
+                            </Link>
+                            <Link 
+                              href="/loan-calculator" 
+                              className="flex items-center px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                              onClick={() => {
+                                setIsMediaDropdownOpen(false);
+                                setIsInsightsDropdownOpen(false);
+                              }}
+                            >
+                              <Calculator className="w-4 h-4 mr-3" />
+                              <div>
+                                <div className="font-medium text-sm">Home Loan Calculator</div>
+                                <div className="text-xs text-gray-600 hover:text-gray-300">Calculate your loan</div>
+                              </div>
+                            </Link>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

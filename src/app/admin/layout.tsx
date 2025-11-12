@@ -147,6 +147,11 @@ export default function AdminLayout({
                       Add Media Item
                     </NavLink>
                   </li>
+                  <li>
+                    <NavLink href="/admin/faqs" icon={FileText}>
+                      FAQs
+                    </NavLink>
+                  </li>
                 </ul>
               </div>
 

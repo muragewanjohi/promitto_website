@@ -129,7 +129,7 @@ const CustomerJourney = () => {
         <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-primary rounded-full"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div id="journey-to-homeownership" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header Section */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full mb-6 shadow-xl">
