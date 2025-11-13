@@ -40,64 +40,28 @@ const ExpertisePage = () => {
 
       {/* Technical Expertise */}
       <section className="py-20">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-center mb-12">
-            
             <h2 className="text-3xl font-bold text-gray-900">Our Technical Capacity</h2>
           </div>
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
-              <h3 className="text-xl font-bold text-primary mb-6 flex items-center">
-                
-                Core Departments
-              </h3>
-              <ul className="space-y-4">
-                <li className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-3 h-3 bg-primary rounded-full flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Project Management Department:</span>
-                    <span className="text-secondary font-bold ml-2">5 team members</span>
-                  </div>
-                </li>
-                <li className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-3 h-3 bg-primary rounded-full flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Architectural & Interior Designers:</span>
-                    <span className="text-secondary font-bold ml-2">5 engineers</span>
-                  </div>
-                </li>
-                <li className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-3 h-3 bg-primary rounded-full flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Quantity Survey Department:</span>
-                    <span className="text-secondary font-bold ml-2">4 Quantity Surveyors</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
-              <h3 className="text-xl font-bold text-primary mb-6 flex items-center">
-                
-                Support Departments
-              </h3>
-              <ul className="space-y-4">
-                <li className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-3 h-3 bg-secondary rounded-full flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Account Management Department:</span>
-                    <span className="text-primary font-bold ml-2">6 account managers</span>
-                  </div>
-                </li>
-                <li className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-3 h-3 bg-secondary rounded-full flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Engineering Department:</span>
-                    <span className="text-primary font-bold ml-2">2 Engineers</span>
-                  </div>
-                </li>
-              </ul>
+          
+          {/* Organizational Chart */}
+          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 mb-12">
+            <h3 className="text-2xl font-bold text-primary mb-8 text-center">
+              Organizational Structure
+            </h3>
+            <div className="flex justify-center">
+              <Image
+                src="/organogram.png"
+                alt="Organizational Structure"
+                width={1200}
+                height={1600}
+                className="w-full h-auto max-w-5xl rounded-lg"
+                priority
+              />
             </div>
           </div>
+
         </div>
       </section>
 
@@ -229,3 +193,4 @@ const ExpertisePage = () => {
 };
 
 export default ExpertisePage;
+
