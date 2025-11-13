@@ -156,14 +156,14 @@ const OrganizationalChart = () => {
               <div
                 className="absolute top-0 left-1/2 h-0.5 bg-gray-400 transform -translate-x-1/2"
                 style={{
-                  width: `${Math.max(80, (node.children.length - 1) * 120)}px`,
+                  width: `${Math.max(80, ((node.children?.length || 0) - 1) * 120)}px`,
                 }}
               ></div>
             )}
 
             {/* Render each child */}
             <div className="flex gap-2 items-start flex-wrap justify-center">
-              {node.children.map((child, index) => {
+              {node.children && node.children.map((child, index) => {
                 return (
                   <div key={`${child.title}-${index}`} className="flex flex-col items-center relative">
                     {/* Vertical connector line to child */}
