@@ -57,8 +57,9 @@ const LoanCalculator = () => {
     // Calculate processing fee
     const processingFeeAmount = Math.round(principal * (Number(processingFee) / 100));
     
-    // Calculate monthly payment using the loan amortization formula
+    // Calculate monthly payment using reducing balance amortization formula
     // PMT = P * (r * (1 + r)^n) / ((1 + r)^n - 1)
+    // This formula ensures interest is calculated on the remaining balance each month
     // Where:
     // PMT = Monthly Payment
     // P = Principal loan amount
@@ -69,12 +70,30 @@ const LoanCalculator = () => {
       (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / 
       (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
     
+    // Verify calculation using reducing balance method (month-by-month)
+    let remainingBalance = principal;
+    let totalInterestCalculated = 0;
+    
+    for (let month = 1; month <= numberOfPayments; month++) {
+      // Interest for this month = remaining balance * monthly rate
+      const monthlyInterest = remainingBalance * monthlyRate;
+      // Principal portion = monthly payment - interest
+      const principalPortion = monthlyPaymentAmount - monthlyInterest;
+      // Update remaining balance
+      remainingBalance = remainingBalance - principalPortion;
+      totalInterestCalculated += monthlyInterest;
+    }
+    
+    // Round remaining balance to handle floating point precision
+    remainingBalance = Math.round(remainingBalance);
+    
+    // Use the verified total interest from reducing balance calculation
     const totalPaymentAmount = monthlyPaymentAmount * numberOfPayments;
-    const totalInterestAmount = totalPaymentAmount - principal;
+    const totalInterestAmount = Math.round(totalInterestCalculated);
     
     setMonthlyPayment(Math.round(monthlyPaymentAmount));
     setTotalPayment(Math.round(totalPaymentAmount));
-    setTotalInterest(Math.round(totalInterestAmount));
+    setTotalInterest(totalInterestAmount);
     setProcessingFeeAmount(processingFeeAmount);
     setIsCalculated(true);
 

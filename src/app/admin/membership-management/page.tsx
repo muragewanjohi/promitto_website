@@ -17,94 +17,169 @@ type Membership = {
   } | null;
 };
 
+type Customer = {
+  id: string;
+  user_id: string;
+  email?: string;
+  first_name?: string;
+  second_name?: string;
+  surname?: string;
+  national_id?: string;
+  kra_pin?: string;
+  marital_status?: string;
+  telephone?: string;
+  mobile?: string;
+  current_address?: string;
+  created_at?: string;
+};
+
+type User = {
+  id: string;
+  email: string;
+  role: string;
+  created_at?: string;
+};
+
+type TabType = 'memberships' | 'customers' | 'users';
+
 const MembershipManagement = () => {
+  const [activeTab, setActiveTab] = useState<TabType>('memberships');
   const [memberships, setMemberships] = useState<Membership[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMemberships = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+    if (activeTab === 'memberships') {
+      fetchMemberships();
+    } else if (activeTab === 'customers') {
+      fetchCustomers();
+    } else if (activeTab === 'users') {
+      fetchUsers();
+    }
+  }, [activeTab]);
 
-        // Fetch membership details
-        const { data: membershipData, error: membershipError } = await supabase
-          .from('membership_details')
-          .select('*')
-          .order('created_at', { ascending: false });
+  const fetchMemberships = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        if (membershipError) {
-          console.error('Error fetching memberships:', membershipError);
-          setError('Failed to load memberships');
-          setLoading(false);
-          return;
-        }
+      const { data: membershipData, error: membershipError } = await supabase
+        .from('membership_details')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-        if (!membershipData || membershipData.length === 0) {
-          setMemberships([]);
-          setLoading(false);
-          return;
-        }
-
-        // Fetch user emails for each membership
-        const membershipsWithUsers = await Promise.all(
-          membershipData.map(async (membership: any) => {
-            let userEmail = 'Unknown';
-            let userProfile = null;
-
-            // Try to get user information from users table
-            try {
-              const { data: userData } = await supabase
-                .from('users')
-                .select('email, first_name, second_name, surname')
-                .eq('id', membership.user_id)
-                .single();
-
-              if (userData) {
-                userEmail = userData.email || userEmail;
-                userProfile = {
-                  first_name: userData.first_name,
-                  second_name: userData.second_name,
-                  surname: userData.surname,
-                };
-              }
-            } catch (userError) {
-              console.error('Error fetching user:', userError);
-              // Fallback: try to get email from auth if available
-              try {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user && user.id === membership.user_id) {
-                  userEmail = user.email || userEmail;
-                }
-              } catch (authError) {
-                console.error('Error fetching auth user:', authError);
-              }
-            }
-
-            return {
-              id: membership.id,
-              user_id: membership.user_id,
-              reference: membership.reference || 'N/A',
-              status: membership.status || false,
-              created_at: membership.created_at,
-              user_email: userEmail,
-              user_profile: userProfile,
-            };
-          })
-        );
-
-        setMemberships(membershipsWithUsers);
-      } catch (err) {
-        console.error('Error in fetchMemberships:', err);
-        setError('An error occurred while loading memberships');
-      } finally {
+      if (membershipError) {
+        console.error('Error fetching memberships:', membershipError);
+        setError('Failed to load memberships');
         setLoading(false);
+        return;
       }
-    };
 
-    fetchMemberships();
-  }, []);
+      if (!membershipData || membershipData.length === 0) {
+        setMemberships([]);
+        setLoading(false);
+        return;
+      }
+
+      const membershipsWithUsers = await Promise.all(
+        membershipData.map(async (membership: any) => {
+          let userEmail = 'Unknown';
+          let userProfile = null;
+
+          try {
+            const { data: userData } = await supabase
+              .from('users')
+              .select('email, first_name, second_name, surname')
+              .eq('id', membership.user_id)
+              .single();
+
+            if (userData) {
+              userEmail = userData.email || userEmail;
+              userProfile = {
+                first_name: userData.first_name,
+                second_name: userData.second_name,
+                surname: userData.surname,
+              };
+            }
+          } catch (userError) {
+            console.error('Error fetching user:', userError);
+          }
+
+          return {
+            id: membership.id,
+            user_id: membership.user_id,
+            reference: membership.reference || 'N/A',
+            status: membership.status || false,
+            created_at: membership.created_at,
+            user_email: userEmail,
+            user_profile: userProfile,
+          };
+        })
+      );
+
+      setMemberships(membershipsWithUsers);
+    } catch (err) {
+      console.error('Error in fetchMemberships:', err);
+      setError('An error occurred while loading memberships');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCustomers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const { data: customerData, error: customerError } = await supabase
+        .from('customer_details')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (customerError) {
+        console.error('Error fetching customers:', customerError);
+        setError('Failed to load customers');
+        setLoading(false);
+        return;
+      }
+
+      setCustomers(customerData || []);
+    } catch (err) {
+      console.error('Error in fetchCustomers:', err);
+      setError('An error occurred while loading customers');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (userError) {
+        console.error('Error fetching users:', userError);
+        setError('Failed to load users');
+        setLoading(false);
+        return;
+      }
+
+      setUsers(userData || []);
+    } catch (err) {
+      console.error('Error in fetchUsers:', err);
+      setError('An error occurred while loading users');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleStatusChange = async (id: string, newStatus: boolean) => {
     try {
@@ -130,6 +205,42 @@ const MembershipManagement = () => {
     }
   };
 
+  const handleDeleteUser = async (userId: string, userEmail: string) => {
+    // Confirm deletion
+    const confirmed = window.confirm(
+      `Are you sure you want to delete user "${userEmail}"?\n\nThis action cannot be undone and will:\n- Remove the user from the users table\n- Remove associated auth account\n- Remove all related data`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      setDeletingUserId(userId);
+
+      // Call API route to delete user (handles both auth and database deletion)
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to delete user');
+      }
+
+      // Remove user from state
+      setUsers(users => users.filter(u => u.id !== userId));
+      
+      alert('User deleted successfully');
+    } catch (err: any) {
+      console.error('Error in handleDeleteUser:', err);
+      alert(err.message || 'An error occurred while deleting user');
+    } finally {
+      setDeletingUserId(null);
+    }
+  };
+
   const getUserDisplayName = (membership: Membership): string => {
     if (membership.user_profile) {
       const { first_name, second_name, surname } = membership.user_profile;
@@ -141,13 +252,310 @@ const MembershipManagement = () => {
     return membership.user_email || 'Unknown User';
   };
 
+  const getCustomerDisplayName = (customer: Customer): string => {
+    const nameParts = [customer.first_name, customer.second_name, customer.surname].filter(Boolean);
+    if (nameParts.length > 0) {
+      return nameParts.join(' ');
+    }
+    return customer.email || 'Unknown Customer';
+  };
+
+  const renderMembershipsTable = () => {
+    if (memberships.length === 0) {
+      return (
+        <div className="bg-white rounded-lg shadow p-12 text-center">
+          <div className="text-gray-400 mb-4">
+            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">No Memberships Found</h3>
+          <p className="text-gray-600">There are no membership registrations in the system yet.</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                User Name
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Reference
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Status
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {memberships.map(m => (
+              <tr key={m.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm font-medium text-gray-900">
+                    {getUserDisplayName(m)}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-500">
+                    {m.user_email}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">
+                    {m.reference}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {m.status ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      Active
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                      Inactive
+                    </span>
+                  )}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <button
+                    className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
+                      m.status
+                        ? 'bg-red-500 hover:bg-red-600'
+                        : 'bg-green-600 hover:bg-green-700'
+                    }`}
+                    onClick={() => handleStatusChange(m.id, !m.status)}
+                  >
+                    {m.status ? 'Deactivate' : 'Confirm Payment'}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const renderCustomersTable = () => {
+    if (customers.length === 0) {
+      return (
+        <div className="bg-white rounded-lg shadow p-12 text-center">
+          <div className="text-gray-400 mb-4">
+            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">No Customers Found</h3>
+          <p className="text-gray-600">There are no customer records in the system yet.</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                National ID
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                KRA PIN
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Mobile
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Created At
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {customers.map(customer => (
+              <tr key={customer.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm font-medium text-gray-900">
+                    {getCustomerDisplayName(customer)}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-500">
+                    {customer.email || 'N/A'}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">
+                    {customer.national_id || 'N/A'}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">
+                    {customer.kra_pin || 'N/A'}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">
+                    {customer.mobile || customer.telephone || 'N/A'}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-500">
+                    {customer.created_at ? new Date(customer.created_at).toLocaleDateString() : 'N/A'}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const renderUsersTable = () => {
+    if (users.length === 0) {
+      return (
+        <div className="bg-white rounded-lg shadow p-12 text-center">
+          <div className="text-gray-400 mb-4">
+            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">No Users Found</h3>
+          <p className="text-gray-600">There are no users in the system yet.</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                ID
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Role
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Created At
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {users.map(user => (
+              <tr key={user.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm font-mono text-gray-900 truncate max-w-xs">
+                    {user.id}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">
+                    {user.email}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    user.role === 'admin' 
+                      ? 'bg-purple-100 text-purple-800'
+                      : 'bg-blue-100 text-blue-800'
+                  }`}>
+                    {user.role || 'user'}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-500">
+                    {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <button
+                    onClick={() => handleDeleteUser(user.id, user.email)}
+                    disabled={deletingUserId === user.id}
+                    className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
+                      deletingUserId === user.id
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-red-600 hover:bg-red-700'
+                    }`}
+                    title="Delete user"
+                  >
+                    {deletingUserId === user.id ? 'Deleting...' : 'Delete'}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Membership Management</h1>
-          <p className="text-gray-600 mt-2">Manage member registrations and payment confirmations</p>
+          <p className="text-gray-600 mt-2">Manage memberships, customers, and users</p>
         </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="mb-6 border-b border-gray-200">
+        <nav className="-mb-px flex space-x-8">
+          <button
+            onClick={() => setActiveTab('memberships')}
+            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'memberships'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Memberships
+          </button>
+          <button
+            onClick={() => setActiveTab('customers')}
+            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'customers'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Customers
+          </button>
+          <button
+            onClick={() => setActiveTab('users')}
+            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'users'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Users
+          </button>
+        </nav>
       </div>
 
       {error && (
@@ -160,90 +568,19 @@ const MembershipManagement = () => {
         <div className="flex items-center justify-center py-20">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading memberships...</p>
+            <p className="mt-4 text-gray-600">Loading...</p>
           </div>
-        </div>
-      ) : memberships.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
-          <div className="text-gray-400 mb-4">
-            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">No Memberships Found</h3>
-          <p className="text-gray-600">There are no membership registrations in the system yet.</p>
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  User Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Reference
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {memberships.map(m => (
-                <tr key={m.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
-                      {getUserDisplayName(m)}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">
-                      {m.user_email}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">
-                      {m.reference}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {m.status ? (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        Active
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                        Inactive
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button
-                      className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
-                        m.status
-                          ? 'bg-red-500 hover:bg-red-600'
-                          : 'bg-green-600 hover:bg-green-700'
-                      }`}
-                      onClick={() => handleStatusChange(m.id, !m.status)}
-                    >
-                      {m.status ? 'Deactivate' : 'Confirm Payment'}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <>
+          {activeTab === 'memberships' && renderMembershipsTable()}
+          {activeTab === 'customers' && renderCustomersTable()}
+          {activeTab === 'users' && renderUsersTable()}
+        </>
       )}
     </div>
   );
 };
 
 export default MembershipManagement;
+

@@ -1,6 +1,5 @@
 import React from 'react';
 import Header from '../components/Header';
-import Hero from '../components/Hero';
 import NewHero from '../components/NewHero';
 import ProductPackages from '../components/ProductPackages';
 import FeaturedProperties from '../components/FeaturedProperties';
