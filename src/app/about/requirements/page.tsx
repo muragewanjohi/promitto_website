@@ -64,111 +64,112 @@ const RequirementsPage = () => {
               </div>
 
               <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
-              <h3 className="text-2xl font-bold text-primary mb-6 flex items-center">
-                <span className="mr-3 text-3xl">👤</span>Individual Registration
-              </h3>
-              <ul className="space-y-4">
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Passport Photos</span>
-                    <p className="text-gray-600 text-sm mt-1">Recent passport-sized photographs</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">National ID</span>
-                    <p className="text-gray-600 text-sm mt-1">Valid Kenyan National Identity Card</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Title Deed</span>
-                    <p className="text-gray-600 text-sm mt-1">Original or certified copy of land title deed</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Desired House Plan</span>
-                    <p className="text-gray-600 text-sm mt-1">Preferred house design or layout</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Registration Fee</span>
-                    <p className="text-gray-600 text-sm mt-1">Ksh. 30,000 registration fee</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">KRA Certificate</span>
-                    <p className="text-gray-600 text-sm mt-1">Kenya Revenue Authority PIN certificate</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
-              <h3 className="text-2xl font-bold text-secondary mb-6 flex items-center">
-                <span className="mr-3 text-3xl">🏢</span>Corporate Registration
-              </h3>
-              <ul className="space-y-4">
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Directors Passport Photos</span>
-                    <p className="text-gray-600 text-sm mt-1">Recent photos of all company directors</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Directors National ID</span>
-                    <p className="text-gray-600 text-sm mt-1">Valid IDs of all company directors</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Directors KRA Certificate</span>
-                    <p className="text-gray-600 text-sm mt-1">KRA PIN certificates for all directors</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Title Deed Copy</span>
-                    <p className="text-gray-600 text-sm mt-1">Copy of land title deed</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Certificate of Incorporation</span>
-                    <p className="text-gray-600 text-sm mt-1">Official company registration certificate</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">Company PIN Certificate</span>
-                    <p className="text-gray-600 text-sm mt-1">Company's KRA PIN certificate</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-semibold text-gray-900">CR (Certificate of Registration)</span>
-                    <p className="text-gray-600 text-sm mt-1">Company registration certificate</p>
-                  </div>
-                </li>
-              </ul>
+                <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
+                  <h3 className="text-2xl font-bold text-primary mb-6 flex items-center">
+                    <span className="mr-3 text-3xl">👤</span>Individual Registration
+                  </h3>
+                  <ul className="space-y-4">
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">Passport Photos</span>
+                        <p className="text-gray-600 text-sm mt-1">Recent passport-sized photographs</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">National ID</span>
+                        <p className="text-gray-600 text-sm mt-1">Valid Kenyan National Identity Card</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">Title Deed</span>
+                        <p className="text-gray-600 text-sm mt-1">Original or certified copy of land title deed</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">Desired House Plan</span>
+                        <p className="text-gray-600 text-sm mt-1">Preferred house design or layout</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">Registration Fee</span>
+                        <p className="text-gray-600 text-sm mt-1">Ksh. 30,000 registration fee</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">KRA Certificate</span>
+                        <p className="text-gray-600 text-sm mt-1">Kenya Revenue Authority PIN certificate</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
+                  <h3 className="text-2xl font-bold text-secondary mb-6 flex items-center">
+                    <span className="mr-3 text-3xl">🏢</span>Corporate Registration
+                  </h3>
+                  <ul className="space-y-4">
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">Directors Passport Photos</span>
+                        <p className="text-gray-600 text-sm mt-1">Recent photos of all company directors</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">Directors National ID</span>
+                        <p className="text-gray-600 text-sm mt-1">Valid IDs of all company directors</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">Directors KRA Certificate</span>
+                        <p className="text-gray-600 text-sm mt-1">KRA PIN certificates for all directors</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">Title Deed Copy</span>
+                        <p className="text-gray-600 text-sm mt-1">Copy of land title deed</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">Certificate of Incorporation</span>
+                        <p className="text-gray-600 text-sm mt-1">Official company registration certificate</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">Company PIN Certificate</span>
+                        <p className="text-gray-600 text-sm mt-1">Company's KRA PIN certificate</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="font-semibold text-gray-900">CR (Certificate of Registration)</span>
+                        <p className="text-gray-600 text-sm mt-1">Company registration certificate</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
 
