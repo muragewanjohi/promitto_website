@@ -14,7 +14,7 @@ const HowToOwn = () => {
     <div className="min-h-screen">
       <Header />
       {/* Hero Section */}
-      <section className="relative h-[70vh] overflow-hidden">
+      <section className="relative h-[300px] sm:h-[350px] lg:h-[400px] overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -32,7 +32,7 @@ const HowToOwn = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="text-center text-white space-y-6">
               <div className="space-y-4">
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight text-shadow-lg">
+                <h1 className="hero-title text-shadow-lg">
                   Own a <span className="text-secondary">Home</span>
                 </h1>
                 <p className="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed text-shadow-md max-w-3xl mx-auto">
@@ -66,7 +66,7 @@ const HowToOwn = () => {
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
              {/* Left Side - Features List */}
              <div className="space-y-8">
-               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+               <h2 className="site-title text-gray-900 mb-6">
                  Why Choose Promitto?
                </h2>
                <ul className="space-y-6">

@@ -50,9 +50,9 @@ const ProductPackages = () => {
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h4 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="site-title text-gray-900 mb-4">
             Our Construction Solutions
-          </h4>
+          </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Choose from our range of construction financing packages designed to meet your specific needs 
             and turn your construction dreams into reality.

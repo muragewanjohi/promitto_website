@@ -127,6 +127,16 @@ export default function AdminLayout({
                       Features Management
                     </NavLink>
                   </li>
+                  <li>
+                    <NavLink href="/admin/property-designs" icon={Layers}>
+                      Property Designs
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink href="/admin/property-designs/new" icon={PlusCircle}>
+                      Add Design
+                    </NavLink>
+                  </li>
                 </ul>
               </div>
 

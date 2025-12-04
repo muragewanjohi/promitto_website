@@ -218,7 +218,7 @@ const PropertyCard = ({ property, onPropertyClick }: PropertyCardProps) => {
       }}
     >
       {/* Enhanced Image Slider Section */}
-      <div className="relative h-72 overflow-hidden isolate">
+      <div className="relative h-80 overflow-hidden isolate">
         {!imageError ? (
           <>
             {/* Main Image Display */}
@@ -325,7 +325,7 @@ const PropertyCard = ({ property, onPropertyClick }: PropertyCardProps) => {
       </div>
 
       {/* Enhanced Content Section */}
-      <div className="p-6 space-y-4">
+      <div className="p-7 space-y-4">
         {/* Title with hover effect */}
         <div className="group/title cursor-pointer">
           <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight group-hover/title:text-[#1E40AF] transition-colors duration-200">

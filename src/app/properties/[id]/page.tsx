@@ -557,7 +557,7 @@ export default function PropertyPage({ params }: PropertyPageProps) {
             <div className="mb-8">
               <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-6 mb-6">
                 <div className="flex-1">
-                  <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">{property.name}</h1>
+                  <h1 className="site-title text-gray-900 mb-4">{property.name}</h1>
                   
                   {/* Location */}
                   <div className="flex items-center text-lg text-gray-600 mb-6">

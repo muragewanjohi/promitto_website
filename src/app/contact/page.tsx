@@ -52,7 +52,7 @@ const ContactUs = () => {
             <div className="grid md:grid-cols-2 gap-12">
               {/* Contact Form */}
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
+                <h2 className="site-title text-gray-900 mb-6">Send us a Message</h2>
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <div>
                     <label htmlFor="name" className="block text-xs font-medium text-gray-700 mb-1">
@@ -132,7 +132,7 @@ const ContactUs = () => {
               {/* Contact Information */}
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h2>
+                  <h2 className="site-title text-gray-900 mb-6">Contact Information</h2>
                   
                   {/* Kenya Office */}
                   <div className="mb-8">

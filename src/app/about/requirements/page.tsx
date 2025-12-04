@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import MediaSidebar from '../../../components/MediaSidebar';
 
 const RequirementsPage = () => {
   return (
@@ -9,7 +10,7 @@ const RequirementsPage = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative h-[400px] overflow-hidden">
+      <section className="relative h-[300px] sm:h-[350px] lg:h-[400px] overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -26,7 +27,7 @@ const RequirementsPage = () => {
             <div className="max-w-3xl">
               <div className="flex items-center mb-4">
                 <div className="w-1 h-16 bg-secondary mr-6"></div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white">
+                <h1 className="hero-title text-white">
                   Registration Requirements
                 </h1>
               </div>
@@ -40,24 +41,27 @@ const RequirementsPage = () => {
 
       {/* Registration Requirements */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="flex items-center justify-center mb-8">
-            <span className="inline-block bg-blue-100 p-3 rounded-full mr-3">
-              <svg className="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </span>
-            <h2 className="text-3xl font-bold text-gray-900">Registration Requirements</h2>
-          </div>
-          
-          <div className="text-center mb-12">
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              To begin your journey with Promitto, please ensure you have all the required documents ready. 
-              The registration fee is Ksh. 30,000 for both individual and corporate registrations.
-            </p>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-2">
+              <div className="flex items-center justify-center mb-8">
+                <span className="inline-block bg-blue-100 p-3 rounded-full mr-3">
+                  <svg className="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
+                <h2 className="site-title text-gray-900">Registration Requirements</h2>
+              </div>
+              
+              <div className="text-center mb-12">
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                  To begin your journey with Promitto, please ensure you have all the required documents ready. 
+                  The registration fee is Ksh. 30,000 for both individual and corporate registrations.
+                </p>
+              </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
               <h3 className="text-2xl font-bold text-primary mb-6 flex items-center">
                 <span className="mr-3 text-3xl">👤</span>Individual Registration
@@ -163,6 +167,12 @@ const RequirementsPage = () => {
                   </div>
                 </li>
               </ul>
+              </div>
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:sticky lg:top-24 lg:h-fit">
+              <MediaSidebar />
             </div>
           </div>
         </div>
@@ -170,8 +180,8 @@ const RequirementsPage = () => {
 
       {/* Contact Information */}
       <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h3 className="text-3xl font-bold text-gray-900 mb-6">Ready to Get Started?</h3>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="site-title text-gray-900 mb-6">Ready to Get Started?</h2>
           <p className="text-xl text-gray-600 mb-8">
             Contact our team to begin your registration process or if you have any questions about the requirements.
           </p>

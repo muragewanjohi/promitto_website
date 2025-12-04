@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import MediaSidebar from '../../../components/MediaSidebar';
 
 const OfficesPage = () => {
   return (
@@ -9,7 +10,7 @@ const OfficesPage = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative h-[400px] overflow-hidden">
+      <section className="relative h-[300px] sm:h-[350px] lg:h-[400px] overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -26,7 +27,7 @@ const OfficesPage = () => {
             <div className="max-w-3xl">
               <div className="flex items-center mb-4">
                 <div className="w-1 h-16 bg-secondary mr-6"></div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white">
+                <h1 className="hero-title text-white">
                   Our Offices
                 </h1>
               </div>
@@ -40,12 +41,14 @@ const OfficesPage = () => {
 
       {/* Global Presence Map */}
       <section className="py-20 bg-gradient-to-r from-secondary/5 to-primary/5">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-center mb-12">
-            
-            <h2 className="text-3xl font-bold text-gray-900">Our Global Presence</h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-2">
+              <div className="flex items-center justify-center mb-12">
+                <h2 className="site-title text-gray-900">Our Global Presence</h2>
+              </div>
+              <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-6">Serving East and Southern Africa</h3>
               <p className="text-gray-700 mb-8 leading-relaxed text-lg">
@@ -85,16 +88,23 @@ const OfficesPage = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
+              </div>
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:sticky lg:top-24 lg:h-fit">
+              <MediaSidebar />
+            </div>
           </div>
         </div>
       </section>
 
       {/* Contact Information */}
       <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center mb-8">
             
-            <h3 className="text-3xl font-bold text-gray-900">Contact Information</h3>
+            <h2 className="site-title text-gray-900">Contact Information</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-gray-50 rounded-xl p-6">

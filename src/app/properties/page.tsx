@@ -241,10 +241,10 @@ function PropertiesContent() {
   return (
     <div className="flex-grow bg-gray-50 min-h-screen">
       {/* Hero Section with Search */}
-      <div className="relative h-[250px] sm:h-[300px] lg:h-[350px] bg-cover bg-center" style={{ backgroundImage: 'url(/hero-house.jpg)' }}>
+      <div className="relative h-[300px] sm:h-[350px] lg:h-[400px] bg-cover bg-center" style={{ backgroundImage: 'url(/hero-house.jpg)' }}>
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-center">Find Your Dream Home</h1>
+          <h1 className="hero-title mb-4 sm:mb-6 text-center">Find Your Dream Home</h1>
           <div className="w-full max-w-2xl">
             <form onSubmit={handleSearch} className="relative">
               <input

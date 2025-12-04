@@ -4,9 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { Plus, Edit, Trash2, Eye, Star, FileText, Calendar, BookOpen, Newspaper } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, Star, FileText, Calendar, BookOpen, Newspaper, Images } from 'lucide-react';
 
-type MediaCategory = 'news' | 'resources' | 'events' | 'blogs';
+type MediaCategory = 'news' | 'resources' | 'events' | 'blogs' | 'gallery';
 
 interface MediaItem {
   id: string;
@@ -26,6 +26,7 @@ const categoryIcons = {
   resources: FileText,
   events: Calendar,
   blogs: BookOpen,
+  gallery: Images,
 };
 
 const categoryLabels = {
@@ -33,6 +34,7 @@ const categoryLabels = {
   resources: 'Resources',
   events: 'Events',
   blogs: 'Blogs',
+  gallery: 'Gallery',
 };
 
 export default function MediaManagementPage() {

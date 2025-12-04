@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { PhoneIcon, EnvelopeIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { Newspaper, FileText, Calendar, BookOpen, HelpCircle, Lightbulb, Building2, Calculator } from 'lucide-react';
+import { Newspaper, FileText, Calendar, BookOpen, HelpCircle, Lightbulb, Building2, Calculator, Images } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -164,7 +164,7 @@ export default function Header() {
               {/* Media Dropdown */}
               <div className="relative group">
                 <button 
-                  className={`text-base hover:text-secondary transition-colors capitalize font-semibold flex items-center ${pathname?.startsWith('/news') || pathname?.startsWith('/resources') || pathname?.startsWith('/events') || pathname?.startsWith('/blogs') || pathname?.startsWith('/faq') || pathname?.startsWith('/about') || pathname?.startsWith('/how-to-own') || pathname?.startsWith('/loan-calculator') ? 'text-secondary' : ''}`}
+                  className={`text-base hover:text-secondary transition-colors capitalize font-semibold flex items-center ${pathname?.startsWith('/news') || pathname?.startsWith('/resources') || pathname?.startsWith('/events') || pathname?.startsWith('/blogs') || pathname?.startsWith('/gallery') || pathname?.startsWith('/faq') || pathname?.startsWith('/about') || pathname?.startsWith('/how-to-own') || pathname?.startsWith('/loan-calculator') ? 'text-secondary' : ''}`}
                   onMouseEnter={() => setIsMediaDropdownOpen(true)}
                   onMouseLeave={() => {
                     setIsMediaDropdownOpen(false);
@@ -235,6 +235,19 @@ export default function Header() {
                       <div>
                         <div className="font-medium text-sm">Blogs</div>
                         <div className="text-xs text-gray-600 hover:text-gray-300">Latest blog posts and insights</div>
+                      </div>
+                    </Link>
+                    <Link 
+                      href="/gallery" 
+                      className="flex items-center px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                      onClick={() => {
+                        setIsMediaDropdownOpen(false);
+                      }}
+                    >
+                      <Images className="w-4 h-4 mr-3" />
+                      <div>
+                        <div className="font-medium text-sm">Gallery</div>
+                        <div className="text-xs text-gray-600 hover:text-gray-300">Photos and videos gallery</div>
                       </div>
                     </Link>
                     <Link 
@@ -553,6 +566,16 @@ export default function Header() {
                     >
                       <BookOpen className="w-4 h-4 mr-3" />
                       Blogs
+                    </Link>
+                    <Link 
+                      href="/gallery" 
+                      className={`flex items-center px-6 py-2 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 ${pathname?.startsWith('/gallery') ? 'text-secondary bg-white/10' : ''}`}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      <Images className="w-4 h-4 mr-3" />
+                      Gallery
                     </Link>
                   </div>
                   

@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import MediaSidebar from '../../components/MediaSidebar';
 import CompetitiveAdvantages from '../../components/CompetitiveAdvantages';
 import KeyStatistics from '../../components/KeyStatistics';
 import Services from '../../components/Services';
@@ -15,7 +16,7 @@ const AboutUs = () => {
       <Header />
       <div>
         {/* Hero Section */}
-        <section className="relative h-[500px] overflow-hidden">
+        <section className="relative h-[300px] sm:h-[350px] lg:h-[400px] overflow-hidden">
           {/* Background Image */}
           <div className="absolute inset-0">
             <Image
@@ -46,7 +47,7 @@ const AboutUs = () => {
                                  <div className="space-y-4">
                   <div className="flex items-center">
                     <div className="w-1 h-16 bg-secondary mr-6"></div>
-                    <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight">
+                    <h1 className="hero-title text-white">
                       About Us
                     </h1>
                   </div>
@@ -59,6 +60,97 @@ const AboutUs = () => {
           </div>
         </section>
 
+        {/* Purpose, Mission, Values & Vision Section */}
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* Main Content */}
+              <div className="lg:col-span-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {/* Purpose */}
+                  <div className="bg-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                    <div className="relative h-48 flex-shrink-0">
+                      <Image
+                        src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                        alt="Enriching Lives - Happy Family in New Home"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent"></div>
+                    </div>
+                    <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
+                      <h3 className="text-lg font-bold text-secondary mb-3">OUR PURPOSE</h3>
+                      <p className="text-white font-semibold">Enriching Lives</p>
+                    </div>
+                  </div>
+
+                  {/* Mission */}
+                  <div className="bg-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                    <div className="relative h-48 flex-shrink-0">
+                      <Image
+                        src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                        alt="Construction and Building Homes"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-secondary/30 to-transparent"></div>
+                    </div>
+                    <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
+                      <h3 className="text-lg font-bold text-secondary mb-3">OUR MISSION</h3>
+                      <p className="text-white">Enriching Lives Through Financial Empowerment</p>
+                    </div>
+                  </div>
+
+                  {/* Values */}
+                  <div className="bg-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                    <div className="relative h-48 flex-shrink-0">
+                      <Image
+                        src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                        alt="Construction Teamwork"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent"></div>
+                    </div>
+                    <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
+                      <h3 className="text-lg font-bold text-secondary mb-3">OUR VALUES</h3>
+                      <ul className="text-white space-y-1 text-sm">
+                        <li><span className="font-bold text-secondary">S</span>tewardship</li>
+                        <li><span className="font-bold text-secondary">T</span>eamwork</li>
+                        <li><span className="font-bold text-secondary">I</span>ntegrity</li>
+                        <li><span className="font-bold text-secondary">C</span>ustomer-Centric</li>
+                        <li><span className="font-bold text-secondary">I</span>nnovation</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Vision */}
+                  <div className="bg-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                    <div className="relative h-48 flex-shrink-0">
+                      <Image
+                        src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                        alt="Modern Housing Development Vision"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-secondary/30 to-transparent"></div>
+                    </div>
+                    <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
+                      <h3 className="text-lg font-bold text-secondary mb-3">OUR VISION</h3>
+                      <p className="text-white text-sm">To be a top ten banking group by being the most dependable and loved financial services provider</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Sidebar */}
+              <div className="lg:sticky lg:top-24 lg:h-fit">
+                <MediaSidebar />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Company Story & Context */}
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,7 +158,7 @@ const AboutUs = () => {
               <div>
                 <div className="flex items-center mb-6">
                   
-                  <h4 className="text-3xl font-bold text-gray-900">Our Story & The Housing Context</h4>
+                  <h2 className="site-title text-gray-900">Our Story & The Housing Context</h2>
                 </div>
                 <p className="text-gray-700 mb-6 leading-relaxed text-lg">
                   Kenya faces a significant housing deficit, with over <span className="font-semibold text-primary">2 million units needed</span> and an annual demand gap of <span className="font-semibold text-secondary">200,000 homes</span>. While initiatives like the Affordable Housing Programme have made strides, challenges related to cost, financing, and regulatory inefficiencies persist. This gap presents a tremendous opportunity for Promitto to expand its reach and help address this crisis.
@@ -98,7 +190,7 @@ const AboutUs = () => {
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex items-center justify-center mb-12">
               
-              <h4 className="text-3xl font-bold text-gray-900">Our Global Presence</h4>
+              <h2 className="site-title text-gray-900">Our Global Presence</h2>
             </div>
             <div className="grid md:grid-cols-2 gap-16 items-center">
               <div>

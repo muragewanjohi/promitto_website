@@ -136,7 +136,7 @@ export default function FeaturedMedia() {
               <div className="flex items-center justify-between mb-12">
                 <div className="flex items-center flex-1">
                   <CategoryIcon className="w-8 h-8 text-primary mr-3" />
-                  <h2 className="text-3xl font-bold text-primary mr-4">Featured {categoryLabel}</h2>
+                  <h2 className="site-title text-primary mr-4">Featured {categoryLabel}</h2>
                   <div className="flex-1 h-px bg-gray-400"></div>
                 </div>
                 <div className="flex items-center space-x-4 ml-4">

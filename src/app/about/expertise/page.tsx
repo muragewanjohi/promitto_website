@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import MediaSidebar from '../../../components/MediaSidebar';
 
 const ExpertisePage = () => {
   return (
@@ -9,7 +10,7 @@ const ExpertisePage = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative h-[400px] overflow-hidden">
+      <section className="relative h-[300px] sm:h-[350px] lg:h-[400px] overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -26,7 +27,7 @@ const ExpertisePage = () => {
             <div className="max-w-3xl">
               <div className="flex items-center mb-4">
                 <div className="w-1 h-16 bg-secondary mr-6"></div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white">
+                <h1 className="hero-title text-white">
                   Technical Expertise
                 </h1>
               </div>
@@ -40,13 +41,16 @@ const ExpertisePage = () => {
 
       {/* Technical Expertise */}
       <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">Our Technical Capacity</h2>
-          </div>
-          
-          {/* Organizational Chart */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 mb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-2">
+              <div className="flex items-center justify-center mb-12">
+                <h2 className="site-title text-gray-900">Our Technical Capacity</h2>
+              </div>
+              
+              {/* Organizational Chart */}
+              <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 mb-12">
             <h3 className="text-2xl font-bold text-primary mb-8 text-center">
               Organizational Structure
             </h3>
@@ -60,8 +64,14 @@ const ExpertisePage = () => {
                 priority
               />
             </div>
-          </div>
+              </div>
+            </div>
 
+            {/* Sidebar */}
+            <div className="lg:sticky lg:top-24 lg:h-fit">
+              <MediaSidebar />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -73,12 +83,12 @@ const ExpertisePage = () => {
           <div className="absolute bottom-20 right-10 w-40 h-40 bg-secondary rounded-full blur-3xl"></div>
         </div>
         
-        <div className="max-w-7xl mx-auto px-4 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
             
-            <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="site-title text-gray-900 mb-6">
               Key Capabilities
-            </h3>
+            </h2>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
               Our multidisciplinary team brings together expertise across all aspects of construction and project management
             </p>

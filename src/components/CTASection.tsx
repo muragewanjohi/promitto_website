@@ -6,7 +6,7 @@ const CTASection = () => {
     <section className="py-20 bg-gradient-to-br from-primary to-secondary text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="site-title mb-6">
             Ready to Build Your Dream Home?
           </h2>
           <p className="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto">

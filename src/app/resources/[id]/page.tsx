@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import MediaSidebar from '@/components/MediaSidebar';
 import { FileText, Calendar, User, ArrowLeft } from 'lucide-react';
 
 interface ResourceItem {
@@ -107,70 +108,80 @@ export default function ResourceDetailPage() {
     <main className="min-h-screen flex flex-col">
       <Header />
       <div className="flex-grow bg-gray-50 py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Breadcrumb */}
-          <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-8">
-            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-            <Link href="/resources" className="hover:text-primary transition-colors">Resources</Link>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-            <span className="text-gray-900 font-medium truncate">{resourceItem.title}</span>
-          </nav>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Main Content */}
+            <div className="flex-1">
+              {/* Breadcrumb */}
+              <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-8">
+                <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+                <Link href="/resources" className="hover:text-primary transition-colors">Resources</Link>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+                <span className="text-gray-900 font-medium truncate">{resourceItem.title}</span>
+              </nav>
 
-          {/* Article */}
-          <article className="bg-white rounded-xl shadow-lg overflow-hidden">
-            {resourceItem.image_url && (
-              <div className="relative h-96">
-                <Image
-                  src={resourceItem.image_url}
-                  alt={resourceItem.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
-            <div className="p-8">
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">{resourceItem.title}</h1>
-              
-              <div className="flex items-center gap-6 text-sm text-gray-600 mb-6 pb-6 border-b">
-                {resourceItem.author && (
-                  <div className="flex items-center gap-2">
-                    <User className="w-4 h-4" />
-                    <span>{resourceItem.author}</span>
+              {/* Article */}
+              <article className="bg-white rounded-xl shadow-lg overflow-hidden">
+                {resourceItem.image_url && (
+                  <div className="relative h-96">
+                    <Image
+                      src={resourceItem.image_url}
+                      alt={resourceItem.title}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                 )}
-                {resourceItem.published_at && (
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    <span>{new Date(resourceItem.published_at).toLocaleDateString('en-US', { 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
-                    })}</span>
+                <div className="p-8">
+                  <h1 className="site-title text-gray-900 mb-4">{resourceItem.title}</h1>
+                  
+                  <div className="flex items-center gap-6 text-sm text-gray-600 mb-6 pb-6 border-b">
+                    {resourceItem.author && (
+                      <div className="flex items-center gap-2">
+                        <User className="w-4 h-4" />
+                        <span>{resourceItem.author}</span>
+                      </div>
+                    )}
+                    {resourceItem.published_at && (
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        <span>{new Date(resourceItem.published_at).toLocaleDateString('en-US', { 
+                          year: 'numeric', 
+                          month: 'long', 
+                          day: 'numeric' 
+                        })}</span>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
 
-              <div 
-                className="prose prose-lg max-w-none"
-                dangerouslySetInnerHTML={{ __html: resourceItem.content.replace(/\n/g, '<br />') }}
-              />
+                  <div 
+                    className="prose prose-lg max-w-none"
+                    dangerouslySetInnerHTML={{ __html: resourceItem.content.replace(/\n/g, '<br />') }}
+                  />
+                </div>
+              </article>
+
+              {/* Back Button */}
+              <div className="mt-8">
+                <Link
+                  href="/resources"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Back to Resources
+                </Link>
+              </div>
             </div>
-          </article>
 
-          {/* Back Button */}
-          <div className="mt-8">
-            <Link
-              href="/resources"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Resources
-            </Link>
+            {/* Sidebar */}
+            <div className="lg:sticky lg:top-24 lg:h-fit">
+              <MediaSidebar />
+            </div>
           </div>
         </div>
       </div>

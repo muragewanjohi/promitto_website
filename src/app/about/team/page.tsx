@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import MediaSidebar from '../../../components/MediaSidebar';
 import BoardMemberModal from '../../../components/BoardMemberModal';
 
 interface BoardMember {
@@ -64,7 +65,7 @@ const TeamPage = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative h-[400px] overflow-hidden">
+      <section className="relative h-[300px] sm:h-[350px] lg:h-[400px] overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -81,7 +82,7 @@ const TeamPage = () => {
             <div className="max-w-3xl">
               <div className="flex items-center mb-4">
                 <div className="w-1 h-16 bg-secondary mr-6"></div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white">
+                <h1 className="hero-title text-white">
                   Our Team
                 </h1>
               </div>
@@ -95,11 +96,14 @@ const TeamPage = () => {
 
       {/* Board Members Section */}
       <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-center mb-12">
-            <h2 className="text-3xl font-bold text-primary">Board Members</h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-2">
+              <div className="flex items-center justify-center mb-12">
+                <h2 className="site-title text-primary">Board Members</h2>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {boardMembers.map((member, idx) => (
               <div 
                 key={idx}
@@ -121,18 +125,25 @@ const TeamPage = () => {
                 </div>
               </div>
             ))}
+              </div>
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:sticky lg:top-24 lg:h-fit">
+              <MediaSidebar />
+            </div>
           </div>
         </div>
       </section>
 
       {/* Management Team */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center mb-12">
             <span className="inline-block bg-secondary/20 p-3 rounded-full mr-3">
               <Image src="/hierarchical-structure_1042060.png" alt="Hierarchical Structure" width={32} height={32} className="w-8 h-8" />
             </span>
-            <h2 className="text-3xl font-bold text-primary">Our Management Team</h2>
+            <h2 className="site-title text-primary">Our Management Team</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[

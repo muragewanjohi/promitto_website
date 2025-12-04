@@ -36,7 +36,7 @@ const ProfilePage: React.FC = () => {
               </svg>
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">My Profile</h1>
+              <h1 className="site-title text-gray-900 mb-2">My Profile</h1>
               <p className="text-lg text-gray-600">Manage your account information and preferences</p>
             </div>
           </div>
