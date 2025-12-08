@@ -79,8 +79,8 @@ const AboutUs = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent"></div>
                     </div>
                     <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
-                      <h3 className="text-lg font-bold text-secondary mb-3">OUR PURPOSE</h3>
-                      <p className="text-white font-semibold">Enriching Lives</p>
+                      <h3 className="text-xl font-bold text-secondary mb-3">OUR PURPOSE</h3>
+                      <p className="text-white font-semibold text-base">Enriching Lives</p>
                     </div>
                   </div>
 
@@ -96,8 +96,8 @@ const AboutUs = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-secondary/30 to-transparent"></div>
                     </div>
                     <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
-                      <h3 className="text-lg font-bold text-secondary mb-3">OUR MISSION</h3>
-                      <p className="text-white">Enriching Lives Through Financial Empowerment</p>
+                      <h3 className="text-xl font-bold text-secondary mb-3">OUR MISSION</h3>
+                      <p className="text-white text-base">Enriching Lives Through Financial Empowerment</p>
                     </div>
                   </div>
 
@@ -113,8 +113,8 @@ const AboutUs = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent"></div>
                     </div>
                     <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
-                      <h3 className="text-lg font-bold text-secondary mb-3">CORE VALUES</h3>
-                      <ul className="text-white space-y-1 text-sm">
+                      <h3 className="text-xl font-bold text-secondary mb-3">CORE VALUES</h3>
+                      <ul className="text-white space-y-1 text-base">
                         <li><span className="font-bold text-secondary">T</span>rust</li>
                         <li><span className="font-bold text-secondary">C</span>ustomer satisfaction</li>
                         <li><span className="font-bold text-secondary">I</span>nnovation</li>
@@ -137,8 +137,8 @@ const AboutUs = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-secondary/30 to-transparent"></div>
                     </div>
                     <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
-                      <h3 className="text-lg font-bold text-secondary mb-3">OUR VISION</h3>
-                      <p className="text-white text-sm">To be a top ten banking group by being the most dependable and loved financial services provider</p>
+                      <h3 className="text-xl font-bold text-secondary mb-3">OUR VISION</h3>
+                      <p className="text-white text-base">To be a top ten banking group by being the most dependable and loved financial services provider</p>
                     </div>
                   </div>
                 </div>
