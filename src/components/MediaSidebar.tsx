@@ -99,11 +99,11 @@ export default function MediaSidebar() {
   };
 
   const socialLinks = {
-    twitter: 'https://twitter.com/promitto',
-    facebook: 'https://facebook.com/promitto',
-    linkedin: 'https://linkedin.com/company/promitto',
-    youtube: 'https://youtube.com/@promitto',
-    instagram: 'https://instagram.com/promitto',
+    twitter: 'https://twitter.com/promittohttps://x.com/PromittoLtd',
+    facebook: 'https://facebook.com/PromittoSacco',
+    linkedin: 'https://www.linkedin.com/company/promittoltd',
+    youtube: 'https://http://www.youtube.com/@promittoltd3271',
+    instagram: 'https://www.instagram.com/promitto_ltd',
   };
 
   return (
