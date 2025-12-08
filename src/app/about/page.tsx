@@ -113,13 +113,14 @@ const AboutUs = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent"></div>
                     </div>
                     <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
-                      <h3 className="text-lg font-bold text-secondary mb-3">OUR VALUES</h3>
+                      <h3 className="text-lg font-bold text-secondary mb-3">CORE VALUES</h3>
                       <ul className="text-white space-y-1 text-sm">
-                        <li><span className="font-bold text-secondary">S</span>tewardship</li>
-                        <li><span className="font-bold text-secondary">T</span>eamwork</li>
-                        <li><span className="font-bold text-secondary">I</span>ntegrity</li>
-                        <li><span className="font-bold text-secondary">C</span>ustomer-Centric</li>
+                        <li><span className="font-bold text-secondary">T</span>rust</li>
+                        <li><span className="font-bold text-secondary">C</span>ustomer satisfaction</li>
                         <li><span className="font-bold text-secondary">I</span>nnovation</li>
+                        <li><span className="font-bold text-secondary">I</span>nclusion</li>
+                        <li><span className="font-bold text-secondary">I</span>mpact</li>
+                        <li><span className="font-bold text-secondary">I</span>ntegrity</li>
                       </ul>
                     </div>
                   </div>
