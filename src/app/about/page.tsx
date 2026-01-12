@@ -25,6 +25,8 @@ const AboutUs = () => {
               fill
               className="object-cover"
               priority
+              sizes="100vw"
+              quality={90}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-transparent"></div>
           </div>
@@ -75,6 +77,9 @@ const AboutUs = () => {
                         alt="Enriching Lives - Happy Family in New Home"
                         fill
                         className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        loading="lazy"
+                        quality={75}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent"></div>
                     </div>
@@ -92,6 +97,9 @@ const AboutUs = () => {
                         alt="Construction and Building Homes"
                         fill
                         className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        loading="lazy"
+                        quality={75}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-secondary/30 to-transparent"></div>
                     </div>
@@ -109,6 +117,9 @@ const AboutUs = () => {
                         alt="Construction Teamwork"
                         fill
                         className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        loading="lazy"
+                        quality={75}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent"></div>
                     </div>
@@ -133,6 +144,9 @@ const AboutUs = () => {
                         alt="Modern Housing Development Vision"
                         fill
                         className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        loading="lazy"
+                        quality={75}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-secondary/30 to-transparent"></div>
                     </div>
@@ -230,6 +244,9 @@ const AboutUs = () => {
                   alt="Promitto Global Presence Map showing Kenya and Zambia"
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  loading="lazy"
+                  quality={75}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>

@@ -31,18 +31,28 @@ export default function NewsPage() {
   const fetchNews = async () => {
     try {
       setLoading(true);
+      setError(null);
+      
+      // Optimize: Only select needed fields (exclude large 'content' field)
+      // Add limit to prevent fetching too many records
       const { data, error: fetchError } = await supabase
         .from('media_items')
-        .select('*')
+        .select('id, title, excerpt, image_url, author, published_at, created_at')
         .eq('category', 'news')
         .eq('published', true)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(50); // Limit to 50 articles to prevent timeout
 
-      if (fetchError) throw fetchError;
+      if (fetchError) {
+        if (fetchError.code === '57014' || fetchError.message?.includes('timeout')) {
+          throw new Error('Query timeout - the database query took too long. Please try again.');
+        }
+        throw fetchError;
+      }
       setNewsItems(data || []);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error fetching news:', err);
-      setError('Failed to load news articles');
+      setError(err?.message || 'Failed to load news articles');
     } finally {
       setLoading(false);
     }
@@ -100,19 +110,23 @@ export default function NewsPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {newsItems.map((item) => (
+                  {newsItems.map((item, index) => (
                     <Link
                       key={item.id}
                       href={`/news/${item.id}`}
                       className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group"
                     >
                       {item.image_url && (
-                        <div className="relative h-48">
+                        <div className="relative h-48 bg-gray-100">
                           <Image
                             src={item.image_url}
                             alt={item.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 500px"
+                            loading={index < 2 ? undefined : 'lazy'}
+                            priority={index < 2}
+                            quality={index < 2 ? 80 : 60}
                           />
                         </div>
                       )}

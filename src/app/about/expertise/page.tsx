@@ -12,16 +12,18 @@ const ExpertisePage = () => {
       {/* Hero Section */}
       <section className="relative h-[300px] sm:h-[350px] lg:h-[400px] overflow-hidden">
         {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/about_us_hero_image.jpeg"
-            alt="About Promitto Limited"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-transparent"></div>
-        </div>
+          <div className="absolute inset-0">
+            <Image
+              src="/about_us_hero_image.jpeg"
+              alt="About Promitto Limited"
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+              quality={90}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-transparent"></div>
+          </div>
         <div className="relative z-10 h-full flex items-end pb-5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="max-w-3xl">
@@ -62,6 +64,8 @@ const ExpertisePage = () => {
                 height={1600}
                 className="w-full h-auto max-w-5xl rounded-lg"
                 priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 1200px"
+                quality={85}
               />
             </div>
               </div>
@@ -102,6 +106,9 @@ const ExpertisePage = () => {
                   alt="Project Planning"
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  loading="lazy"
+                  quality={75}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
                 <div className="absolute top-4 right-4">
@@ -135,6 +142,9 @@ const ExpertisePage = () => {
                   alt="Design & Architecture"
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  loading="lazy"
+                  quality={75}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent"></div>
                 <div className="absolute top-4 right-4">
@@ -168,6 +178,9 @@ const ExpertisePage = () => {
                   alt="Cost Management"
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  loading="lazy"
+                  quality={75}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
                 <div className="absolute top-4 right-4">

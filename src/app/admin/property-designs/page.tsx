@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 import { Plus, Edit, Trash2, Star, Image as ImageIcon } from 'lucide-react';
 
@@ -184,10 +185,13 @@ export default function PropertyDesignsAdmin() {
               {/* Image */}
               <div className="relative h-48 bg-gray-200">
                 {design.image_path ? (
-                  <img
+                  <Image
                     src={design.image_path}
                     alt={design.name}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = '/images/placeholder.png';
                     }}

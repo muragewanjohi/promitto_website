@@ -161,6 +161,9 @@ const TrustSection = () => {
                     alt={award.name}
                     fill
                     className="object-contain p-2"
+                    sizes="80px"
+                    loading="lazy"
+                    quality={75}
                   />
                 </div>
                 <h4 className="text-sm font-semibold text-gray-900 mb-2 leading-tight">

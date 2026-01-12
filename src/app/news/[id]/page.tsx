@@ -134,6 +134,9 @@ export default function NewsDetailPage() {
                       alt={newsItem.title}
                       fill
                       className="object-cover"
+                      sizes="100vw"
+                      priority
+                      quality={85}
                     />
                   </div>
                 )}

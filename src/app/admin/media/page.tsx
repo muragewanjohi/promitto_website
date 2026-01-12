@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 import { Plus, Edit, Trash2, Eye, Star, FileText, Calendar, BookOpen, Newspaper, Images } from 'lucide-react';
 
@@ -212,11 +213,17 @@ export default function MediaManagementPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         {item.image_url && (
-                          <img
-                            src={item.image_url}
-                            alt={item.title}
-                            className="w-12 h-12 object-cover rounded mr-3"
-                          />
+                          <div className="relative w-12 h-12 rounded mr-3 overflow-hidden flex-shrink-0">
+                            <Image
+                              src={item.image_url}
+                              alt={item.title}
+                              fill
+                              className="object-cover"
+                              sizes="48px"
+                              loading="lazy"
+                              quality={70}
+                            />
+                          </div>
                         )}
                         <div>
                           <div className="text-sm font-medium text-gray-900">{item.title}</div>

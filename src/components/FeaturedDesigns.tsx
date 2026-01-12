@@ -223,15 +223,19 @@ const FeaturedDesigns = () => {
         {/* Designs Grid */}
         {visibleDesigns.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {visibleDesigns.map((design) => (
+          {visibleDesigns.map((design, index) => (
             <div key={design.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               {/* Image */}
-              <div className="relative h-72">
+              <div className="relative h-72 bg-gray-100">
                 <Image
                   src={design.imagePath}
                   alt={design.name}
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  loading={index < 3 ? undefined : 'lazy'}
+                  priority={index < 3}
+                  quality={index < 3 ? 80 : 65}
                 />
                 <div className="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">
                   {design.bedrooms} BR

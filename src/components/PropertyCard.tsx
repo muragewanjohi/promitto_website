@@ -26,9 +26,10 @@ interface Property {
 interface PropertyCardProps {
   property: Property | null;
   onPropertyClick?: () => void;
+  priority?: boolean;
 }
 
-const PropertyCard = ({ property, onPropertyClick }: PropertyCardProps) => {
+const PropertyCard = ({ property, onPropertyClick, priority = false }: PropertyCardProps) => {
   const router = useRouter();
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -230,7 +231,9 @@ const PropertyCard = ({ property, onPropertyClick }: PropertyCardProps) => {
                 className="object-cover transition-all duration-700 ease-in-out transform group-hover:scale-110"
                 onError={() => setImageError(true)}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                priority={true}
+                priority={priority}
+                loading={priority ? undefined : 'lazy'}
+                quality={priority ? 85 : 75}
               />
               
               {/* Enhanced Gradient Overlay */}

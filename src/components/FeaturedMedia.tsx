@@ -167,19 +167,23 @@ export default function FeaturedMedia() {
 
               {/* Items Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {visibleItems.map((item) => (
+                {visibleItems.map((item, index) => (
                   <div
                     key={item.id}
                     className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
                   >
                     {/* Image */}
                     {item.image_url && (
-                      <div className="relative h-64">
+                      <div className="relative h-64 bg-gray-100">
                         <Image
                           src={item.image_url}
                           alt={item.title}
                           fill
                           className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          loading={index < 3 ? undefined : 'lazy'}
+                          priority={index < 3}
+                          quality={index < 3 ? 80 : 65}
                         />
                       </div>
                     )}

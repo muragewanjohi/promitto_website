@@ -78,6 +78,7 @@ function ImageSlider({ images, propertyName }: { images: string[], propertyName:
             className="object-cover transition-transform duration-700 group-hover:scale-105"
             priority={currentIndex === 0}
             sizes="100vw"
+            quality={currentIndex === 0 ? 85 : 75}
             onLoadingComplete={() => setIsLoading(false)}
             onLoadStart={() => setIsLoading(true)}
           />

@@ -31,18 +31,28 @@ export default function GalleryPage() {
   const fetchGallery = async () => {
     try {
       setLoading(true);
+      setError(null);
+      
+      // Optimize: Only select needed fields (exclude large 'content' field)
+      // Add limit to prevent fetching too many records
       const { data, error: fetchError } = await supabase
         .from('media_items')
-        .select('*')
+        .select('id, title, image_url, video_url, published_at, created_at')
         .eq('category', 'gallery')
         .eq('published', true)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(50); // Limit to 50 items to prevent timeout
 
-      if (fetchError) throw fetchError;
+      if (fetchError) {
+        if (fetchError.code === '57014' || fetchError.message?.includes('timeout')) {
+          throw new Error('Query timeout - the database query took too long. Please try again.');
+        }
+        throw fetchError;
+      }
       setGalleryItems(data || []);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error fetching gallery:', err);
-      setError('Failed to load gallery items');
+      setError(err?.message || 'Failed to load gallery items');
     } finally {
       setLoading(false);
     }
@@ -98,19 +108,23 @@ export default function GalleryPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {galleryItems.map((item) => (
+                  {galleryItems.map((item, index) => (
                     <div
                       key={item.id}
                       className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group"
                       onClick={() => setSelectedItem(item)}
                     >
                       {item.image_url ? (
-                        <div className="relative h-64 overflow-hidden">
+                        <div className="relative h-64 overflow-hidden bg-gray-100">
                           <Image
                             src={item.image_url}
                             alt={item.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            loading={index < 4 ? undefined : 'lazy'}
+                            priority={index < 4}
+                            quality={index < 4 ? 75 : 60}
                           />
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                             <Images className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />

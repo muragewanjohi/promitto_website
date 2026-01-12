@@ -134,6 +134,9 @@ export default function EventDetailPage() {
                       alt={eventItem.title}
                       fill
                       className="object-cover"
+                      sizes="100vw"
+                      priority
+                      quality={85}
                     />
                   </div>
                 )}

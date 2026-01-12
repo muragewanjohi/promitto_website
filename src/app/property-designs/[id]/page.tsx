@@ -290,6 +290,9 @@ export default function PropertyDesignDetailPage() {
                   alt={`${design.name} - Image ${currentImageIndex + 1}`}
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority={currentImageIndex === 0}
+                  quality={currentImageIndex === 0 ? 85 : 75}
                   onError={() => setImageError(true)}
                 />
               ) : (

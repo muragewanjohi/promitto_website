@@ -52,6 +52,22 @@ const NewHero = () => {
     return () => clearInterval(interval);
   }, [heroImages.length, mounted]);
 
+  // Preload next image before it's needed
+  useEffect(() => {
+    if (!mounted) return;
+    const nextIndex = (currentImageIndex + 1) % heroImages.length;
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = heroImages[nextIndex];
+    document.head.appendChild(link);
+    return () => {
+      if (document.head.contains(link)) {
+        document.head.removeChild(link);
+      }
+    };
+  }, [currentImageIndex, mounted, heroImages]);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -91,24 +107,35 @@ const NewHero = () => {
   return (
     <section className="relative h-[300px] sm:h-[350px] lg:h-[400px] overflow-hidden" style={{ zIndex: 1 }}>
       {/* Background Images with Fade Transition */}
-      {heroImages.map((image, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-            index === currentImageIndex ? 'opacity-100' : 'opacity-0'
-          }`}
-          style={{ zIndex: 1 }}
-        >
-          <Image
-            src={image}
-            alt={`Hero image ${index + 1}`}
-            fill
-            className="object-cover"
-            priority={index === 0}
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70" />
-        </div>
-      ))}
+      {heroImages.map((image, index) => {
+        // Only render visible image and next one for smooth transition
+        const isVisible = index === currentImageIndex;
+        const isNext = index === (currentImageIndex + 1) % heroImages.length;
+        const shouldLoad = isVisible || isNext || index === 0;
+        
+        if (!shouldLoad) return null;
+        
+        return (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              isVisible ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{ zIndex: 1 }}
+          >
+            <Image
+              src={image}
+              alt={`Hero image ${index + 1}`}
+              fill
+              className="object-cover"
+              priority={index === 0}
+              sizes="100vw"
+              quality={index === 0 ? 90 : 75}
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70" />
+          </div>
+        );
+      })}
 
       {/* Content */}
       <div className="relative h-full flex items-center" style={{ zIndex: 2 }}>

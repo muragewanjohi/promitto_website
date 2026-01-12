@@ -19,6 +19,10 @@ interface EventItem {
   created_at: string;
 }
 
+// Cache key for client-side caching (5 minutes)
+const EVENTS_CACHE_KEY = 'events_page_cache';
+const EVENTS_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export default function EventsPage() {
   const [eventItems, setEventItems] = useState<EventItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,18 +35,68 @@ export default function EventsPage() {
   const fetchEvents = async () => {
     try {
       setLoading(true);
+      setError(null);
+      
+      // Check cache first
+      if (typeof window !== 'undefined') {
+        const cached = localStorage.getItem(EVENTS_CACHE_KEY);
+        if (cached) {
+          const { data, timestamp } = JSON.parse(cached);
+          const now = Date.now();
+          if (now - timestamp < EVENTS_CACHE_DURATION) {
+            setEventItems(data);
+            setLoading(false);
+            return;
+          }
+        }
+      }
+
+      // Optimize: Only select needed fields (exclude large 'content' field)
+      // Add limit to prevent fetching too many records
       const { data, error: fetchError } = await supabase
         .from('media_items')
-        .select('*')
+        .select('id, title, excerpt, image_url, author, published_at, created_at')
         .eq('category', 'events')
         .eq('published', true)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(50); // Limit to 50 events to prevent timeout
 
-      if (fetchError) throw fetchError;
-      setEventItems(data || []);
-    } catch (err) {
+      if (fetchError) {
+        // Check if it's a timeout error
+        if (fetchError.code === '57014' || fetchError.message?.includes('timeout')) {
+          throw new Error('Query timeout - the database query took too long. Please try again or contact support.');
+        }
+        throw fetchError;
+      }
+
+      const events = (data || []) as EventItem[];
+      setEventItems(events);
+
+      // Cache the result
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(EVENTS_CACHE_KEY, JSON.stringify({
+          data: events,
+          timestamp: Date.now()
+        }));
+      }
+    } catch (err: any) {
       console.error('Error fetching events:', err);
-      setError('Failed to load events');
+      const errorMessage = err?.message || 'Failed to load events';
+      setError(errorMessage);
+      
+      // Try to load from cache even if expired
+      if (typeof window !== 'undefined') {
+        const cached = localStorage.getItem(EVENTS_CACHE_KEY);
+        if (cached) {
+          try {
+            const { data } = JSON.parse(cached);
+            setEventItems(data || []);
+            setError('Using cached data. Some events may be outdated.');
+          } catch (e) {
+            // Cache is corrupted, ignore
+          }
+        }
+      }
     } finally {
       setLoading(false);
     }
@@ -87,8 +141,22 @@ export default function EventsPage() {
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6">
-                  {error}
+                <div className={`border px-4 py-3 rounded-lg mb-6 ${
+                  error.includes('cached') 
+                    ? 'bg-yellow-50 border-yellow-200 text-yellow-800'
+                    : 'bg-red-50 border-red-200 text-red-600'
+                }`}>
+                  <div className="flex items-center justify-between">
+                    <span>{error}</span>
+                    {error.includes('timeout') && (
+                      <button
+                        onClick={fetchEvents}
+                        className="ml-4 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm"
+                      >
+                        Retry
+                      </button>
+                    )}
+                  </div>
                 </div>
               )}
 
@@ -100,19 +168,23 @@ export default function EventsPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {eventItems.map((item) => (
+                  {eventItems.map((item, index) => (
                     <Link
                       key={item.id}
                       href={`/events/${item.id}`}
                       className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group"
                     >
                       {item.image_url && (
-                        <div className="relative h-48">
+                        <div className="relative h-48 bg-gray-100">
                           <Image
                             src={item.image_url}
                             alt={item.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 500px"
+                            loading={index < 2 ? undefined : 'lazy'}
+                            priority={index < 2}
+                            quality={index < 2 ? 80 : 60}
                           />
                         </div>
                       )}

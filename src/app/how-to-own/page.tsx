@@ -23,6 +23,8 @@ const HowToOwn = () => {
             fill
             className="object-cover"
             priority
+            sizes="100vw"
+            quality={90}
           />
           <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70" />
         </div>

@@ -38,6 +38,10 @@ const categoryRoutes = {
   blogs: '/blogs',
 };
 
+// Cache key for client-side caching (5 minutes)
+const CACHE_KEY = 'media_sidebar_cache';
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export default function MediaSidebar() {
   const [latestByCategory, setLatestByCategory] = useState<Record<MediaCategory, MediaItem[]>>({
     news: [],
@@ -55,22 +59,36 @@ export default function MediaSidebar() {
   const fetchLatestMedia = async () => {
     try {
       setLoading(true);
+      
+      // Check cache first
+      if (typeof window !== 'undefined') {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const { data, timestamp } = JSON.parse(cached);
+          const now = Date.now();
+          if (now - timestamp < CACHE_DURATION) {
+            setLatestByCategory(data);
+            setLoading(false);
+            return;
+          }
+        }
+      }
+
       const categories: MediaCategory[] = ['news', 'resources', 'events', 'blogs'];
       
-      const promises = categories.map(async (category) => {
-        const { data, error } = await supabase
-          .from('media_items')
-          .select('id, title, category, image_url, published_at, created_at')
-          .eq('category', category)
-          .eq('published', true)
-          .order('created_at', { ascending: false })
-          .limit(5);
+      // Optimize: Use a single query instead of 4 separate queries
+      // Fetch all published items for all categories at once
+      const { data, error } = await supabase
+        .from('media_items')
+        .select('id, title, category, image_url, published_at, created_at')
+        .eq('published', true)
+        .in('category', categories)
+        .order('created_at', { ascending: false })
+        .limit(20); // Fetch more than needed, then filter client-side
 
-        if (error) throw error;
-        return { category, items: data || [] };
-      });
+      if (error) throw error;
 
-      const results = await Promise.all(promises);
+      // Group by category and limit to 5 per category
       const grouped: Record<MediaCategory, MediaItem[]> = {
         news: [],
         resources: [],
@@ -78,13 +96,32 @@ export default function MediaSidebar() {
         blogs: [],
       };
 
-      results.forEach(({ category, items }) => {
-        grouped[category as MediaCategory] = items as MediaItem[];
+      // Group items by category
+      (data || []).forEach((item) => {
+        const category = item.category as MediaCategory;
+        if (grouped[category] && grouped[category].length < 5) {
+          grouped[category].push(item);
+        }
       });
 
       setLatestByCategory(grouped);
+
+      // Cache the result
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          data: grouped,
+          timestamp: Date.now()
+        }));
+      }
     } catch (err) {
       console.error('Error fetching latest media:', err);
+      // Don't block the page - show empty state if fetch fails
+      setLatestByCategory({
+        news: [],
+        resources: [],
+        events: [],
+        blogs: [],
+      });
     } finally {
       setLoading(false);
     }
@@ -153,6 +190,9 @@ export default function MediaSidebar() {
                               alt={item.title}
                               fill
                               className="object-cover group-hover:scale-105 transition-transform duration-300"
+                              sizes="64px"
+                              loading="lazy"
+                              quality={70}
                             />
                           </div>
                         ) : (
