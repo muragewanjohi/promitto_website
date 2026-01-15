@@ -47,6 +47,13 @@ const TeamPage = () => {
       image: '/images/board/jimmy-kagoni.png',
       about: 'Jimmy Kagoni is a thought leader in building Africa Home grown solutions.He posses great innovative and analytical skills that enables him to build block by block design thinking strategies.',
       careerHistory: 'As a former Investment Banker with a Bachelor of Commerce in Finance and pursuing a Masters of business Administration at Strathmore University. He has served as an Investment Banker, Portfolio Manager and Investments Advisor with some of the leading investment banks as well as Stockbridge Investments where he managed Billions of shillings worth of portfolio with clear growth trajectory'
+    },
+    {
+      name: 'Innocent Ongeri',
+      title: 'Technical Committee',
+      image: '/images/board/innocent_ongeri.png',
+      about: 'Innocent Ongeri brings over five years of expertise in project management and architecture, with a strong focus on client satisfaction and practical design solutions.',
+      careerHistory: 'With a proven track record of successfully managing large-scale construction projects, Innocent has consistently delivered projects with high standards of quality, efficiency, and precision. His expertise lies in coordinating technical teams, overseeing project execution, and ensuring alignment with client expectations. He plays a vital role in turning concepts into well-executed, lasting structures.'
     }
   ];
 
@@ -74,6 +81,8 @@ const TeamPage = () => {
             fill
             className="object-cover"
             priority
+            sizes="100vw"
+            quality={90}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-transparent"></div>
         </div>
@@ -110,12 +119,16 @@ const TeamPage = () => {
                 className="text-center bg-gray-50 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105"
                 onClick={() => handleMemberClick(member)}
               >
-                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
+                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden bg-gray-100">
                   <Image
                     src={member.image}
                     alt={member.name}
                     fill
                     className="object-cover"
+                    sizes="128px"
+                    loading={idx < 4 ? undefined : 'lazy'}
+                    priority={idx < 4}
+                    quality={85}
                   />
                 </div>
                 <h4 className="text-xl font-bold text-primary mb-2">{member.name}</h4>
@@ -141,7 +154,14 @@ const TeamPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center mb-12">
             <span className="inline-block bg-secondary/20 p-3 rounded-full mr-3">
-              <Image src="/hierarchical-structure_1042060.png" alt="Hierarchical Structure" width={32} height={32} className="w-8 h-8" />
+              <Image 
+              src="/hierarchical-structure_1042060.png" 
+              alt="Hierarchical Structure" 
+              width={32} 
+              height={32} 
+              className="w-8 h-8" 
+              quality={75}
+            />
             </span>
             <h2 className="site-title text-primary">Our Management Team</h2>
           </div>
@@ -156,12 +176,16 @@ const TeamPage = () => {
             ].map((member, idx) => (
               <div key={idx} className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
                 {member.img ? (
-                  <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden ">
+                  <div className="relative w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden bg-gray-100">
                     <Image
                       src={member.img}
                       alt={member.name}
                       fill
                       className="object-cover"
+                      sizes="80px"
+                      loading={idx < 3 ? undefined : 'lazy'}
+                      priority={idx < 3}
+                      quality={80}
                     />
                   </div>
                 ) : (
