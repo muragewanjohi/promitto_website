@@ -10,7 +10,7 @@ const LoanCalculator = () => {
   const [propertyType, setPropertyType] = useState<string>('residential'); // residential or commercial
   const [loanTerm, setLoanTerm] = useState<string>('7'); // Default 7 years, adjustable
   const [interestRate] = useState<string>('12');
-  const [processingFee] = useState<string>('2.5'); // 2.5% processing fee
+  const [processingFee] = useState<string>('5'); // 5% processing fee
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
   const [totalPayment, setTotalPayment] = useState<number>(0);
   const [totalInterest, setTotalInterest] = useState<number>(0);
@@ -146,7 +146,7 @@ const LoanCalculator = () => {
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 bg-secondary rounded-full"></div>
-              <span className="text-gray-700 font-medium">Processing Fee: 2.5%</span>
+              <span className="text-gray-700 font-medium">Processing Fee: 5%</span>
             </div>
           </div>
         </div>
@@ -333,7 +333,7 @@ const LoanCalculator = () => {
                 <li>Loan term is adjustable from <span className="font-bold text-primary">1-7 years</span> for residential properties</li>
                 <li>Loan term is adjustable from <span className="font-bold text-primary">1-10 years</span> for commercial properties</li>
                 <li>Interest rate is fixed at <span className="font-bold text-primary">12% per annum</span> on reducing balance</li>
-                <li>Processing fee is <span className="font-bold text-secondary">2.5%</span> of the loan amount</li>
+                <li>Processing fee is <span className="font-bold text-secondary">5%</span> of the loan amount</li>
                 <li>Monthly payments start one month after construction begins</li>
                 <li>Construction period is typically <span className="font-bold text-primary">6-12 months</span></li>
               </ul>
