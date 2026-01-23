@@ -43,6 +43,27 @@ export default function SignUpPage() {
       // Save phone to user profile after sign up (to be handled after email verification)
       const { error } = await signUp(email, password);
       if (error) throw error;
+      
+      // Send admin notification email (non-blocking - don't fail signup if email fails)
+      try {
+        const response = await fetch('/api/notify-signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userEmail: email,
+            phone: phone.trim() || undefined,
+          }),
+        });
+        const result = await response.json();
+        if (!result.success) {
+          console.error('Failed to send admin notification email:', result.error);
+          // Don't throw - signup was successful, email notification is just a bonus
+        }
+      } catch (emailError) {
+        console.error('Error sending admin notification email:', emailError);
+        // Don't throw - signup was successful
+      }
+      
       // Optionally, you can store phone in localStorage or pass as query param for later use
       localStorage.setItem('pendingPhone', phone);
       router.push(`/verify-email?email=${encodeURIComponent(email)}`);

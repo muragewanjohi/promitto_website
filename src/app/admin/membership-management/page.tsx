@@ -3,6 +3,15 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 
+type ProfileProgress = {
+  customerDetails: boolean;
+  employmentDetails: boolean;
+  businessEntities: boolean;
+  propertyDetails: boolean;
+  nextOfKinDetails: boolean;
+  membershipDetails: boolean;
+};
+
 type Membership = {
   id: string;
   user_id: string;
@@ -15,6 +24,7 @@ type Membership = {
     second_name?: string;
     surname?: string;
   } | null;
+  profileProgress?: ProfileProgress;
 };
 
 type Customer = {
@@ -31,6 +41,7 @@ type Customer = {
   mobile?: string;
   current_address?: string;
   created_at?: string;
+  profileProgress?: ProfileProgress;
 };
 
 type User = {
@@ -60,6 +71,90 @@ const MembershipManagement = () => {
       fetchUsers();
     }
   }, [activeTab]);
+
+  // Check profile completion status for a user
+  const checkProfileProgress = async (userId: string): Promise<ProfileProgress> => {
+    const progress: ProfileProgress = {
+      customerDetails: false,
+      employmentDetails: false,
+      businessEntities: false,
+      propertyDetails: false,
+      nextOfKinDetails: false,
+      membershipDetails: false,
+    };
+
+    try {
+      // Check Customer Details - at least first_name and national_id should be filled
+      const { data: customerData } = await supabase
+        .from('customer_details')
+        .select('first_name, national_id')
+        .eq('user_id', userId)
+        .single();
+      
+      if (customerData && customerData.first_name && customerData.national_id) {
+        progress.customerDetails = true;
+      }
+
+      // Check Employment Details - at least employer_name should be filled
+      const { data: employmentData } = await supabase
+        .from('employment_details')
+        .select('employer_name')
+        .eq('user_id', userId)
+        .single();
+      
+      if (employmentData && employmentData.employer_name) {
+        progress.employmentDetails = true;
+      }
+
+      // Check Business Entities - at least registered_entity should be filled
+      const { data: businessData } = await supabase
+        .from('business_entities')
+        .select('registered_entity')
+        .eq('user_id', userId)
+        .single();
+      
+      if (businessData && businessData.registered_entity) {
+        progress.businessEntities = true;
+      }
+
+      // Check Property Details - at least location should be filled
+      const { data: propertyData } = await supabase
+        .from('property_details')
+        .select('location')
+        .eq('user_id', userId)
+        .single();
+      
+      if (propertyData && propertyData.location) {
+        progress.propertyDetails = true;
+      }
+
+      // Check Next of Kin Details - at least first_name should be filled
+      const { data: nextOfKinData } = await supabase
+        .from('next_of_kin_details')
+        .select('first_name')
+        .eq('user_id', userId)
+        .single();
+      
+      if (nextOfKinData && nextOfKinData.first_name) {
+        progress.nextOfKinDetails = true;
+      }
+
+      // Check Membership Details - reference should be filled
+      const { data: membershipData } = await supabase
+        .from('membership_details')
+        .select('reference')
+        .eq('user_id', userId)
+        .single();
+      
+      if (membershipData && membershipData.reference) {
+        progress.membershipDetails = true;
+      }
+    } catch (error) {
+      console.error('Error checking profile progress:', error);
+    }
+
+    return progress;
+  };
 
   const fetchMemberships = async () => {
     try {
@@ -108,6 +203,9 @@ const MembershipManagement = () => {
             console.error('Error fetching user:', userError);
           }
 
+          // Check profile progress
+          const profileProgress = await checkProfileProgress(membership.user_id);
+
           return {
             id: membership.id,
             user_id: membership.user_id,
@@ -116,6 +214,7 @@ const MembershipManagement = () => {
             created_at: membership.created_at,
             user_email: userEmail,
             user_profile: userProfile,
+            profileProgress,
           };
         })
       );
@@ -146,7 +245,18 @@ const MembershipManagement = () => {
         return;
       }
 
-      setCustomers(customerData || []);
+      // Add profile progress for each customer
+      const customersWithProgress = await Promise.all(
+        (customerData || []).map(async (customer: any) => {
+          const profileProgress = await checkProfileProgress(customer.user_id);
+          return {
+            ...customer,
+            profileProgress,
+          };
+        })
+      );
+
+      setCustomers(customersWithProgress);
     } catch (err) {
       console.error('Error in fetchCustomers:', err);
       setError('An error occurred while loading customers');
@@ -293,6 +403,9 @@ const MembershipManagement = () => {
                 Status
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Profile Progress
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -324,6 +437,42 @@ const MembershipManagement = () => {
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                       Inactive
                     </span>
+                  )}
+                </td>
+                <td className="px-6 py-4">
+                  {m.profileProgress ? (
+                    <div className="flex flex-col gap-1">
+                      <div className="text-xs text-gray-600 mb-1">
+                        {Object.values(m.profileProgress).filter(Boolean).length} / 6 completed
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {[
+                          { key: 'customerDetails', label: 'Customer' },
+                          { key: 'employmentDetails', label: 'Employment' },
+                          { key: 'businessEntities', label: 'Business' },
+                          { key: 'propertyDetails', label: 'Property' },
+                          { key: 'nextOfKinDetails', label: 'Next of Kin' },
+                          { key: 'membershipDetails', label: 'Membership' },
+                        ].map(({ key, label }) => {
+                          const isCompleted = m.profileProgress?.[key as keyof ProfileProgress];
+                          return (
+                            <span
+                              key={key}
+                              className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                                isCompleted
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-gray-100 text-gray-600'
+                              }`}
+                              title={isCompleted ? `${label} Details: Completed` : `${label} Details: Not completed`}
+                            >
+                              {isCompleted ? '✓' : '○'} {label}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <span className="text-xs text-gray-400">Loading...</span>
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -382,6 +531,9 @@ const MembershipManagement = () => {
                 Mobile
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Profile Progress
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Created At
               </th>
             </tr>
@@ -413,6 +565,42 @@ const MembershipManagement = () => {
                   <div className="text-sm text-gray-900">
                     {customer.mobile || customer.telephone || 'N/A'}
                   </div>
+                </td>
+                <td className="px-6 py-4">
+                  {customer.profileProgress ? (
+                    <div className="flex flex-col gap-1">
+                      <div className="text-xs text-gray-600 mb-1">
+                        {Object.values(customer.profileProgress).filter(Boolean).length} / 6 completed
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {[
+                          { key: 'customerDetails', label: 'Customer' },
+                          { key: 'employmentDetails', label: 'Employment' },
+                          { key: 'businessEntities', label: 'Business' },
+                          { key: 'propertyDetails', label: 'Property' },
+                          { key: 'nextOfKinDetails', label: 'Next of Kin' },
+                          { key: 'membershipDetails', label: 'Membership' },
+                        ].map(({ key, label }) => {
+                          const isCompleted = customer.profileProgress?.[key as keyof ProfileProgress];
+                          return (
+                            <span
+                              key={key}
+                              className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                                isCompleted
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-gray-100 text-gray-600'
+                              }`}
+                              title={isCompleted ? `${label} Details: Completed` : `${label} Details: Not completed`}
+                            >
+                              {isCompleted ? '✓' : '○'} {label}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <span className="text-xs text-gray-400">Loading...</span>
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-500">

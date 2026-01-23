@@ -6,6 +6,8 @@ import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { ArrowLeft, Save, X, Video } from 'lucide-react';
 import RichTextEditor from '@/components/RichTextEditor';
+// @ts-ignore - tus-js-client types will be available after npm install
+import * as tus from 'tus-js-client';
 
 type MediaCategory = 'news' | 'resources' | 'events' | 'blogs' | 'gallery';
 type MediaType = 'image' | 'video';
@@ -14,6 +16,7 @@ export default function NewMediaPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -59,6 +62,92 @@ export default function NewMediaPage() {
     setVideoFile(null);
     setVideoPreview(null);
     setFormData({ ...formData, video_url: '' });
+  };
+
+  // Resumable video upload function using TUS protocol
+  const uploadVideoResumable = async (file: File, filePath: string): Promise<string> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // Get the current session to use authenticated token
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError || !session) {
+          reject(new Error('You must be logged in to upload videos. Please sign in and try again.'));
+          return;
+        }
+
+        // Get Supabase storage URL
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+        
+        // Extract project ref from URL (format: https://xxxxx.supabase.co)
+        const urlMatch = supabaseUrl.match(/https:\/\/([^.]+)\.supabase\.co/);
+        if (!urlMatch) {
+          reject(new Error('Invalid Supabase URL format'));
+          return;
+        }
+        const projectRef = urlMatch[1];
+
+        // Use direct storage hostname for better performance
+        const storageUrl = `https://${projectRef}.supabase.co/storage/v1/upload/resumable`;
+        
+        // Use the session access token instead of anon key for authenticated uploads
+        const accessToken = session.access_token;
+        
+        const upload = new tus.Upload(file, {
+          endpoint: storageUrl,
+          retryDelays: [0, 3000, 5000, 10000, 20000],
+          headers: {
+            authorization: `Bearer ${accessToken}`,
+            'x-upsert': 'false',
+          },
+        metadata: {
+          bucketName: 'media',
+          objectName: filePath,
+          contentType: file.type || 'video/mp4',
+          cacheControl: '3600',
+        },
+        chunkSize: 6 * 1024 * 1024, // 6MB chunks (required by Supabase)
+        removeFingerprintOnSuccess: true,
+        onError: (error: Error) => {
+          console.error('Upload error:', error);
+          setUploading(false);
+          setUploadProgress(0);
+          reject(new Error(`Upload failed: ${error.message || 'Unknown error'}`));
+        },
+        onProgress: (bytesUploaded: number, bytesTotal: number) => {
+          const progress = Math.round((bytesUploaded / bytesTotal) * 100);
+          setUploadProgress(progress);
+        },
+        onSuccess: () => {
+          // Get the public URL after successful upload
+          const { data: publicUrlData } = supabase.storage
+            .from('media')
+            .getPublicUrl(filePath);
+          resolve(publicUrlData.publicUrl);
+        },
+      });
+
+        // Check if there's a previous upload to resume
+        // @ts-ignore - tus-js-client types
+        upload.findPreviousUploads().then((previousUploads: any) => {
+          if (previousUploads.length > 0) {
+            // @ts-ignore - tus-js-client types
+            upload.resumeFromPreviousUpload(previousUploads[0]);
+          }
+          upload.start();
+        }).catch((error: Error) => {
+          console.error('Error starting upload:', error);
+          setUploading(false);
+          setUploadProgress(0);
+          reject(new Error(`Failed to start upload: ${error.message || 'Unknown error'}`));
+        });
+      } catch (error) {
+        console.error('Error setting up upload:', error);
+        setUploading(false);
+        setUploadProgress(0);
+        reject(new Error(`Failed to set up upload: ${error instanceof Error ? error.message : 'Unknown error'}`));
+      }
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -114,24 +203,23 @@ export default function NewMediaPage() {
       }
 
       // Upload new video to Supabase Storage if a file was selected
+      // Always use resumable upload for videos (better for reliability and progress tracking)
       if (videoFile) {
         setUploading(true);
+        setUploadProgress(0);
         const fileExt = videoFile.name.split('.').pop();
         const filePath = `media/videos/video-${Date.now()}.${fileExt}`;
         
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('media')
-          .upload(filePath, videoFile, { upsert: false });
-        
-        if (uploadError) throw uploadError;
-        
-        // Get the public URL
-        const { data: publicUrlData } = supabase.storage
-          .from('media')
-          .getPublicUrl(filePath);
-        
-        videoUrl = publicUrlData.publicUrl;
-        setUploading(false);
+        try {
+          // Use resumable upload for all videos (more reliable, especially for larger files)
+          videoUrl = await uploadVideoResumable(videoFile, filePath);
+        } catch (uploadError) {
+          console.error('Video upload error:', uploadError);
+          throw new Error(`Video upload failed: ${uploadError instanceof Error ? uploadError.message : 'Unknown error'}`);
+        } finally {
+          setUploading(false);
+          setUploadProgress(0);
+        }
       }
 
       // For gallery items, only include image_url or video_url based on selection
@@ -444,7 +532,17 @@ export default function NewMediaPage() {
             </div>
           )}
           {uploading && (
-            <p className="text-sm text-gray-500 mt-2">Uploading video...</p>
+            <div className="mt-2">
+              <p className="text-sm text-gray-500 mb-2">Uploading video... {uploadProgress > 0 && `${uploadProgress}%`}</p>
+              {uploadProgress > 0 && (
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className="bg-primary h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${uploadProgress}%` }}
+                  />
+                </div>
+              )}
+            </div>
           )}
           </div>
         ) : null}

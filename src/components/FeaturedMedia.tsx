@@ -4,9 +4,10 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
-import { Newspaper, FileText, Calendar, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Newspaper, FileText, Calendar, BookOpen, Images, ChevronLeft, ChevronRight } from 'lucide-react';
+import VideoThumbnail from './VideoThumbnail';
 
-type MediaCategory = 'news' | 'resources' | 'events' | 'blogs';
+type MediaCategory = 'news' | 'resources' | 'events' | 'blogs' | 'gallery';
 
 interface MediaItem {
   id: string;
@@ -14,6 +15,7 @@ interface MediaItem {
   category: MediaCategory;
   excerpt?: string;
   image_url?: string;
+  video_url?: string;
   author?: string;
   published_at?: string;
 }
@@ -23,6 +25,7 @@ const categoryIcons = {
   resources: FileText,
   events: Calendar,
   blogs: BookOpen,
+  gallery: Images,
 };
 
 const categoryLabels = {
@@ -30,6 +33,7 @@ const categoryLabels = {
   resources: 'Resources',
   events: 'Events',
   blogs: 'Blogs',
+  gallery: 'Gallery',
 };
 
 const categoryRoutes = {
@@ -37,6 +41,7 @@ const categoryRoutes = {
   resources: '/resources',
   events: '/events',
   blogs: '/blogs',
+  gallery: '/gallery',
 };
 
 export default function FeaturedMedia() {
@@ -45,6 +50,7 @@ export default function FeaturedMedia() {
     resources: [],
     events: [],
     blogs: [],
+    gallery: [],
   });
   const [loading, setLoading] = useState(true);
   const [currentIndices, setCurrentIndices] = useState<Record<MediaCategory, number>>({
@@ -52,6 +58,7 @@ export default function FeaturedMedia() {
     resources: 0,
     events: 0,
     blogs: 0,
+    gallery: 0,
   });
 
   useEffect(() => {
@@ -60,12 +67,13 @@ export default function FeaturedMedia() {
 
   const fetchFeaturedMedia = async () => {
     try {
-      const categories: MediaCategory[] = ['news', 'resources', 'events', 'blogs'];
+      const categories: MediaCategory[] = ['news', 'resources', 'events', 'blogs', 'gallery'];
       const featuredData: Record<MediaCategory, MediaItem[]> = {
         news: [],
         resources: [],
         events: [],
         blogs: [],
+        gallery: [],
       };
 
       for (const category of categories) {
@@ -172,8 +180,8 @@ export default function FeaturedMedia() {
                     key={item.id}
                     className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
                   >
-                    {/* Image */}
-                    {item.image_url && (
+                    {/* Image or Video */}
+                    {item.image_url ? (
                       <div className="relative h-64 bg-gray-100">
                         <Image
                           src={item.image_url}
@@ -186,7 +194,16 @@ export default function FeaturedMedia() {
                           quality={index < 3 ? 80 : 65}
                         />
                       </div>
-                    )}
+                    ) : item.video_url ? (
+                      <div className="relative h-64 bg-black">
+                        <VideoThumbnail
+                          videoUrl={item.video_url}
+                          alt={item.title}
+                          className="w-full h-full"
+                          seekTime={1}
+                        />
+                      </div>
+                    ) : null}
 
                     {/* Content */}
                     <div className="p-6">
@@ -195,19 +212,28 @@ export default function FeaturedMedia() {
                         <span className="text-xs font-semibold text-primary uppercase">{categoryLabel}</span>
                       </div>
                       <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">{item.title}</h3>
-                      {item.excerpt && (
+                      {item.excerpt && category !== 'gallery' && (
                         <p className="text-gray-600 mb-4 line-clamp-3">{item.excerpt}</p>
                       )}
                       <div className="flex items-center justify-between">
                         {item.author && (
                           <span className="text-sm text-gray-500">By {item.author}</span>
                         )}
-                        <Link
-                          href={`${categoryRoute}/${item.id}`}
-                          className="text-primary font-semibold hover:text-secondary transition-colors"
-                        >
-                          Read More →
-                        </Link>
+                        {category === 'gallery' ? (
+                          <Link
+                            href={categoryRoute}
+                            className="text-primary font-semibold hover:text-secondary transition-colors"
+                          >
+                            View Gallery →
+                          </Link>
+                        ) : (
+                          <Link
+                            href={`${categoryRoute}/${item.id}`}
+                            className="text-primary font-semibold hover:text-secondary transition-colors"
+                          >
+                            Read More →
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </div>

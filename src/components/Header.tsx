@@ -6,13 +6,14 @@ import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { PhoneIcon, EnvelopeIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { Newspaper, FileText, Calendar, BookOpen, HelpCircle, Lightbulb, Building2, Calculator, Images } from 'lucide-react';
+import { Newspaper, FileText, Calendar, BookOpen, HelpCircle, Lightbulb, Building2, Calculator, Images, User, Settings, LogOut } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const [isMediaDropdownOpen, setIsMediaDropdownOpen] = useState(false);
   const [isInsightsDropdownOpen, setIsInsightsDropdownOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { user, userProfile, signOut } = useAuth();
   const pathname = usePathname();
@@ -29,7 +30,23 @@ export default function Header() {
     setIsAboutDropdownOpen(false);
     setIsMediaDropdownOpen(false);
     setIsInsightsDropdownOpen(false);
+    setIsProfileDropdownOpen(false);
   }, [pathname]);
+
+  // Close profile dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.profile-dropdown-container')) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+
+    if (isProfileDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isProfileDropdownOpen]);
 
   // Show loading state until component is mounted
   if (!mounted) {
@@ -394,27 +411,85 @@ export default function Header() {
                 </Link>
               )}
               {user ? (
-                <div className="flex items-center space-x-2 sm:space-x-4">
-                  <Link 
-                    href="/profile" 
-                    className="text-sm lg:text-base hover:text-secondary font-bold transition-colors capitalize"
-                  >
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors">
-                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                    </div>
-                  </Link>
-                  <button
-                    onClick={async () => {
-                      await signOut();
-                      router.push('/');
-                    }}
-                    className="text-xs sm:text-sm bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-300 capitalize shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
-                    <span className="hidden sm:inline">Log out</span>
-                    <span className="sm:hidden">Logout</span>
-                  </button>
+                <div className="flex items-center space-x-2 sm:space-x-4 profile-dropdown-container">
+                  {/* Profile Dropdown */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                      className="flex items-center space-x-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-white/10 transition-colors group"
+                      aria-label="Profile menu"
+                      aria-expanded={isProfileDropdownOpen}
+                    >
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center hover:ring-2 hover:ring-white/50 transition-all shadow-md group-hover:shadow-lg">
+                        <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                      </div>
+                      <span className="hidden lg:inline text-sm font-medium text-white group-hover:text-secondary transition-colors">
+                        Profile
+                      </span>
+                      <ChevronDownIcon className={`hidden lg:block w-4 h-4 text-white transition-transform ${isProfileDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {/* Profile Dropdown Menu */}
+                    {isProfileDropdownOpen && (
+                      <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden">
+                        <div className="py-2">
+                          {/* User Info */}
+                          <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
+                            <p className="text-sm font-semibold text-gray-900 truncate">
+                              {(() => {
+                                const profile = userProfile as any;
+                                if (profile?.first_name && profile?.surname) {
+                                  return `${profile.first_name} ${profile.surname}`;
+                                }
+                                return user?.email?.split('@')[0] || 'User';
+                              })()}
+                            </p>
+                            <p className="text-xs text-gray-500 truncate mt-0.5">
+                              {user?.email}
+                            </p>
+                          </div>
+
+                          {/* Profile Link */}
+                          <Link
+                            href="/profile"
+                            onClick={() => setIsProfileDropdownOpen(false)}
+                            className="flex items-center px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                          >
+                            <User className="w-4 h-4 mr-3" />
+                            <span className="text-sm font-medium">My Profile</span>
+                          </Link>
+
+                          {/* Admin Link (if admin) */}
+                          {userProfile?.role === 'admin' && (
+                            <Link
+                              href="/admin"
+                              onClick={() => setIsProfileDropdownOpen(false)}
+                              className="flex items-center px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                            >
+                              <Settings className="w-4 h-4 mr-3" />
+                              <span className="text-sm font-medium">Admin Panel</span>
+                            </Link>
+                          )}
+
+                          {/* Divider */}
+                          <div className="border-t border-gray-200 my-1"></div>
+
+                          {/* Logout */}
+                          <button
+                            onClick={async () => {
+                              setIsProfileDropdownOpen(false);
+                              await signOut();
+                              router.push('/');
+                            }}
+                            className="w-full flex items-center px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors"
+                          >
+                            <LogOut className="w-4 h-4 mr-3" />
+                            <span className="text-sm font-medium">Log Out</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               ) : (
                 <>
@@ -641,6 +716,22 @@ export default function Header() {
                   )}
                   {user ? (
                     <div className="space-y-2">
+                      {/* User Info */}
+                      <div className="px-4 py-3 bg-white/10 rounded-lg mb-2">
+                        <p className="text-sm font-semibold text-white truncate">
+                          {(() => {
+                            const profile = userProfile as any;
+                            if (profile?.first_name && profile?.surname) {
+                              return `${profile.first_name} ${profile.surname}`;
+                            }
+                            return user?.email?.split('@')[0] || 'User';
+                          })()}
+                        </p>
+                        <p className="text-xs text-white/80 truncate mt-0.5">
+                          {user?.email}
+                        </p>
+                      </div>
+                      
                       <Link 
                         href="/profile" 
                         className="flex items-center px-4 py-3 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 font-medium"
@@ -648,22 +739,35 @@ export default function Header() {
                           setIsMenuOpen(false);
                         }}
                       >
-                        <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center mr-3">
-                          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                          </svg>
+                        <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mr-3 shadow-md">
+                          <User className="w-5 h-5 text-white" />
                         </div>
-                        Profile
+                        <span>My Profile</span>
                       </Link>
+                      
+                      {userProfile?.role === 'admin' && (
+                        <Link 
+                          href="/admin" 
+                          className="flex items-center px-4 py-3 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 font-medium"
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                          }}
+                        >
+                          <Settings className="w-5 h-5 mr-3" />
+                          <span>Admin Panel</span>
+                        </Link>
+                      )}
+                      
                       <button
                         onClick={async () => {
                           await signOut();
                           router.push('/');
                           setIsMenuOpen(false);
                         }}
-                        className="w-full text-left px-4 py-3 text-red-300 hover:text-red-200 transition-colors capitalize rounded-lg hover:bg-red-500/20 font-medium"
+                        className="w-full flex items-center px-4 py-3 text-red-300 hover:text-red-200 transition-colors capitalize rounded-lg hover:bg-red-500/20 font-medium"
                       >
-                        Log Out
+                        <LogOut className="w-5 h-5 mr-3" />
+                        <span>Log Out</span>
                       </button>
                     </div>
                   ) : (

@@ -8,6 +8,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MediaSidebar from '@/components/MediaSidebar';
 import { Images, Video, Calendar } from 'lucide-react';
+import VideoThumbnail from '@/components/VideoThumbnail';
 
 interface GalleryItem {
   id: string;
@@ -132,12 +133,11 @@ export default function GalleryPage() {
                         </div>
                       ) : item.video_url ? (
                         <div className="relative h-64 overflow-hidden bg-black">
-                          <video
-                            src={item.video_url}
-                            className="w-full h-full object-cover"
-                            muted
-                            loop
-                            playsInline
+                          <VideoThumbnail
+                            videoUrl={item.video_url}
+                            alt={item.title}
+                            className="w-full h-full"
+                            seekTime={1} // Extract frame at 1 second (skips black first frame)
                           />
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                             <Video className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
