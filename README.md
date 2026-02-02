@@ -50,6 +50,8 @@ yarn install
    
    # Email Configuration (if using Resend)
    RESEND_API_KEY=your_resend_api_key_here
+   # Optional: use your verified domain (e.g. noreply@promittoltd.com) once Resend domain is verified
+   RESEND_FROM_EMAIL=noreply@promittoltd.com
    ```
 
 4. Run the development server:
@@ -94,6 +96,7 @@ promitto/
    - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
    - `RESEND_API_KEY`: Your Resend API key (if using email functionality)
+   - `RESEND_FROM_EMAIL`: (Optional) Sender address on your verified domain (e.g. `noreply@promittoltd.com`)
 
 4. Deploy your application
 
@@ -104,6 +107,7 @@ Make sure to set these environment variables in your deployment platform:
 - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL (starts with `https://`)
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous/public key
 - `RESEND_API_KEY`: Your Resend API key for email functionality
+- `RESEND_FROM_EMAIL`: (Optional) Sender address on your verified domain (e.g. `noreply@promittoltd.com`). See `docs/technical/resend-vercel-dns.md` for connecting Resend to Vercel.
 
 ## Contributing
 

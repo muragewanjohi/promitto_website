@@ -2,6 +2,9 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Use custom domain (e.g. noreply@promittoltd.com) when RESEND_FROM_EMAIL is set and domain is verified in Resend
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+
 export async function sendInquiryEmail({
   to,
   propertyName,
@@ -17,7 +20,7 @@ export async function sendInquiryEmail({
 }) {
   try {
     const data = await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: FROM_EMAIL,
       to: [to],
       subject: `New Inquiry for ${propertyName}`,
       html: `
@@ -59,7 +62,7 @@ export async function sendContactEmail({
 }) {
   try {
     const data = await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: FROM_EMAIL,
       to: [to],
       subject: `Contact Form: ${subject}`,
       html: `
@@ -99,7 +102,7 @@ export async function sendSignupNotificationEmail({
     const recipients = Array.isArray(to) ? to : [to];
     
     const data = await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: FROM_EMAIL,
       to: recipients,
       subject: 'New User Signup - Promitto',
       html: `

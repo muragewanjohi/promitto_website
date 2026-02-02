@@ -68,7 +68,7 @@ const AboutUs = () => {
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Main Content */}
               <div className="lg:col-span-2">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {/* Purpose */}
                   <div className="bg-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
                     <div className="relative h-48 flex-shrink-0">
@@ -105,7 +105,7 @@ const AboutUs = () => {
                     </div>
                     <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
                       <h3 className="text-xl font-bold text-secondary mb-3">OUR MISSION</h3>
-                      <p className="text-white text-base">Enriching Lives Through Financial Empowerment</p>
+                      <p className="text-white text-base">To advance housing affordability through innovative funding structures, efficient project delivery frameworks, and robust governance systems that promote sustainable homeownership.</p>
                     </div>
                   </div>
 
@@ -126,12 +126,12 @@ const AboutUs = () => {
                     <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
                       <h3 className="text-xl font-bold text-secondary mb-3">CORE VALUES</h3>
                       <ul className="text-white space-y-1 text-base">
-                        <li><span className="font-bold text-secondary">T</span>rust</li>
-                        <li><span className="font-bold text-secondary">C</span>ustomer satisfaction</li>
-                        <li><span className="font-bold text-secondary">I</span>nnovation</li>
-                        <li><span className="font-bold text-secondary">I</span>nclusion</li>
-                        <li><span className="font-bold text-secondary">I</span>mpact</li>
                         <li><span className="font-bold text-secondary">I</span>ntegrity</li>
+                        <li><span className="font-bold text-secondary">A</span>gility</li>
+                        <li><span className="font-bold text-secondary">O</span>perational Excellence</li>
+                        <li><span className="font-bold text-secondary">I</span>nnovation</li>
+                        <li><span className="font-bold text-secondary">T</span>ransparency</li>
+                        <li><span className="font-bold text-secondary">I</span>mpact</li>
                       </ul>
                     </div>
                   </div>
@@ -152,7 +152,51 @@ const AboutUs = () => {
                     </div>
                     <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
                       <h3 className="text-xl font-bold text-secondary mb-3">OUR VISION</h3>
-                      <p className="text-white text-base">To be a top ten banking group by being the most dependable and loved financial services provider</p>
+                      <p className="text-white text-base">To empower individuals to become homeowners.</p>
+                    </div>
+                  </div>
+
+                  {/* Business Model */}
+                  <div className="bg-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                    <div className="relative h-48 flex-shrink-0">
+                      <Image
+                        src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1000&q=80"
+                        alt="Affordable path to homeownership - keys and financing"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        loading="lazy"
+                        quality={75}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent"></div>
+                    </div>
+                    <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
+                      <h3 className="text-xl font-bold text-secondary mb-3">BUSINESS MODEL</h3>
+                      <p className="text-white text-base">Minimum of 30% project cost deposit with balance payable within 7 years.</p>
+                    </div>
+                  </div>
+
+                  {/* Eligibility */}
+                  <div className="bg-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                    <div className="relative h-48 flex-shrink-0">
+                      <Image
+                        src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                        alt="Eligibility requirements - documents and criteria"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        loading="lazy"
+                        quality={75}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-secondary/30 to-transparent"></div>
+                    </div>
+                    <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
+                      <h3 className="text-xl font-bold text-secondary mb-3">ELIGIBILITY</h3>
+                      <ul className="text-white space-y-2 text-base">
+                        <li>Clean title deed.</li>
+                        <li>Ability to raise 30% of the total project cost.</li>
+                        <li>Ability to repay 70% for a period of up to 7 years.</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
