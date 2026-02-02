@@ -134,7 +134,6 @@ export default function Header() {
                       <div className="font-medium text-sm">Company Overview</div>
                       <div className="text-xs text-gray-600 hover:text-gray-300">Our story and mission</div>
                     </Link>
-                    {/* Our Team - commented out
                     <Link 
                       href="/about/team" 
                       className="block px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
@@ -145,7 +144,6 @@ export default function Header() {
                       <div className="font-medium text-sm">Our Team</div>
                       <div className="text-xs text-gray-600 hover:text-gray-300">Management & Board members</div>
                     </Link>
-                    */}
                     <Link 
                       href="/about/offices" 
                       className="block px-4 py-2.5 text-gray-800 hover:bg-primary hover:text-white transition-colors"
@@ -561,7 +559,6 @@ export default function Header() {
                     >
                       Company Overview
                     </Link>
-                    {/* Our Team - commented out
                     <Link 
                       href="/about/team" 
                       className={`block px-6 py-2 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 ${pathname === '/about/team' ? 'text-secondary bg-white/10' : ''}`}
@@ -571,7 +568,6 @@ export default function Header() {
                     >
                       Our Team
                     </Link>
-                    */}
                     <Link 
                       href="/about/offices" 
                       className={`block px-6 py-2 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 ${pathname === '/about/offices' ? 'text-secondary bg-white/10' : ''}`}
