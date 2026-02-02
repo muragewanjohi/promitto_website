@@ -45,19 +45,6 @@ const TeamPage = () => {
       {/* Management Team */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center mb-12">
-            <span className="inline-block bg-secondary/20 p-3 rounded-full mr-3">
-              <Image 
-              src="/hierarchical-structure_1042060.png" 
-              alt="Hierarchical Structure" 
-              width={32} 
-              height={32} 
-              className="w-8 h-8" 
-              quality={75}
-            />
-            </span>
-            <h2 className="site-title text-primary">Our Management Team</h2>
-          </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { name: 'Jimmy Kagoni', title: 'Chief Executive Officer', img: '/images/board/jimmy-kagoni.png' },

@@ -142,7 +142,7 @@ export default function Header() {
                       }}
                     >
                       <div className="font-medium text-sm">Our Team</div>
-                      <div className="text-xs text-gray-600 hover:text-gray-300">Management & Board members</div>
+                      <div className="text-xs text-gray-600 hover:text-gray-300">Management team</div>
                     </Link>
                     <Link 
                       href="/about/offices" 
