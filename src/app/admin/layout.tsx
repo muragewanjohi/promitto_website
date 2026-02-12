@@ -17,7 +17,8 @@ import {
   Users, 
   LogOut,
   ChevronRight,
-  Newspaper
+  Newspaper,
+  BarChart3
 } from 'lucide-react';
 
 export default function AdminLayout({
@@ -85,6 +86,11 @@ export default function AdminLayout({
                   <li>
                     <NavLink href="/admin" icon={Home}>
                       Overview
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink href="/admin/analytics" icon={BarChart3}>
+                      Analytics
                     </NavLink>
                   </li>
                 </ul>

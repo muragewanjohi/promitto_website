@@ -52,6 +52,11 @@ yarn install
    RESEND_API_KEY=your_resend_api_key_here
    # Optional: use your verified domain (e.g. noreply@promittoltd.com) once Resend domain is verified
    RESEND_FROM_EMAIL=noreply@promittoltd.com
+
+   # Google Analytics (optional). See docs/technical/google-analytics-setup.md
+   # NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+   # GA_PROPERTY_ID=123456789
+   # GA_SERVICE_ACCOUNT_JSON={"type":"service_account",...}
    ```
 
 4. Run the development server:
@@ -97,6 +102,8 @@ promitto/
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
    - `RESEND_API_KEY`: Your Resend API key (if using email functionality)
    - `RESEND_FROM_EMAIL`: (Optional) Sender address on your verified domain (e.g. `noreply@promittoltd.com`)
+   - `NEXT_PUBLIC_GA_MEASUREMENT_ID`: (Optional) GA4 Measurement ID for site tracking
+   - `GA_PROPERTY_ID` and `GA_SERVICE_ACCOUNT_JSON`: (Optional) For admin Analytics page. See `docs/technical/google-analytics-setup.md`
 
 4. Deploy your application
 
@@ -108,6 +115,8 @@ Make sure to set these environment variables in your deployment platform:
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous/public key
 - `RESEND_API_KEY`: Your Resend API key for email functionality
 - `RESEND_FROM_EMAIL`: (Optional) Sender address on your verified domain (e.g. `noreply@promittoltd.com`). See `docs/technical/resend-vercel-dns.md` for connecting Resend to Vercel.
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID`: (Optional) Google Analytics 4 Measurement ID for page view tracking.
+- `GA_PROPERTY_ID` and `GA_SERVICE_ACCOUNT_JSON`: (Optional) For the admin Analytics page (page views, visitors, country). See `docs/technical/google-analytics-setup.md`.
 
 ## Contributing
 

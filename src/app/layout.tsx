@@ -8,6 +8,7 @@ import ClientWrapper from '@/components/ClientWrapper';
 import WhatsAppChat from '@/components/WhatsAppChat';
 import FloatingCalculator from '@/components/FloatingCalculator';
 import FloatingGetStarted from '@/components/FloatingGetStarted';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -43,6 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className={inter.className}>
+        <GoogleAnalytics />
         <AuthProvider>
           {children}
           <ClientWrapper>

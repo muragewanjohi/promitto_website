@@ -30,12 +30,22 @@ export default function ForgotPasswordPage() {
     try {
       const { error } = await resetPasswordForEmail(email);
       if (error) {
-        setError(error.message || 'An error occurred while sending the reset email');
+        // Handle rate limit error specifically
+        if (error.code === 'over_email_send_rate_limit' || error.message?.includes('rate limit')) {
+          setError('Too many password reset requests. Please wait a few minutes before trying again. If you continue to have issues, please contact support.');
+        } else {
+          setError(error.message || 'An error occurred while sending the reset email');
+        }
       } else {
         setSuccess(true);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred while sending the reset email');
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred while sending the reset email';
+      if (errorMessage.includes('rate limit')) {
+        setError('Too many password reset requests. Please wait a few minutes before trying again. If you continue to have issues, please contact support.');
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setLoading(false);
     }
@@ -116,8 +126,15 @@ export default function ForgotPasswordPage() {
               /* Form */
               <form className="space-y-6" onSubmit={handleSubmit}>
                 {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg relative" role="alert">
-                    <span className="block sm:inline text-sm">{error}</span>
+                  <div className={`px-4 py-3 rounded-lg relative ${error.includes('Too many password reset requests') ? 'bg-orange-50 border border-orange-200 text-orange-700' : 'bg-red-50 border border-red-200 text-red-600'}`} role="alert">
+                    <div className="flex items-start">
+                      {error.includes('Too many password reset requests') && (
+                        <svg className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                      <span className="block sm:inline text-sm">{error}</span>
+                    </div>
                   </div>
                 )}
                 
