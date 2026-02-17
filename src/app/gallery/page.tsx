@@ -7,14 +7,23 @@ import { supabase } from '@/lib/supabase';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MediaSidebar from '@/components/MediaSidebar';
-import { Images, Video, Calendar } from 'lucide-react';
+import { Images, Video, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import VideoThumbnail from '@/components/VideoThumbnail';
+
+const getDisplayImages = (item: GalleryItem): string[] => {
+  if (item.gallery_images && item.gallery_images.length > 0) {
+    return item.gallery_images;
+  }
+  if (item.image_url) return [item.image_url];
+  return [];
+};
 
 interface GalleryItem {
   id: string;
   title: string;
   image_url?: string;
   video_url?: string;
+  gallery_images?: string[];
   published_at?: string;
   created_at: string;
 }
@@ -24,6 +33,7 @@ export default function GalleryPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   useEffect(() => {
     fetchGallery();
@@ -38,7 +48,7 @@ export default function GalleryPage() {
       // Add limit to prevent fetching too many records
       const { data, error: fetchError } = await supabase
         .from('media_items')
-        .select('id, title, image_url, video_url, published_at, created_at')
+        .select('id, title, image_url, video_url, gallery_images, published_at, created_at')
         .eq('category', 'gallery')
         .eq('published', true)
         .order('created_at', { ascending: false })
@@ -109,16 +119,19 @@ export default function GalleryPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {galleryItems.map((item, index) => (
+                  {galleryItems.map((item, index) => {
+                    const displayImages = getDisplayImages(item);
+                    const thumbnailUrl = displayImages[0];
+                    return (
                     <div
                       key={item.id}
                       className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group"
-                      onClick={() => setSelectedItem(item)}
+                      onClick={() => { setSelectedItem(item); setSelectedImageIndex(0); }}
                     >
-                      {item.image_url ? (
+                      {thumbnailUrl ? (
                         <div className="relative h-64 overflow-hidden bg-gray-100">
                           <Image
-                            src={item.image_url}
+                            src={thumbnailUrl}
                             alt={item.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -127,6 +140,11 @@ export default function GalleryPage() {
                             priority={index < 4}
                             quality={index < 4 ? 75 : 60}
                           />
+                          {displayImages.length > 1 && (
+                            <div className="absolute top-2 right-2 bg-black/60 text-white px-2 py-1 rounded text-xs font-medium">
+                              {displayImages.length} photos
+                            </div>
+                          )}
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                             <Images className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                           </div>
@@ -154,7 +172,8 @@ export default function GalleryPage() {
                         )}
                       </div>
                     </div>
-                  ))}
+                  );
+                  })}
                 </div>
               )}
             </div>
@@ -168,10 +187,15 @@ export default function GalleryPage() {
       </div>
 
       {/* Modal for viewing gallery item */}
-      {selectedItem && (
+      {selectedItem && (() => {
+        const modalImages = getDisplayImages(selectedItem);
+        const hasMultipleImages = modalImages.length > 1;
+        const currentImage = modalImages[selectedImageIndex];
+
+        return (
         <div
           className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedItem(null)}
+          onClick={() => { setSelectedItem(null); setSelectedImageIndex(0); }}
         >
           <div
             className="max-w-4xl w-full bg-white rounded-xl overflow-hidden"
@@ -179,22 +203,49 @@ export default function GalleryPage() {
           >
             <div className="relative bg-black">
               <button
-                onClick={() => setSelectedItem(null)}
+                onClick={() => { setSelectedItem(null); setSelectedImageIndex(0); }}
                 className="absolute top-4 right-4 z-10 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-              {selectedItem.image_url ? (
-                <div className="relative w-full h-[70vh]">
-                  <Image
-                    src={selectedItem.image_url}
-                    alt={selectedItem.title}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
+              {currentImage ? (
+                <>
+                  <div className="relative w-full h-[70vh]">
+                    <Image
+                      src={currentImage}
+                      alt={`${selectedItem.title} - ${selectedImageIndex + 1}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  {hasMultipleImages && (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedImageIndex((i) => (i === 0 ? modalImages.length - 1 : i - 1));
+                        }}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition-colors"
+                      >
+                        <ChevronLeft className="w-8 h-8" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedImageIndex((i) => (i === modalImages.length - 1 ? 0 : i + 1));
+                        }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition-colors"
+                      >
+                        <ChevronRight className="w-8 h-8" />
+                      </button>
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 text-white/80 text-sm">
+                        {selectedImageIndex + 1} / {modalImages.length}
+                      </div>
+                    </>
+                  )}
+                </>
               ) : selectedItem.video_url ? (
                 <div className="relative w-full h-[70vh]">
                   <video
@@ -216,7 +267,8 @@ export default function GalleryPage() {
             </div>
           </div>
         </div>
-      )}
+        );
+      })()}
 
       <Footer />
     </main>

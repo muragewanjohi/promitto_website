@@ -4,13 +4,16 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
-import { ArrowLeft, Save, X, Video } from 'lucide-react';
+import { ArrowLeft, Save, X, Video, Plus } from 'lucide-react';
 import RichTextEditor from '@/components/RichTextEditor';
 // @ts-ignore - tus-js-client types will be available after npm install
 import * as tus from 'tus-js-client';
 
 type MediaCategory = 'news' | 'resources' | 'events' | 'blogs' | 'gallery';
 type MediaType = 'image' | 'video';
+
+const isMultiImageCategory = (category: MediaCategory) =>
+  category === 'events' || category === 'gallery';
 
 export default function NewMediaPage() {
   const router = useRouter();
@@ -20,6 +23,9 @@ export default function NewMediaPage() {
   const [error, setError] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<{ file: File; preview: string }[]>([]);
+  const [galleryImageUrls, setGalleryImageUrls] = useState<string[]>([]);
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
   const [galleryMediaType, setGalleryMediaType] = useState<MediaType>('image');
@@ -41,6 +47,31 @@ export default function NewMediaPage() {
     if (file) {
       setImageFile(file);
       setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleMultiImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    const newPreviews = files.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+    setImageFiles((prev) => [...prev, ...files]);
+    setImagePreviews((prev) => [...prev, ...newPreviews]);
+    e.target.value = '';
+  };
+
+  const handleRemoveMultiImage = (index: number) => {
+    if (index < imagePreviews.length) {
+      setImageFiles((prev) => prev.filter((_, i) => i !== index));
+      setImagePreviews((prev) => {
+        URL.revokeObjectURL(prev[index].preview);
+        return prev.filter((_, i) => i !== index);
+      });
+    } else {
+      const urlIndex = index - imagePreviews.length;
+      setGalleryImageUrls((prev) => prev.filter((_, i) => i !== urlIndex));
     }
   };
 
@@ -158,13 +189,25 @@ export default function NewMediaPage() {
 
     // Validation for gallery items
     if (formData.category === 'gallery') {
-      if (galleryMediaType === 'image' && !imageFile && !formData.image_url) {
-        setError('Please upload an image for the gallery item');
+      if (galleryMediaType === 'image') {
+        const hasImages = imageFiles.length > 0 || galleryImageUrls.length > 0 || imageFile || formData.image_url;
+        if (!hasImages) {
+          setError('Please upload at least one image for the gallery item');
+          setLoading(false);
+          return;
+        }
+      } else if (!videoFile && !formData.video_url) {
+        setError('Please upload a video for the gallery item');
         setLoading(false);
         return;
       }
-      if (galleryMediaType === 'video' && !videoFile && !formData.video_url) {
-        setError('Please upload a video for the gallery item');
+    }
+
+    // Validation for events - need at least one image when using multi-image
+    if (formData.category === 'events') {
+      const hasImages = imageFiles.length > 0 || galleryImageUrls.length > 0 || imageFile || formData.image_url;
+      if (!hasImages) {
+        setError('Please upload at least one image for the event');
         setLoading(false);
         return;
       }
@@ -180,24 +223,50 @@ export default function NewMediaPage() {
     try {
       let imageUrl = formData.image_url;
       let videoUrl = formData.video_url;
+      let galleryImages: string[] = [];
 
-      // Upload new image to Supabase Storage if a file was selected
-      if (imageFile) {
+      const isMultiImage = isMultiImageCategory(formData.category) &&
+        (formData.category !== 'gallery' || galleryMediaType === 'image');
+
+      if (isMultiImage && (imageFiles.length > 0 || galleryImageUrls.length > 0)) {
+        // Multi-image upload for events/gallery
+        setUploading(true);
+        const uploadedUrls: string[] = [...galleryImageUrls];
+
+        for (const file of imageFiles) {
+          const fileExt = file.name.split('.').pop();
+          const filePath = `media/images/media-${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
+
+          const { error: uploadError } = await supabase.storage
+            .from('media')
+            .upload(filePath, file, { upsert: false });
+
+          if (uploadError) throw uploadError;
+
+          const { data: publicUrlData } = supabase.storage
+            .from('media')
+            .getPublicUrl(filePath);
+          uploadedUrls.push(publicUrlData.publicUrl);
+        }
+
+        galleryImages = uploadedUrls;
+        imageUrl = uploadedUrls[0] || imageUrl;
+        setUploading(false);
+      } else if (imageFile && !isMultiImage) {
+        // Single image upload for other categories
         setUploading(true);
         const fileExt = imageFile.name.split('.').pop();
         const filePath = `media/images/media-${Date.now()}.${fileExt}`;
-        
-        const { data: uploadData, error: uploadError } = await supabase.storage
+
+        const { error: uploadError } = await supabase.storage
           .from('media')
           .upload(filePath, imageFile, { upsert: false });
-        
+
         if (uploadError) throw uploadError;
-        
-        // Get the public URL
+
         const { data: publicUrlData } = supabase.storage
           .from('media')
           .getPublicUrl(filePath);
-        
         imageUrl = publicUrlData.publicUrl;
         setUploading(false);
       }
@@ -236,10 +305,16 @@ export default function NewMediaPage() {
         if (galleryMediaType === 'image') {
           insertData.image_url = imageUrl;
           insertData.video_url = null;
+          insertData.gallery_images = galleryImages;
         } else {
           insertData.video_url = videoUrl;
           insertData.image_url = null;
+          insertData.gallery_images = [];
         }
+      } else if (formData.category === 'events') {
+        insertData.image_url = imageUrl;
+        insertData.video_url = videoUrl;
+        insertData.gallery_images = galleryImages;
       } else {
         insertData.image_url = imageUrl;
         insertData.video_url = videoUrl;
@@ -309,7 +384,13 @@ export default function NewMediaPage() {
                 setFormData({ ...formData, category: newCategory });
                 // Reset content and excerpt when switching to gallery
                 if (newCategory === 'gallery') {
-                  setFormData(prev => ({ ...prev, category: newCategory, content: '', excerpt: '' }));
+                  setFormData((prev) => ({ ...prev, category: newCategory, content: '', excerpt: '' }));
+                }
+                // Reset multi-image state when switching away from events/gallery
+                if (!isMultiImageCategory(newCategory)) {
+                  setImageFiles([]);
+                  setImagePreviews([]);
+                  setGalleryImageUrls([]);
                 }
               }}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
@@ -400,60 +481,121 @@ export default function NewMediaPage() {
         {formData.category !== 'gallery' || galleryMediaType === 'image' ? (
           <div>
             <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-2">
-              {formData.category === 'gallery' ? 'Gallery Image *' : 'Image'}
+              {isMultiImageCategory(formData.category)
+                ? 'Gallery Images * (upload multiple)'
+                : 'Image'}
             </label>
-          {!imagePreview && !formData.image_url && (
-            <input
-              type="file"
-              id="image"
-              accept="image/*"
-              onChange={handleImageChange}
-              disabled={uploading || loading}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-            />
-          )}
-          {(imagePreview || formData.image_url) && (
-            <div className="relative inline-block">
-              <img
-                src={imagePreview || formData.image_url}
-                alt="Preview"
-                className="w-64 h-48 object-cover rounded-lg border-2 border-gray-300"
-              />
-              <button
-                type="button"
-                onClick={handleRemoveImage}
-                className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full hover:bg-red-700 transition-colors"
-                disabled={uploading || loading}
-              >
-                <X className="w-4 h-4" />
-              </button>
-              {!imagePreview && formData.image_url && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    const input = document.createElement('input');
-                    input.type = 'file';
-                    input.accept = 'image/*';
-                    input.onchange = (e) => {
-                      const file = (e.target as HTMLInputElement).files?.[0];
-                      if (file) {
-                        setImageFile(file);
-                        setImagePreview(URL.createObjectURL(file));
-                      }
-                    };
-                    input.click();
-                  }}
-                  className="absolute bottom-2 left-2 bg-primary text-white px-3 py-1 rounded-lg hover:bg-primary/90 transition-colors text-sm"
-                  disabled={uploading || loading}
-                >
-                  Replace Image
-                </button>
-              )}
-            </div>
-          )}
-          {uploading && (
-            <p className="text-sm text-gray-500 mt-2">Uploading image...</p>
-          )}
+
+            {isMultiImageCategory(formData.category) ? (
+              <>
+                <div className="flex flex-wrap gap-4 mb-4">
+                  {imagePreviews.map((item, index) => (
+                    <div key={index} className="relative">
+                      <img
+                        src={item.preview}
+                        alt={`Preview ${index + 1}`}
+                        className="w-32 h-24 object-cover rounded-lg border-2 border-gray-300"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveMultiImage(index)}
+                        className="absolute -top-2 -right-2 bg-red-600 text-white p-1 rounded-full hover:bg-red-700 transition-colors"
+                        disabled={uploading || loading}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                  {galleryImageUrls.map((url, index) => (
+                    <div key={`url-${index}`} className="relative">
+                      <img
+                        src={url}
+                        alt={`Uploaded ${index + 1}`}
+                        className="w-32 h-24 object-cover rounded-lg border-2 border-gray-300"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveMultiImage(imagePreviews.length + index)}
+                        className="absolute -top-2 -right-2 bg-red-600 text-white p-1 rounded-full hover:bg-red-700 transition-colors"
+                        disabled={uploading || loading}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <label className="inline-flex items-center gap-2 px-4 py-2 border border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                  <Plus className="w-5 h-5 text-gray-500" />
+                  <span className="text-sm text-gray-600">Add more images</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleMultiImageChange}
+                    disabled={uploading || loading}
+                    className="hidden"
+                  />
+                </label>
+                {uploading && (
+                  <p className="text-sm text-gray-500 mt-2">Uploading images...</p>
+                )}
+              </>
+            ) : (
+              <>
+                {!imagePreview && !formData.image_url && (
+                  <input
+                    type="file"
+                    id="image"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    disabled={uploading || loading}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                  />
+                )}
+                {(imagePreview || formData.image_url) && (
+                  <div className="relative inline-block">
+                    <img
+                      src={imagePreview || formData.image_url}
+                      alt="Preview"
+                      className="w-64 h-48 object-cover rounded-lg border-2 border-gray-300"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full hover:bg-red-700 transition-colors"
+                      disabled={uploading || loading}
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                    {!imagePreview && formData.image_url && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const input = document.createElement('input');
+                          input.type = 'file';
+                          input.accept = 'image/*';
+                          input.onchange = (e) => {
+                            const file = (e.target as HTMLInputElement).files?.[0];
+                            if (file) {
+                              setImageFile(file);
+                              setImagePreview(URL.createObjectURL(file));
+                            }
+                          };
+                          input.click();
+                        }}
+                        className="absolute bottom-2 left-2 bg-primary text-white px-3 py-1 rounded-lg hover:bg-primary/90 transition-colors text-sm"
+                        disabled={uploading || loading}
+                      >
+                        Replace Image
+                      </button>
+                    )}
+                  </div>
+                )}
+                {uploading && (
+                  <p className="text-sm text-gray-500 mt-2">Uploading image...</p>
+                )}
+              </>
+            )}
           </div>
         ) : null}
 

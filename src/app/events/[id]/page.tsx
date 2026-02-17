@@ -8,7 +8,7 @@ import { supabase } from '@/lib/supabase';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MediaSidebar from '@/components/MediaSidebar';
-import { Calendar, Clock, User, ArrowLeft } from 'lucide-react';
+import { Calendar, Clock, User, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface EventItem {
   id: string;
@@ -16,10 +16,19 @@ interface EventItem {
   content: string;
   excerpt?: string;
   image_url?: string;
+  gallery_images?: string[];
   author?: string;
   published_at?: string;
   created_at: string;
 }
+
+const getEventDisplayImages = (item: EventItem): string[] => {
+  if (item.gallery_images && item.gallery_images.length > 0) {
+    return item.gallery_images;
+  }
+  if (item.image_url) return [item.image_url];
+  return [];
+};
 
 export default function EventDetailPage() {
   const params = useParams();
@@ -27,10 +36,15 @@ export default function EventDetailPage() {
   const [eventItem, setEventItem] = useState<EventItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [galleryIndex, setGalleryIndex] = useState(0);
 
   useEffect(() => {
     fetchEventItem();
   }, [id]);
+
+  useEffect(() => {
+    setGalleryIndex(0);
+  }, [eventItem?.id]);
 
   const fetchEventItem = async () => {
     try {
@@ -127,19 +141,46 @@ export default function EventDetailPage() {
 
               {/* Article */}
               <article className="bg-white rounded-xl shadow-lg overflow-hidden">
-                {eventItem.image_url && (
-                  <div className="relative h-96">
-                    <Image
-                      src={eventItem.image_url}
-                      alt={eventItem.title}
-                      fill
-                      className="object-cover"
-                      sizes="100vw"
-                      priority
-                      quality={85}
-                    />
-                  </div>
-                )}
+                {(() => {
+                  const displayImages = getEventDisplayImages(eventItem);
+                  const currentImage = displayImages[galleryIndex];
+                  const hasMultipleImages = displayImages.length > 1;
+
+                  return currentImage ? (
+                    <div className="relative h-96 bg-gray-100">
+                      <Image
+                        src={currentImage}
+                        alt={`${eventItem.title} - ${galleryIndex + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="100vw"
+                        priority={galleryIndex === 0}
+                        quality={85}
+                      />
+                      {hasMultipleImages && (
+                        <>
+                          <button
+                            onClick={() => setGalleryIndex((i) => (i === 0 ? displayImages.length - 1 : i - 1))}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-colors"
+                            aria-label="Previous image"
+                          >
+                            <ChevronLeft className="w-8 h-8" />
+                          </button>
+                          <button
+                            onClick={() => setGalleryIndex((i) => (i === displayImages.length - 1 ? 0 : i + 1))}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-colors"
+                            aria-label="Next image"
+                          >
+                            <ChevronRight className="w-8 h-8" />
+                          </button>
+                          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 text-white px-3 py-1 rounded-full text-sm">
+                            {galleryIndex + 1} / {displayImages.length}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  ) : null;
+                })()}
                 <div className="p-8">
                   <h1 className="site-title text-gray-900 mb-4">{eventItem.title}</h1>
                   
