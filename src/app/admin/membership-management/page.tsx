@@ -49,6 +49,7 @@ type User = {
   email: string;
   role: string;
   created_at?: string;
+  phone?: string;
 };
 
 type TabType = 'memberships' | 'customers' | 'users';
@@ -282,7 +283,32 @@ const MembershipManagement = () => {
         return;
       }
 
-      setUsers(userData || []);
+      const usersList = userData || [];
+      const userIds = usersList.map((user: any) => user.id);
+
+      let phoneByUserId: Record<string, string> = {};
+      if (userIds.length > 0) {
+        const { data: customerPhones, error: customerPhonesError } = await supabase
+          .from('customer_details')
+          .select('user_id, mobile, telephone')
+          .in('user_id', userIds);
+
+        if (customerPhonesError) {
+          console.error('Error fetching customer phone details:', customerPhonesError);
+        } else {
+          phoneByUserId = (customerPhones || []).reduce((acc: Record<string, string>, row: any) => {
+            acc[row.user_id] = row.mobile || row.telephone || '';
+            return acc;
+          }, {});
+        }
+      }
+
+      const usersWithPhone: User[] = usersList.map((user: any) => ({
+        ...user,
+        phone: phoneByUserId[user.id] || '',
+      }));
+
+      setUsers(usersWithPhone);
     } catch (err) {
       console.error('Error in fetchUsers:', err);
       setError('An error occurred while loading users');
@@ -642,6 +668,9 @@ const MembershipManagement = () => {
                 Email
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Phone Number
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Role
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -663,6 +692,11 @@ const MembershipManagement = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">
                     {user.email}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">
+                    {user.phone || 'N/A'}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">

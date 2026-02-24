@@ -402,14 +402,6 @@ export default function Header() {
             
             {/* Auth Links */}
             <div className="flex items-center space-x-2 sm:space-x-4">
-              {userProfile?.role === 'admin' && (
-                <Link 
-                  href="/admin" 
-                  className="hidden sm:block text-sm lg:text-base hover:text-secondary font-bold transition-colors capitalize"
-                >
-                  Admin
-                </Link>
-              )}
               {user ? (
                 <div className="flex items-center space-x-2 sm:space-x-4 profile-dropdown-container">
                   {/* Profile Dropdown */}

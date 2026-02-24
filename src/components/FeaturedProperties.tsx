@@ -1,15 +1,42 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import PropertyCard from './PropertyCard';
-import { supabase } from '@/lib/supabase';
 
 const FeaturedProperties = () => {
   const [featuredProperties, setFeaturedProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+
+  const fetchFeaturedProperties = useCallback(async (signal?: AbortSignal) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch('/api/featured-properties', {
+        method: 'GET',
+        cache: 'no-store',
+        signal,
+      });
+
+      const payload = await response.json();
+      if (!response.ok) {
+        throw new Error(payload?.details || payload?.error || 'Failed to load featured properties');
+      }
+
+      setFeaturedProperties(Array.isArray(payload) ? payload : []);
+    } catch (err: any) {
+      if (err?.name === 'AbortError') return;
+      const errorMessage = err?.message || 'Failed to load featured properties';
+      setError(errorMessage);
+      console.error('Error loading featured properties:', err);
+    } finally {
+      if (!signal?.aborted) {
+        setLoading(false);
+      }
+    }
+  }, []);
 
   // Prevent hydration mismatch
   useEffect(() => {
@@ -18,70 +45,12 @@ const FeaturedProperties = () => {
 
   useEffect(() => {
     if (!mounted) return;
-    
-    const fetchFeaturedProperties = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        // First, try to fetch with relationships
-        let query = supabase
-          .from('properties')
-          .select(`
-            *,
-            property_types(name),
-            property_statuses(name),
-            roof_types(name)
-          `)
-          .eq('featured', true)
-          .order('updatedat', { ascending: false })
-          .limit(12);
 
-        let { data, error } = await query;
+    const controller = new AbortController();
+    fetchFeaturedProperties(controller.signal);
 
-        // If the query with relationships fails, try without relationships
-        if (error) {
-          console.warn('Error fetching with relationships, trying without:', error);
-          const simpleQuery = supabase
-            .from('properties')
-            .select('*')
-            .eq('featured', true)
-            .order('updatedat', { ascending: false })
-            .limit(12);
-          
-          const simpleResult = await simpleQuery;
-          if (simpleResult.error) {
-            throw simpleResult.error;
-          }
-          data = simpleResult.data;
-        }
-
-        if (!data || data.length === 0) {
-          console.log('No featured properties found');
-          setFeaturedProperties([]);
-          setLoading(false);
-          return;
-        }
-
-        const propertiesWithImages = data.map(property => ({
-          ...property,
-          mainImage: property.featuredImage || property.image_url || '/images/placeholder.png',
-          status: property.property_statuses?.name || property.status || 'completed',
-          type: property.property_types?.name || property.type || 'House'
-        }));
-
-        setFeaturedProperties(propertiesWithImages);
-      } catch (err: any) {
-        const errorMessage = err?.message || 'Failed to load featured properties';
-        setError(errorMessage);
-        console.error('Error loading featured properties:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFeaturedProperties();
-  }, [mounted]);
+    return () => controller.abort();
+  }, [mounted, fetchFeaturedProperties]);
 
   // Show all featured properties (limit to 12)
   const visibleProperties = featuredProperties.slice(0, 12);
@@ -158,45 +127,6 @@ const FeaturedProperties = () => {
             <p className="text-red-600 mb-4">{error}</p>
             <button
               onClick={() => {
-                setError(null);
-                setLoading(true);
-                const fetchFeaturedProperties = async () => {
-                  try {
-                    setLoading(true);
-                    setError(null);
-                    
-                    let query = supabase
-                      .from('properties')
-                      .select('*')
-                      .eq('featured', true)
-                      .order('updatedat', { ascending: false })
-                      .limit(12);
-
-                    const { data, error } = await query;
-
-                    if (error) throw error;
-
-                    if (!data || data.length === 0) {
-                      setFeaturedProperties([]);
-                      setLoading(false);
-                      return;
-                    }
-
-                    const propertiesWithImages = data.map(property => ({
-                      ...property,
-                      mainImage: property.featuredImage || property.image_url || '/images/placeholder.png',
-                      status: property.status || 'completed',
-                      type: property.type || 'House'
-                    }));
-
-                    setFeaturedProperties(propertiesWithImages);
-                  } catch (err: any) {
-                    setError(err?.message || 'Failed to load featured properties');
-                    console.error('Error loading featured properties:', err);
-                  } finally {
-                    setLoading(false);
-                  }
-                };
                 fetchFeaturedProperties();
               }}
               className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
