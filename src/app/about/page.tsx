@@ -105,7 +105,9 @@ const AboutUs = () => {
                     </div>
                     <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
                       <h3 className="text-xl font-bold text-secondary mb-3">OUR MISSION</h3>
-                      <p className="text-white text-base">To advance housing affordability through innovative funding structures, efficient project delivery frameworks, and robust governance systems that promote sustainable homeownership.</p>
+                      <p className="text-white text-base">
+                        To empower individuals to become homeowners. Enrich the well-being of individuals through provision of innovative products and services geared towards enhancing efficient and effective home ownership journey
+                      </p>
                     </div>
                   </div>
 
