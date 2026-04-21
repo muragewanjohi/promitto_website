@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import Header from '@/components/Header';
+import { useAuth } from '@/contexts/AuthContext';
 import { 
   LayoutDashboard, 
   Home, 
@@ -28,6 +29,29 @@ export default function AdminLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { user, userProfile, loading } = useAuth();
+
+  React.useEffect(() => {
+    if (loading) return;
+    if (!user) {
+      router.replace('/login');
+      return;
+    }
+    if (userProfile?.role !== 'admin') {
+      router.replace('/');
+    }
+  }, [loading, user, userProfile, router]);
+
+  if (loading || !user || userProfile?.role !== 'admin') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto mb-3"></div>
+          <p className="text-sm text-gray-600">Verifying access...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();

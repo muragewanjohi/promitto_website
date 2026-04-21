@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import { useAuth } from '@/contexts/AuthContext';
+import { isPropertySafe } from '@/lib/security/propertySafety';
 
 interface PropertyPageProps {
   params: {
@@ -467,6 +468,9 @@ export default function PropertyPage({ params }: PropertyPageProps) {
         .eq('id', params.id)
         .single();
       if (error || !data) {
+        setError('Property not found');
+        setProperty(null);
+      } else if (!isPropertySafe(data)) {
         setError('Property not found');
         setProperty(null);
       } else {

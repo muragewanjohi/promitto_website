@@ -7,6 +7,7 @@ import PropertyFilters from '../../components/PropertyFilters';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { supabase } from '@/lib/supabase';
+import { isPropertySafe } from '@/lib/security/propertySafety';
 
 interface Property {
   id: string;
@@ -59,23 +60,25 @@ function PropertiesContent() {
         setLoading(false);
         return;
       }
-      const propertiesArray = (data || []).map((property: any) => ({
-        id: property.id,
-        name: property.name,
-        location: property.location,
-        price: property.price,
-        bedrooms: property.bedrooms,
-        bathrooms: property.bathrooms,
-        mainImage: property.featuredImage || (property.images && property.images[0]) || '/images/placeholder.png',
-        images: property.images || [],
-        featuredImage: property.featuredImage,
-        status: property.property_statuses?.name || 'completed',
-        type: property.property_types?.name || 'House',
-        area: property.area,
-        description: property.description,
-        features: property.features,
-        roofType: property.roof_types?.name || '',
-      }));
+      const propertiesArray = (data || [])
+        .filter((property: any) => isPropertySafe(property))
+        .map((property: any) => ({
+          id: property.id,
+          name: property.name,
+          location: property.location,
+          price: property.price,
+          bedrooms: property.bedrooms,
+          bathrooms: property.bathrooms,
+          mainImage: property.featuredImage || (property.images && property.images[0]) || '/images/placeholder.png',
+          images: property.images || [],
+          featuredImage: property.featuredImage,
+          status: property.property_statuses?.name || 'completed',
+          type: property.property_types?.name || 'House',
+          area: property.area,
+          description: property.description,
+          features: property.features,
+          roofType: property.roof_types?.name || '',
+        }));
       setProperties(propertiesArray);
       setFilteredProperties(propertiesArray);
       setLoading(false);

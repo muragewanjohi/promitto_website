@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.imgur.com',
+      },
     ],
     // Use modern image formats for better compression
     formats: ['image/avif', 'image/webp'],
