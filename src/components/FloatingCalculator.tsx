@@ -19,7 +19,7 @@ const FloatingCalculator: React.FC<FloatingCalculatorProps> = ({ className = '' 
   const [propertyType, setPropertyType] = useState<string>('residential');
   const [loanTerm, setLoanTerm] = useState<string>('7');
   const [interestRate] = useState<string>('12');
-  const [processingFee] = useState<string>('2.5');
+  const [processingFee] = useState<string>('5');
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
   const [totalPayment, setTotalPayment] = useState<number>(0);
   const [totalInterest, setTotalInterest] = useState<number>(0);
@@ -284,7 +284,7 @@ const FloatingCalculator: React.FC<FloatingCalculatorProps> = ({ className = '' 
           <li>Loan term is adjustable from <span className="font-bold text-primary">1-7 years</span> for residential properties</li>
           <li>Loan term is adjustable from <span className="font-bold text-primary">1-10 years</span> for commercial properties</li>
           <li>Interest rate is fixed at <span className="font-bold text-primary">12% per annum</span> on reducing balance</li>
-          <li>Processing fee is <span className="font-bold text-secondary">2.5%</span> of the loan amount</li>
+          <li>Processing fee is <span className="font-bold text-secondary">5%</span> of the loan amount</li>
           <li>Monthly payments start one month after construction begins</li>
           <li>Construction period is typically <span className="font-bold text-primary">6-12 months</span></li>
         </ul>
