@@ -158,7 +158,7 @@ const RequirementsPage = () => {
                       <div className="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="font-semibold text-gray-900">Company PIN Certificate</span>
-                        <p className="text-gray-600 text-sm mt-1">Company's KRA PIN certificate</p>
+                        <p className="text-gray-600 text-sm mt-1">Company&apos;s KRA PIN certificate</p>
                       </div>
                     </li>
                     <li className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">

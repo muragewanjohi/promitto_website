@@ -83,6 +83,10 @@ const KeyStatistics = () => {
       suffix: '+'
     }
   ];
+  const countA = useCountUp(stats[0].number, 2500);
+  const countB = useCountUp(stats[1].number, 2500);
+  const countC = useCountUp(stats[2].number, 2500);
+  const countUps = [countA, countB, countC];
 
   return (
     <section className="py-16 bg-gradient-to-r from-primary/5 to-secondary/5">
@@ -99,7 +103,7 @@ const KeyStatistics = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {stats.map((stat, index) => {
-            const { count, ref } = useCountUp(stat.number, 2500);
+            const { count, ref } = countUps[index];
             
             // Format the number with commas for better readability
             const formattedCount = count.toLocaleString();

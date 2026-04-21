@@ -120,7 +120,7 @@ export default function FAQPage() {
         <div className="mt-16 bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 text-white text-center">
           <h2 className="text-2xl font-bold mb-4">Still have questions?</h2>
           <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-            Can't find the answer you're looking for? Please get in touch with our friendly team.
+            Can&apos;t find the answer you&apos;re looking for? Please get in touch with our friendly team.
           </p>
           <a
             href="/contact"

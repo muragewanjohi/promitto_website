@@ -97,7 +97,7 @@ export default function ForgotPasswordPage() {
                     <span className="font-semibold">Email Sent!</span>
                   </div>
                   <p className="text-sm">
-                    We've sent a password reset link to <strong>{email}</strong>. 
+                    We&apos;ve sent a password reset link to <strong>{email}</strong>. 
                     Please check your inbox and follow the instructions to reset your password.
                   </p>
                 </div>

@@ -40,7 +40,7 @@ export async function GET() {
       data = fallback.data;
     }
 
-    const mapped = (data ?? [])
+    let mapped = (data ?? [])
       .filter((property: any) => isPropertySafe(property))
       .map((property: any) => ({
         ...property,
@@ -48,6 +48,32 @@ export async function GET() {
         status: property.property_statuses?.name || property.status || 'completed',
         type: property.property_types?.name || property.type || 'House',
       }));
+
+    // If no rows are explicitly marked as featured, gracefully fall back
+    // to the latest safe properties so the homepage section is not empty.
+    if (mapped.length === 0) {
+      const fallbackLatest = await supabase
+        .from('properties')
+        .select(`
+          *,
+          property_types(name),
+          property_statuses(name),
+          roof_types(name)
+        `)
+        .order('updatedat', { ascending: false })
+        .limit(12);
+
+      if (!fallbackLatest.error) {
+        mapped = (fallbackLatest.data ?? [])
+          .filter((property: any) => isPropertySafe(property))
+          .map((property: any) => ({
+            ...property,
+            mainImage: property.featuredImage || property.image_url || '/images/placeholder.png',
+            status: property.property_statuses?.name || property.status || 'completed',
+            type: property.property_types?.name || property.type || 'House',
+          }));
+      }
+    }
 
     return NextResponse.json(mapped);
   } catch (error) {

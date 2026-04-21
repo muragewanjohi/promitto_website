@@ -29,17 +29,33 @@ export default function PropertiesAdmin() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const handleToggleFeatured = async (id: string, currentFeatured: boolean) => {
-    const { error } = await supabase
-      .from('properties')
-      .update({ featured: !currentFeatured })
-      .eq('id', id);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert('You must be logged in to update On Show status.');
+        return;
+      }
 
-    if (!error) {
+      const response = await fetch(`/api/admin/properties/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ featured: !currentFeatured }),
+      });
+
+      if (!response.ok) {
+        alert('Failed to update On Show status');
+        return;
+      }
+
       setProperties(prev => prev.map(p => 
         p.id === id ? { ...p, featured: !currentFeatured } : p
       ));
-    } else {
-      alert('Failed to update featured status');
+    } catch (toggleError) {
+      console.error('Error toggling On Show status:', toggleError);
+      alert('Failed to update On Show status');
     }
   };
 
@@ -220,7 +236,7 @@ export default function PropertiesAdmin() {
                 </div>
               </div>
               <div className="ml-2 sm:ml-4">
-                <p className="text-xs font-medium text-gray-600">Featured</p>
+                <p className="text-xs font-medium text-gray-600">On Show</p>
                 <p className="text-lg sm:text-xl font-semibold text-gray-900">{properties.filter(p => p.featured).length}</p>
               </div>
             </div>
@@ -402,7 +418,7 @@ export default function PropertiesAdmin() {
                                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                 }`}
                               >
-                                {property.featured ? 'Featured' : 'Not Featured'}
+                                {property.featured ? 'On Show' : 'Not On Show'}
                               </button>
                             </div>
                           </div>
@@ -444,7 +460,7 @@ export default function PropertiesAdmin() {
                           Status
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Featured
+                          On Show
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Actions
@@ -497,7 +513,7 @@ export default function PropertiesAdmin() {
                                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                               }`}
                             >
-                              {property.featured ? 'Featured' : 'Not Featured'}
+                              {property.featured ? 'On Show' : 'Not On Show'}
                             </button>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -569,7 +585,7 @@ export default function PropertiesAdmin() {
                               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                           }`}
                         >
-                          {property.featured ? 'Featured' : 'Not Featured'}
+                          {property.featured ? 'On Show' : 'Not On Show'}
                         </button>
                         
                         <div className="flex items-center space-x-2">

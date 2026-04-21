@@ -15,7 +15,7 @@ const Hero = () => {
               Beautiful homes made for you
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-200">
-              Discover the perfect home with Promitto's extensive project listings
+              Discover the perfect home with Promitto&apos;s extensive project listings
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link

@@ -359,7 +359,7 @@ function PropertiesContent() {
                 {searchQuery && (
                   <div className="flex items-center gap-2 text-xs text-gray-600">
                     <span>Search results for:</span>
-                    <span className="font-semibold text-primary">"{searchQuery}"</span>
+                    <span className="font-semibold text-primary">&quot;{searchQuery}&quot;</span>
                     <button 
                       onClick={clearSearch}
                       className="text-gray-400 hover:text-gray-600 transition-colors"

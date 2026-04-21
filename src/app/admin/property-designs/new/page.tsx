@@ -193,7 +193,7 @@ export default function NewPropertyDesignPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Area (e.g., "140 sqm")</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Area (e.g., &quot;140 sqm&quot;)</label>
               <input
                 type="text"
                 value={formData.area}

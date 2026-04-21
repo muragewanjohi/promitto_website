@@ -35,7 +35,7 @@ const TeamPage = () => {
                 </h1>
               </div>
               <p className="text-xl text-white font-medium leading-relaxed">
-                Meet the dedicated professionals behind Promitto's success
+                Meet the dedicated professionals behind Promitto&apos;s success
               </p>
             </div>
           </div>

@@ -58,7 +58,7 @@ function VerifyEmailPageInner() {
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1E40AF]"></div>
             </div>
             <p className="mt-4 text-gray-600">
-              We've sent a verification link to <span className="font-medium">{email}</span>
+              We&apos;ve sent a verification link to <span className="font-medium">{email}</span>
             </p>
             <p className="mt-2 text-sm text-gray-500">
               Please click the link in your email to complete your registration.

@@ -83,6 +83,11 @@ const TrustSection = () => {
       description: 'Loan application success'
     }
   ];
+  const metricA = useCountUp(trustMetrics[0].number, 2500);
+  const metricB = useCountUp(trustMetrics[1].number, 2500);
+  const metricC = useCountUp(trustMetrics[2].number, 2500);
+  const metricD = useCountUp(trustMetrics[3].number, 2500);
+  const trustCounts = [metricA, metricB, metricC, metricD];
 
   const awards = [
     {
@@ -121,7 +126,7 @@ const TrustSection = () => {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {trustMetrics.map((metric, index) => {
-              const { count, ref } = useCountUp(metric.number, 2500);
+              const { count, ref } = trustCounts[index];
               const suffix = metric.label === 'Approval Rate' ? '%' : metric.label === 'Years Experience' ? '+' : '+';
               
               return (

@@ -291,7 +291,7 @@ function InquiryCard({ propertyId, propertyName }: { propertyId: string, propert
           </div>
           <div>
             <h3 className="text-2xl font-bold text-primary mb-1">Interested in a Similar Design?</h3>
-            <p className="text-secondary font-medium">Let's build your dream home</p>
+            <p className="text-secondary font-medium">Let&apos;s build your dream home</p>
           </div>
         </div>
         <p className="mb-6 text-gray-700 leading-relaxed">Start your journey to owning a similar house design. Learn more about the process and get started with our personalized consultation.</p>
@@ -327,7 +327,7 @@ function InquiryCard({ propertyId, propertyName }: { propertyId: string, propert
         </div>
         <div>
           <h3 className="text-2xl font-bold text-primary mb-1">Interested in a Similar Design?</h3>
-          <p className="text-secondary font-medium">Let's discuss your dream home project</p>
+          <p className="text-secondary font-medium">Let&apos;s discuss your dream home project</p>
         </div>
       </div>
       <p className="mb-6 text-gray-700 leading-relaxed">

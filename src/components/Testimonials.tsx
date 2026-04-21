@@ -94,6 +94,10 @@ const Testimonials = () => {
     { number: 400, label: 'Happy Clients', suffix: '+' },
     { number: 100, label: 'Approval Rate', suffix: '%' }
   ];
+  const metricA = useCountUp(communityMetrics[0].number, 2500);
+  const metricB = useCountUp(communityMetrics[1].number, 2500);
+  const metricC = useCountUp(communityMetrics[2].number, 2500);
+  const metricCounts = [metricA, metricB, metricC];
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -122,7 +126,7 @@ const Testimonials = () => {
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             {communityMetrics.map((metric, index) => {
-              const { count, ref } = useCountUp(metric.number, 2500);
+              const { count, ref } = metricCounts[index];
               
               return (
                 <div key={index} className="text-center" ref={ref}>
@@ -144,7 +148,7 @@ const Testimonials = () => {
             What Our Clients Say
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Don't just take our word for it. Hear from our satisfied customers about their experience with Promitto
+            Don&apos;t just take our word for it. Hear from our satisfied customers about their experience with Promitto
           </p>
         </div>
 
@@ -164,7 +168,7 @@ const Testimonials = () => {
 
               {/* Quote */}
               <blockquote className="text-gray-700 mb-6 italic leading-relaxed">
-                "{testimonial.quote}"
+                &ldquo;{testimonial.quote}&rdquo;
               </blockquote>
 
               {/* Client Info */}

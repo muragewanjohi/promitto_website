@@ -244,7 +244,7 @@ export default function PropertyDesignDetailPage() {
               </svg>
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">Design Not Found</h3>
-            <p className="text-gray-600 mb-6">The property design you're looking for doesn't exist.</p>
+            <p className="text-gray-600 mb-6">The property design you&apos;re looking for doesn&apos;t exist.</p>
             <button 
               onClick={() => router.push('/property-designs')}
               className="bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary/90 transition-colors"
