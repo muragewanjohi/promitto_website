@@ -7,6 +7,7 @@ import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import { useAuth } from '@/contexts/AuthContext';
 import { isPropertySafe } from '@/lib/security/propertySafety';
+import { getPropertyImageList } from '@/lib/propertyImages';
 
 interface PropertyPageProps {
   params: {
@@ -528,7 +529,13 @@ export default function PropertyPage({ params }: PropertyPageProps) {
     );
   }
 
-  const images: string[] = property.images || (property.featuredImage ? [property.featuredImage] : []);
+  const images: string[] = getPropertyImageList({
+    id: property.id,
+    images: property.images,
+    featuredImage: property.featuredImage,
+    mainImage: property.mainImage,
+    image_url: property.image_url,
+  });
 
   // Helper function to format price
   const formatPrice = (price: string | number | null) => {

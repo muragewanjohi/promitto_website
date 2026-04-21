@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { getPropertyImageList } from '@/lib/propertyImages';
 
 interface Property {
   id: string;
@@ -27,13 +28,6 @@ interface PropertyCardProps {
   property: Property | null;
   onPropertyClick?: () => void;
   priority?: boolean;
-}
-
-function isUsablePropertyImageUrl(value: unknown): value is string {
-  if (typeof value !== 'string') return false;
-  const trimmed = value.trim();
-  if (!trimmed) return false;
-  return true;
 }
 
 const PropertyCard = ({ property, onPropertyClick, priority = false }: PropertyCardProps) => {
@@ -70,24 +64,12 @@ const PropertyCard = ({ property, onPropertyClick, priority = false }: PropertyC
   // Prepare image array for slider
   const imageArray = React.useMemo(() => {
     if (!property) return [];
-    const allImages = [];
-    if (isUsablePropertyImageUrl(featuredImage)) allImages.push(featuredImage);
-    if (isUsablePropertyImageUrl(mainImage) && mainImage !== featuredImage) allImages.push(mainImage);
-    if (images && images.length > 0) {
-      images.forEach(img => {
-        if (
-          isUsablePropertyImageUrl(img) &&
-          img !== featuredImage &&
-          img !== mainImage
-        ) {
-          allImages.push(img);
-        }
-      });
-    }
-    // Fallback to default image if no images available
-    if (allImages.length === 0) {
-      allImages.push(`/images/${id}/main.jpg`);
-    }
+    const allImages = getPropertyImageList({
+      id,
+      images,
+      featuredImage,
+      mainImage,
+    });
     return allImages.filter((img) => !failedImageUrls.includes(img));
   }, [property, featuredImage, mainImage, images, id, failedImageUrls]);
 
