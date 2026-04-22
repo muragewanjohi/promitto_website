@@ -106,17 +106,6 @@ export default function Header() {
                 Home
               </Link>
 
-              <Link
-                href="/royal-heights-sukari"
-                className={`text-base hover:text-secondary transition-colors capitalize font-semibold ${pathname === '/royal-heights-sukari' ? 'text-secondary' : ''}`}
-                onClick={() => {
-                  setIsAboutDropdownOpen(false);
-                  setIsMediaDropdownOpen(false);
-                }}
-              >
-                Royal Heights Sukari
-              </Link>
-              
               {/* About Dropdown */}
               <div className="relative group">
                 <button 
@@ -548,16 +537,6 @@ export default function Header() {
                     Home
                   </Link>
 
-                  <Link
-                    href="/royal-heights-sukari"
-                    className={`block px-4 py-3 text-white hover:text-secondary transition-colors capitalize rounded-lg hover:bg-white/10 font-medium ${pathname === '/royal-heights-sukari' ? 'text-secondary bg-white/10' : ''}`}
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                    }}
-                  >
-                    Royal Heights Sukari
-                  </Link>
-                  
                   {/* About Section with Submenu */}
                   <div className="space-y-1">
                     <div className="px-4 py-2 text-white/80 text-sm font-semibold uppercase tracking-wider">

@@ -1,83 +1,112 @@
-import {
-  Dumbbell,
-  ShieldCheck,
-  ParkingCircle,
-  ArrowUpDown,
-  BatteryCharging,
-  Waves,
-  Trees,
-  Wifi,
-} from 'lucide-react';
+ 'use client';
+
+import { useState } from 'react';
+import Image from 'next/image';
 
 const amenities = [
+  'High-speed WiFi internet connection',
+  'Fitted modular kitchen',
+  'Fully integrated wardrobes in the bedrooms',
+  'Anti-skid porcelain floors tiled in living rooms and balconies',
+  'Swimming pool',
+  'Expansive balconies on all units',
+  'Large glider windows to let in maximum light',
+  'Access to sports & recreational facilities',
+];
+
+const amenitySlides = [
   {
-    title: 'Fully Equipped Gym',
-    description: 'State-of-the-art fitness center with steam room',
-    icon: Dumbbell,
+    image: '/4brm/4br_standard_flat_roof_2.png',
+    title: 'Blended Nature',
+    description: 'Green spaces and attractive landscaping on individual courts.',
   },
   {
-    title: '24/7 Security',
-    description: 'Round-the-clock security with CCTV surveillance',
-    icon: ShieldCheck,
-  },
-  {
-    title: 'Secure Parking',
-    description: 'Ample basement and visitor parking spaces',
-    icon: ParkingCircle,
-  },
-  {
-    title: 'High-Speed Lifts',
-    description: 'Modern elevators for quick access',
-    icon: ArrowUpDown,
-  },
-  {
-    title: 'Backup Power',
-    description: '24/7 power backup for uninterrupted living',
-    icon: BatteryCharging,
-  },
-  {
-    title: 'Water Backup',
-    description: 'Continuous water supply with borehole',
-    icon: Waves,
-  },
-  {
-    title: 'Landscaped Gardens',
-    description: 'Beautiful green spaces for relaxation',
-    icon: Trees,
-  },
-  {
-    title: 'High-Speed Internet',
-    description: 'Fiber optic ready throughout the building',
-    icon: Wifi,
+    image: '/hero-house.jpg',
+    title: 'Dedicated Entries',
+    description: 'Gated courts with dedicated entry and exits to the main gate.',
   },
 ];
 
 export default function RoyalHeightsAmenitiesSection() {
-  return (
-    <section id="apartments" className="py-16 bg-gradient-to-br from-primary/5 via-white to-secondary/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
-          <p className="uppercase tracking-[0.2em] text-xs font-semibold text-secondary">Premium Amenities</p>
-          <h2 className="site-title mt-3 text-gray-900">Unmatched Luxury & Comfort</h2>
-          <p className="mt-4 text-gray-600">Experience world-class amenities designed for your ultimate comfort</p>
-        </div>
+  const [activeSlide, setActiveSlide] = useState(0);
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {amenities.map((amenity) => {
-            const Icon = amenity.icon;
-            return (
-              <article
-                key={amenity.title}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 text-center"
+  const prevSlide = () => {
+    setActiveSlide((prev) => (prev === 0 ? amenitySlides.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+    setActiveSlide((prev) => (prev === amenitySlides.length - 1 ? 0 : prev + 1));
+  };
+
+  const current = amenitySlides[activeSlide];
+  const firstColumnAmenities = amenities.slice(0, 4);
+  const secondColumnAmenities = amenities.slice(4);
+
+  return (
+    <section id="apartments" className="py-16 lg:py-20 bg-white">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-10">
+        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-14 items-start">
+          <div className="relative h-[500px] lg:h-[560px] overflow-hidden">
+            <Image
+              src={current.image}
+              alt="Royal Heights Amenities"
+              fill
+              className="object-cover transition-all duration-700"
+            />
+            <div className="absolute bottom-0 left-0 bg-primary/90 text-white px-8 py-7 max-w-[360px]">
+              <p className="uppercase tracking-[0.2em] text-[11px] text-secondary">{current.title}</p>
+              <p className="mt-2 text-sm leading-6 text-white/90">{current.description}</p>
+              <p className="mt-5 text-[11px] uppercase tracking-[0.24em] text-secondary font-semibold">Explore</p>
+            </div>
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 bg-[#cbc3a2] text-white flex items-center">
+              <button
+                type="button"
+                onClick={prevSlide}
+                aria-label="Previous amenity slide"
+                className="px-4 py-3 hover:bg-black/10 transition-colors"
               >
-                <div className="w-14 h-14 mx-auto rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
-                  <Icon className="h-6 w-6" />
-                </div>
-                <h3 className="mt-5 text-3xl font-semibold text-gray-900">{amenity.title}</h3>
-                <p className="mt-2 text-gray-500 leading-6">{amenity.description}</p>
-              </article>
-            );
-          })}
+                &#8249;
+              </button>
+              <span className="text-sm px-3">
+                {activeSlide + 1}/{amenitySlides.length}
+              </span>
+              <button
+                type="button"
+                onClick={nextSlide}
+                aria-label="Next amenity slide"
+                className="px-4 py-3 hover:bg-black/10 transition-colors"
+              >
+                &#8250;
+              </button>
+            </div>
+          </div>
+
+          <div className="pt-3">
+            <h2 className="text-[34px] lg:text-[38px] font-medium tracking-wide text-gray-900">AMENITIES</h2>
+            <p className="mt-4 text-[15px] text-gray-600 leading-7 max-w-[520px]">
+              The residences at Royal Heights Sukari showcase a modernized design direction with
+              practical layouts that bring to life comfort-driven lifestyle experiences.
+            </p>
+
+            <div className="mt-7 grid sm:grid-cols-2 gap-x-10 gap-y-3">
+              <ul className="space-y-3 text-gray-700">
+                {firstColumnAmenities.map((amenity) => (
+                  <li key={amenity} className="flex items-start text-sm leading-6">
+                    <span className="mr-2 text-secondary">&bull;</span>
+                    <span>{amenity}</span>
+                  </li>
+                ))}
+              </ul>
+              <ul className="space-y-3 text-gray-700">
+                {secondColumnAmenities.map((amenity) => (
+                  <li key={amenity} className="flex items-start text-sm leading-6">
+                    <span className="mr-2 text-secondary">&bull;</span>
+                    <span>{amenity}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>

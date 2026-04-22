@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -34,8 +34,6 @@ const slides: HeroSlide[] = [
 export default function RoyalHeightsHero() {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const activeSlide = useMemo(() => slides[activeIndex], [activeIndex]);
-
   useEffect(() => {
     const interval = window.setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % slides.length);
@@ -49,12 +47,20 @@ export default function RoyalHeightsHero() {
       {slides.map((slide, index) => (
         <div
           key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-700 ${
+          className={`absolute inset-0 transition-opacity duration-[1400ms] ease-in-out ${
             index === activeIndex ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
           aria-hidden={index !== activeIndex}
         >
-          <Image src={slide.image} alt={slide.heading} fill priority={index === 0} className="object-cover" />
+          <Image
+            src={slide.image}
+            alt={slide.heading}
+            fill
+            priority={index === 0}
+            className={`object-cover transition-transform ease-out duration-[6500ms] ${
+              index === activeIndex ? 'scale-110' : 'scale-100'
+            }`}
+          />
           <div className="absolute inset-0 bg-black/50" />
         </div>
       ))}
@@ -85,12 +91,26 @@ export default function RoyalHeightsHero() {
       </header>
 
       <div id="home" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-44 pb-20">
-        <h1 className="mt-8 text-4xl sm:text-6xl font-bold text-white max-w-4xl leading-tight">
-          {activeSlide.heading}
-        </h1>
-        <p className="mt-5 text-white/95 text-lg sm:text-2xl max-w-4xl">
-          {activeSlide.description}
-        </p>
+        <div className="relative min-h-[230px] sm:min-h-[270px]">
+          {slides.map((slide, index) => (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-all duration-[900ms] ease-in-out ${
+                index === activeIndex
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-4 pointer-events-none'
+              }`}
+              aria-hidden={index !== activeIndex}
+            >
+              <h1 className="mt-8 text-4xl sm:text-6xl font-bold text-white max-w-4xl leading-tight">
+                {slide.heading}
+              </h1>
+              <p className="mt-5 text-white/95 text-lg sm:text-2xl max-w-4xl">
+                {slide.description}
+              </p>
+            </div>
+          ))}
+        </div>
 
         <div className="mt-8 flex items-center gap-2">
           {slides.map((slide, index) => (
