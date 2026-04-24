@@ -51,7 +51,7 @@ const TeamPage = () => {
               { name: 'Machira Minyati', title: 'Project Manager', img: '/machira.jpg' },
               { name: 'Steve Kihara', title: 'Chief Finance Officer', img: '/steve.jpeg' },
               { name: 'Anastaciah Wajohi', title: 'Head of Customer Service', img: '/anastaciah.jpg' },
-              { name: 'David Mwangi', title: 'Risk Manager', img: '/david.png' },
+              { name: 'Felista N. Mbatha', title: 'Head of Construction Projects and Finance', img: '/felistas.jpeg' },
               { name: 'Adreen Gichore', title: 'Chief of Staff & Head of Credit Management', img: '/adreen.jpeg' },
             ].map((member, idx) => (
               <div key={idx} className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
