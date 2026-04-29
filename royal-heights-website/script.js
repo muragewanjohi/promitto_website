@@ -12,22 +12,22 @@ const heroSlides = [
 ];
 
 const unitData = [
-  { name: '1 Bedroom Apartment', price: 'KES 4.5M', image: './assets/images/4brm/4br_standard_flat_roof_2.png' },
-  { name: '2 Bedroom Apartment', price: 'KES 8.5M', image: './assets/images/house_designs/3br-flat-roof-product-1-3-photo.webp' },
-  { name: '3 Bedroom Apartment', price: 'KES 13M', image: './assets/images/hero-house.jpg' },
-  { name: 'Studio Apartment', price: 'KES 3.2M', image: './assets/images/hero-house.jpg' },
-  { name: '2 Bedroom Superior', price: 'KES 9.8M', image: './assets/images/4brm/4br_standard_flat_roof_2.png' },
-  { name: '3 Bedroom Penthouse', price: 'KES 16.5M', image: './assets/images/house_designs/3br-flat-roof-product-1-3-photo.webp' },
+  { name: '1 Bedroom Apartment', price: 'KES 4.5M', image: './assets/images/royal-heights/ROYAL%20HEIGHTS%20Grey_3.png' },
+  { name: '2 Bedroom Apartment', price: 'KES 8.5M', image: './assets/images/royal-heights/ROYAL%20HEIGHTS%20Grey_4.jpg' },
+  { name: '3 Bedroom Apartment', price: 'KES 13M', image: './assets/images/royal-heights/ROYAL%20HEIGHTS%20Grey_5.png' },
+  { name: 'Studio Apartment', price: 'KES 3.2M', image: './assets/images/royal-heights/ROYAL%20HEIGHTS%20Grey_6.png' },
+  { name: '2 Bedroom Superior', price: 'KES 9.8M', image: './assets/images/royal-heights/ROYAL%20HEIGHTS%20Grey_1.png' },
+  { name: '3 Bedroom Penthouse', price: 'KES 16.5M', image: './assets/images/royal-heights/ROYAL%20HEIGHTS%20Grey_2.png' },
 ];
 
 const amenitySlides = [
   {
-    image: './assets/images/4brm/4br_standard_flat_roof_2.png',
+    image: './assets/images/royal-heights/ROYAL%20HEIGHTS%20Grey_4.jpg',
     title: 'Blended Nature',
     description: 'Green spaces and attractive landscaping on individual courts.',
   },
   {
-    image: './assets/images/hero-house.jpg',
+    image: './assets/images/royal-heights/ROYAL%20HEIGHTS%20Grey_6.png',
     title: 'Dedicated Entries',
     description: 'Gated courts with dedicated entry and exits to the main gate.',
   },

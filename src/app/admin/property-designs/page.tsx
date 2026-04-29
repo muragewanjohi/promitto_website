@@ -236,14 +236,15 @@ export default function PropertyDesignsAdmin() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => toggleFeatured(design.id, design.is_featured)}
-                      className={`p-2 rounded transition-colors ${
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
                         design.is_featured
-                          ? 'text-yellow-500 hover:text-yellow-600'
-                          : 'text-gray-400 hover:text-yellow-500'
+                          ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
-                      title={design.is_featured ? 'Remove from featured' : 'Mark as featured'}
+                      title={design.is_featured ? 'Remove from homepage' : 'Show on homepage'}
                     >
-                      <Star className={`w-5 h-5 ${design.is_featured ? 'fill-current' : ''}`} />
+                      <Star className={`w-4 h-4 ${design.is_featured ? 'fill-current' : ''}`} />
+                      {design.is_featured ? 'On Homepage' : 'Hidden'}
                     </button>
                     <Link
                       href={`/admin/property-designs/${design.id}`}

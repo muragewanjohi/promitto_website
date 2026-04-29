@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { NextResponse } from 'next/server';
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
+import { requireAdmin } from '@/lib/auth/requireAdmin';
 
 const propertyId = process.env.GA_PROPERTY_ID;
 const serviceAccountJson = process.env.GA_SERVICE_ACCOUNT_JSON;
@@ -25,25 +26,9 @@ function getAnalyticsClient(): BetaAnalyticsDataClient | null {
 
 export async function GET(request: Request) {
   try {
-    const authHeader = request.headers.get('authorization');
-    const accessToken = authHeader?.split(' ')[1];
-
-    if (!accessToken) {
-      return NextResponse.json(
-        { error: 'Unauthorized', message: 'No access token provided' },
-        { status: 401 }
-      );
-    }
-
-    const { createServerSupabaseClient } = await import('@/lib/supabase');
-    const supabase = createServerSupabaseClient(accessToken);
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: 'Unauthorized', message: 'Invalid or expired session' },
-        { status: 401 }
-      );
+    const authResult = await requireAdmin(request);
+    if ('response' in authResult) {
+      return authResult.response;
     }
 
     if (!propertyId) {

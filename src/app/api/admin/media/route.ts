@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { requireAdmin } from '@/lib/auth/requireAdmin';
 
 export async function GET(request: Request) {
   try {
@@ -7,10 +7,11 @@ export async function GET(request: Request) {
     const category = searchParams.get('category');
     const featured = searchParams.get('featured');
     
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const authResult = await requireAdmin(request);
+    if ('response' in authResult) {
+      return authResult.response;
+    }
+    const { supabase } = authResult;
     
     let query = supabase
       .from('media_items')
@@ -44,6 +45,12 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const authResult = await requireAdmin(request);
+    if ('response' in authResult) {
+      return authResult.response;
+    }
+    const { supabase } = authResult;
+
     const body = await request.json();
     const { title, content, category, image_url, is_featured, author, published_at, excerpt } = body;
     
@@ -61,11 +68,6 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-    
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
     
     const { data, error } = await supabase
       .from('media_items')

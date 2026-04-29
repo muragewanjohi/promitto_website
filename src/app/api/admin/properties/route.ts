@@ -1,22 +1,22 @@
 export const dynamic = "force-dynamic";
 import { NextResponse } from 'next/server';
-import { propertyDetails } from '@/data/properties';
+import { requireAdmin } from '@/lib/auth/requireAdmin';
+
+function sanitizeText(value: unknown, maxLength = 500): string | unknown {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  return value.replace(/[\u0000-\u001F\u007F]/g, '').trim().slice(0, maxLength);
+}
 
 export async function GET(request: Request) {
   try {
-    const authHeader = request.headers.get('authorization');
-    const accessToken = authHeader?.split(' ')[1];
-
-    if (!accessToken) {
-      return NextResponse.json(
-        { error: 'Unauthorized', message: 'No access token provided' },
-        { status: 401 }
-      );
+    const authResult = await requireAdmin(request);
+    if ('response' in authResult) {
+      return authResult.response;
     }
-
-    // Dynamic import to avoid build-time execution
-    const { createServerSupabaseClient } = await import('@/lib/supabase');
-    const supabase = createServerSupabaseClient(accessToken);
+    const { supabase } = authResult;
 
   // Fetch all properties
   const { data: properties, error } = await supabase
@@ -79,28 +79,26 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const authHeader = request.headers.get('authorization');
-    const accessToken = authHeader?.split(' ')[1];
-
-    if (!accessToken) {
-      return NextResponse.json(
-        { error: 'Unauthorized', message: 'No access token provided' },
-        { status: 401 }
-      );
+    const authResult = await requireAdmin(request);
+    if ('response' in authResult) {
+      return authResult.response;
     }
-
-    // Dynamic import to avoid build-time execution
-    const { createServerSupabaseClient } = await import('@/lib/supabase');
-    const supabase = createServerSupabaseClient(accessToken);
+    const { supabase } = authResult;
 
   try {
     const data = await request.json();
     const { features, ...propertyData } = data;
+    const sanitizedPropertyData = {
+      ...propertyData,
+      name: sanitizeText(propertyData.name, 120),
+      location: sanitizeText(propertyData.location, 160),
+      description: sanitizeText(propertyData.description, 2000),
+    };
 
     // Insert property into Supabase
     const { data: inserted, error } = await supabase
       .from('properties')
-      .insert([propertyData])
+      .insert([sanitizedPropertyData])
       .select()
       .single();
 

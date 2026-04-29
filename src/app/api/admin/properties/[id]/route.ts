@@ -1,26 +1,36 @@
 export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdmin } from '@/lib/auth/requireAdmin';
+
+function sanitizeText(value: unknown, maxLength = 500): string | unknown {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  return value.replace(/[\u0000-\u001F\u007F]/g, '').trim().slice(0, maxLength);
+}
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
-    const authHeader = request.headers.get("authorization");
-    const accessToken = authHeader?.split(" ")[1];
-
-    if (!accessToken) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authResult = await requireAdmin(request);
+    if ('response' in authResult) {
+      return authResult.response;
     }
-
-    // Dynamic import to avoid build-time execution
-    const { createServerSupabaseClient } = await import("@/lib/supabase");
-    const supabase = createServerSupabaseClient(accessToken);
+    const { supabase } = authResult;
   const data = await request.json();
   const { features, ...propertyData } = data;
+  const sanitizedPropertyData = {
+    ...propertyData,
+    name: sanitizeText(propertyData.name, 120),
+    location: sanitizeText(propertyData.location, 160),
+    description: sanitizeText(propertyData.description, 2000),
+  };
 
   const { error } = await supabase
     .from("properties")
-    .update(propertyData)
+    .update(sanitizedPropertyData)
     .eq("id", id);
 
   if (error) {
@@ -62,16 +72,11 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
-    const authHeader = request.headers.get("authorization");
-    const accessToken = authHeader?.split(" ")[1];
-
-    if (!accessToken) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authResult = await requireAdmin(request);
+    if ('response' in authResult) {
+      return authResult.response;
     }
-
-    // Dynamic import to avoid build-time execution
-    const { createServerSupabaseClient } = await import("@/lib/supabase");
-    const supabase = createServerSupabaseClient(accessToken);
+    const { supabase } = authResult;
 
   // Fetch property
   const { data: property, error } = await supabase

@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { requireAdmin } from '@/lib/auth/requireAdmin';
 
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const authResult = await requireAdmin(request);
+    if ('response' in authResult) {
+      return authResult.response;
+    }
+    const { supabase } = authResult;
 
     const { data, error } = await supabase
       .from('faqs')
@@ -37,6 +38,12 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    const authResult = await requireAdmin(request);
+    if ('response' in authResult) {
+      return authResult.response;
+    }
+    const { supabase } = authResult;
+
     const body = await request.json();
     const { question, answer, display_order, published } = body;
 
@@ -46,11 +53,6 @@ export async function PUT(
         { status: 400 }
       );
     }
-
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
 
     const { data, error } = await supabase
       .from('faqs')
@@ -85,10 +87,11 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const authResult = await requireAdmin(request);
+    if ('response' in authResult) {
+      return authResult.response;
+    }
+    const { supabase } = authResult;
 
     const { error } = await supabase
       .from('faqs')
