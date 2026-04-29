@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 
 type ProfileProgress = {
@@ -53,6 +53,7 @@ type User = {
 };
 
 type TabType = 'memberships' | 'customers' | 'users';
+const ROWS_PER_PAGE = 10;
 
 const MembershipManagement = () => {
   const [activeTab, setActiveTab] = useState<TabType>('memberships');
@@ -62,6 +63,16 @@ const MembershipManagement = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
+  const [searchByTab, setSearchByTab] = useState<Record<TabType, string>>({
+    memberships: '',
+    customers: '',
+    users: '',
+  });
+  const [pageByTab, setPageByTab] = useState<Record<TabType, number>>({
+    memberships: 1,
+    customers: 1,
+    users: 1,
+  });
 
   useEffect(() => {
     if (activeTab === 'memberships') {
@@ -72,6 +83,13 @@ const MembershipManagement = () => {
       fetchUsers();
     }
   }, [activeTab]);
+
+  useEffect(() => {
+    setPageByTab((prev) => ({
+      ...prev,
+      [activeTab]: 1,
+    }));
+  }, [activeTab, searchByTab]);
 
   // Check profile completion status for a user
   const checkProfileProgress = async (userId: string): Promise<ProfileProgress> => {
@@ -396,8 +414,137 @@ const MembershipManagement = () => {
     return customer.email || 'Unknown Customer';
   };
 
+  const searchTerm = searchByTab[activeTab].trim().toLowerCase();
+
+  const filteredMemberships = useMemo(() => {
+    if (!searchTerm) {
+      return memberships;
+    }
+
+    return memberships.filter((membership) => {
+      const status = membership.status ? 'active' : 'inactive';
+      return [
+        getUserDisplayName(membership),
+        membership.user_email || '',
+        membership.reference || '',
+        status,
+      ]
+        .join(' ')
+        .toLowerCase()
+        .includes(searchTerm);
+    });
+  }, [memberships, searchTerm]);
+
+  const filteredCustomers = useMemo(() => {
+    if (!searchTerm) {
+      return customers;
+    }
+
+    return customers.filter((customer) =>
+      [
+        getCustomerDisplayName(customer),
+        customer.email || '',
+        customer.national_id || '',
+        customer.kra_pin || '',
+        customer.mobile || '',
+        customer.telephone || '',
+      ]
+        .join(' ')
+        .toLowerCase()
+        .includes(searchTerm)
+    );
+  }, [customers, searchTerm]);
+
+  const filteredUsers = useMemo(() => {
+    if (!searchTerm) {
+      return users;
+    }
+
+    return users.filter((user) =>
+      [user.id, user.email, user.phone || '', user.role || '']
+        .join(' ')
+        .toLowerCase()
+        .includes(searchTerm)
+    );
+  }, [users, searchTerm]);
+
+  const paginatedMemberships = useMemo(() => {
+    const currentPage = pageByTab.memberships;
+    const start = (currentPage - 1) * ROWS_PER_PAGE;
+    return filteredMemberships.slice(start, start + ROWS_PER_PAGE);
+  }, [filteredMemberships, pageByTab.memberships]);
+
+  const paginatedCustomers = useMemo(() => {
+    const currentPage = pageByTab.customers;
+    const start = (currentPage - 1) * ROWS_PER_PAGE;
+    return filteredCustomers.slice(start, start + ROWS_PER_PAGE);
+  }, [filteredCustomers, pageByTab.customers]);
+
+  const paginatedUsers = useMemo(() => {
+    const currentPage = pageByTab.users;
+    const start = (currentPage - 1) * ROWS_PER_PAGE;
+    return filteredUsers.slice(start, start + ROWS_PER_PAGE);
+  }, [filteredUsers, pageByTab.users]);
+
+  const getFilteredCountForTab = (tab: TabType) => {
+    if (tab === 'memberships') return filteredMemberships.length;
+    if (tab === 'customers') return filteredCustomers.length;
+    return filteredUsers.length;
+  };
+
+  const getCurrentPageForTab = (tab: TabType) => pageByTab[tab];
+
+  const getTotalPagesForTab = (tab: TabType) =>
+    Math.max(1, Math.ceil(getFilteredCountForTab(tab) / ROWS_PER_PAGE));
+
+  const handlePageChange = (tab: TabType, nextPage: number) => {
+    const totalPages = getTotalPagesForTab(tab);
+    const clampedPage = Math.min(Math.max(nextPage, 1), totalPages);
+    setPageByTab((prev) => ({
+      ...prev,
+      [tab]: clampedPage,
+    }));
+  };
+
+  const renderPagination = (tab: TabType) => {
+    const totalItems = getFilteredCountForTab(tab);
+    const totalPages = getTotalPagesForTab(tab);
+    const currentPage = getCurrentPageForTab(tab);
+    const startItem = totalItems === 0 ? 0 : (currentPage - 1) * ROWS_PER_PAGE + 1;
+    const endItem = Math.min(currentPage * ROWS_PER_PAGE, totalItems);
+
+    return (
+      <div className="mt-4 flex items-center justify-between gap-4">
+        <p className="text-sm text-gray-600">
+          Showing {startItem}-{endItem} of {totalItems}
+        </p>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => handlePageChange(tab, currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-3 py-1.5 text-sm rounded-md border border-gray-300 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+          >
+            Previous
+          </button>
+          <span className="text-sm text-gray-700">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() => handlePageChange(tab, currentPage + 1)}
+            disabled={currentPage >= totalPages}
+            className="px-3 py-1.5 text-sm rounded-md border border-gray-300 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   const renderMembershipsTable = () => {
-    if (memberships.length === 0) {
+    if (filteredMemberships.length === 0) {
       return (
         <div className="bg-white rounded-lg shadow p-12 text-center">
           <div className="text-gray-400 mb-4">
@@ -437,7 +584,7 @@ const MembershipManagement = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {memberships.map(m => (
+            {paginatedMemberships.map(m => (
               <tr key={m.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">
@@ -522,7 +669,7 @@ const MembershipManagement = () => {
   };
 
   const renderCustomersTable = () => {
-    if (customers.length === 0) {
+    if (filteredCustomers.length === 0) {
       return (
         <div className="bg-white rounded-lg shadow p-12 text-center">
           <div className="text-gray-400 mb-4">
@@ -565,7 +712,7 @@ const MembershipManagement = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {customers.map(customer => (
+            {paginatedCustomers.map(customer => (
               <tr key={customer.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">
@@ -642,7 +789,7 @@ const MembershipManagement = () => {
   };
 
   const renderUsersTable = () => {
-    if (users.length === 0) {
+    if (filteredUsers.length === 0) {
       return (
         <div className="bg-white rounded-lg shadow p-12 text-center">
           <div className="text-gray-400 mb-4">
@@ -682,7 +829,7 @@ const MembershipManagement = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {users.map(user => (
+            {paginatedUsers.map(user => (
               <tr key={user.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-mono text-gray-900 truncate max-w-xs">
@@ -795,9 +942,45 @@ const MembershipManagement = () => {
         </div>
       ) : (
         <>
-          {activeTab === 'memberships' && renderMembershipsTable()}
-          {activeTab === 'customers' && renderCustomersTable()}
-          {activeTab === 'users' && renderUsersTable()}
+          <div className="mb-4">
+            <input
+              type="text"
+              value={searchByTab[activeTab]}
+              onChange={(event) =>
+                setSearchByTab((prev) => ({
+                  ...prev,
+                  [activeTab]: event.target.value,
+                }))
+              }
+              placeholder={
+                activeTab === 'memberships'
+                  ? 'Search by name, email, reference, or status'
+                  : activeTab === 'customers'
+                    ? 'Search by name, email, national ID, KRA PIN, or phone'
+                    : 'Search by user ID, email, role, or phone'
+              }
+              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
+
+          {activeTab === 'memberships' && (
+            <>
+              {renderMembershipsTable()}
+              {renderPagination('memberships')}
+            </>
+          )}
+          {activeTab === 'customers' && (
+            <>
+              {renderCustomersTable()}
+              {renderPagination('customers')}
+            </>
+          )}
+          {activeTab === 'users' && (
+            <>
+              {renderUsersTable()}
+              {renderPagination('users')}
+            </>
+          )}
         </>
       )}
     </div>
