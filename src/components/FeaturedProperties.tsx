@@ -92,7 +92,7 @@ const FeaturedProperties = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center mb-12">
             <div className="flex items-center flex-1">
-              <h2 className="site-title text-primary mr-4">Featured Projects</h2>
+              <h2 className="site-title text-primary mr-4">On Show</h2>
               <div className="flex-1 h-px bg-gray-400"></div>
             </div>
           </div>
@@ -119,7 +119,7 @@ const FeaturedProperties = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center mb-12">
             <div className="flex items-center flex-1">
-              <h2 className="site-title text-primary mr-4">Featured Projects</h2>
+              <h2 className="site-title text-primary mr-4">On Show</h2>
               <div className="flex-1 h-px bg-gray-400"></div>
             </div>
           </div>
@@ -174,7 +174,7 @@ const FeaturedProperties = () => {
           </>
         ) : (
           <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">No featured properties available at the moment.</p>
+            <p className="text-gray-500 mb-4">No properties are On Show at the moment.</p>
             <Link
               href="/properties"
               className="text-primary font-semibold uppercase hover:text-secondary transition-colors border-b-2 border-red-500 pb-1"

@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
-import { Plus, Edit, Trash2, Star, Image as ImageIcon } from 'lucide-react';
+import { safeNextImageSrc } from '@/lib/safeNextImageSrc';
+import { Plus, Edit, Trash2, Image as ImageIcon } from 'lucide-react';
 
 interface PropertyDesign {
   id: string;
@@ -30,7 +30,12 @@ export default function PropertyDesignsAdmin() {
   const [error, setError] = useState<string | null>(null);
   const [filterBedrooms, setFilterBedrooms] = useState<string>('all');
   const [filterRoofType, setFilterRoofType] = useState<string>('all');
-  const router = useRouter();
+  const getAccessToken = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    return session?.access_token;
+  };
 
   useEffect(() => {
     fetchDesigns();
@@ -40,25 +45,29 @@ export default function PropertyDesignsAdmin() {
     try {
       setLoading(true);
       setError(null);
-      
-      let query = supabase
-        .from('property_designs')
-        .select('*')
-        .order('display_order', { ascending: true })
-        .order('updatedat', { ascending: false });
 
-      if (filterBedrooms !== 'all') {
-        query = query.eq('bedrooms', parseInt(filterBedrooms));
-      }
-      if (filterRoofType !== 'all') {
-        query = query.eq('roof_type', filterRoofType);
+      const accessToken = await getAccessToken();
+      if (!accessToken) {
+        throw new Error('Session expired. Please log in again.');
       }
 
-      const { data, error: fetchError } = await query;
-      
-      if (fetchError) throw fetchError;
-      
-      setDesigns(data || []);
+      const params = new URLSearchParams({
+        bedrooms: filterBedrooms,
+        roofType: filterRoofType,
+      });
+
+      const response = await fetch(`/api/admin/property-designs?${params.toString()}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result?.error || 'Failed to fetch property designs');
+      }
+
+      setDesigns(result || []);
     } catch (err) {
       console.error('Error fetching property designs:', err);
       setError('Failed to load property designs');
@@ -71,12 +80,21 @@ export default function PropertyDesignsAdmin() {
     if (!confirm('Are you sure you want to delete this property design?')) return;
     
     try {
-      const { error } = await supabase
-        .from('property_designs')
-        .delete()
-        .eq('id', id);
-      
-      if (error) throw error;
+      const accessToken = await getAccessToken();
+      if (!accessToken) {
+        throw new Error('Session expired. Please log in again.');
+      }
+
+      const response = await fetch(`/api/admin/property-designs/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result?.error || 'Failed to delete property design');
+      }
       
       setDesigns(designs.filter(design => design.id !== id));
     } catch (err) {
@@ -87,12 +105,23 @@ export default function PropertyDesignsAdmin() {
 
   const toggleFeatured = async (id: string, currentFeatured: boolean) => {
     try {
-      const { error } = await supabase
-        .from('property_designs')
-        .update({ is_featured: !currentFeatured })
-        .eq('id', id);
-      
-      if (error) throw error;
+      const accessToken = await getAccessToken();
+      if (!accessToken) {
+        throw new Error('Session expired. Please log in again.');
+      }
+
+      const response = await fetch(`/api/admin/property-designs/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ is_featured: !currentFeatured }),
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result?.error || 'Failed to update property design');
+      }
       
       setDesigns(designs.map(design => 
         design.id === id ? { ...design, is_featured: !currentFeatured } : design
@@ -186,15 +215,12 @@ export default function PropertyDesignsAdmin() {
               <div className="relative h-48 bg-gray-200">
                 {design.image_path ? (
                   <Image
-                    src={design.image_path}
+                    src={safeNextImageSrc(design.image_path)}
                     alt={design.name}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     loading="lazy"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/images/placeholder.png';
-                    }}
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
@@ -231,21 +257,30 @@ export default function PropertyDesignsAdmin() {
                   <p className="text-sm text-gray-600 mb-4 line-clamp-2">{design.description}</p>
                 )}
                 
-                {/* Actions */}
+                {/* Featured Toggle */}
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => toggleFeatured(design.id, design.is_featured)}
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
-                        design.is_featured
-                          ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  <span className="text-sm font-medium text-gray-700">Featured</span>
+                  <button
+                    onClick={() => toggleFeatured(design.id, design.is_featured)}
+                    type="button"
+                    role="switch"
+                    aria-checked={design.is_featured}
+                    className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-1 ${
+                      design.is_featured ? 'bg-primary' : 'bg-gray-300'
+                    }`}
+                    title={design.is_featured ? 'Set as inactive' : 'Set as active'}
+                  >
+                    <span
+                      className={`inline-block h-6 w-6 transform rounded-full bg-white shadow transition-transform duration-200 ${
+                        design.is_featured ? 'translate-x-7' : 'translate-x-1'
                       }`}
-                      title={design.is_featured ? 'Remove from homepage' : 'Show on homepage'}
-                    >
-                      <Star className={`w-4 h-4 ${design.is_featured ? 'fill-current' : ''}`} />
-                      {design.is_featured ? 'On Homepage' : 'Hidden'}
-                    </button>
+                    />
+                  </button>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center justify-between pt-3">
+                  <div className="flex items-center gap-2">
                     <Link
                       href={`/admin/property-designs/${design.id}`}
                       className="text-primary hover:text-primary/80 p-2 rounded hover:bg-primary/10 transition-colors"

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
@@ -25,7 +25,53 @@ export default function NewPropertyDesignPage() {
     display_order: 0,
   });
   const [newFeature, setNewFeature] = useState('');
-  const [newImage, setNewImage] = useState('');
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [featuredIndex, setFeaturedIndex] = useState<number | null>(null);
+
+  const getAccessToken = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    return session?.access_token;
+  };
+
+  const uploadImages = async (files: File[]): Promise<string[]> => {
+    const accessToken = await getAccessToken();
+    if (!accessToken) {
+      throw new Error('Session expired. Please log in again.');
+    }
+
+    const formData = new FormData();
+    for (const file of files) {
+      formData.append('files', file);
+    }
+
+    const response = await fetch('/api/admin/property-designs/upload', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: formData,
+    });
+
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result?.error || 'Failed to upload images');
+    }
+
+    return result.urls ?? [];
+  };
+
+  useEffect(() => {
+    return () => {
+      imagePreviews.forEach((preview) => {
+        if (preview.startsWith('blob:')) {
+          URL.revokeObjectURL(preview);
+        }
+      });
+    };
+  }, [imagePreviews]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,15 +80,41 @@ export default function NewPropertyDesignPage() {
 
     try {
       // Validate required fields
-      if (!formData.name || !formData.roof_type || !formData.house_type || !formData.image_path) {
+      if (!formData.name || !formData.roof_type || !formData.house_type) {
         throw new Error('Please fill in all required fields');
       }
 
-      const { error: insertError } = await supabase
-        .from('property_designs')
-        .insert([formData]);
+      if (selectedImages.length === 0) {
+        throw new Error('Please upload at least one image');
+      }
 
-      if (insertError) throw insertError;
+      const imageUrls = await uploadImages(selectedImages);
+
+      const resolvedFeaturedIndex = featuredIndex ?? 0;
+      const payload = {
+        ...formData,
+        image_path: imageUrls[resolvedFeaturedIndex] ?? imageUrls[0],
+        images: imageUrls,
+      };
+
+      const accessToken = await getAccessToken();
+      if (!accessToken) {
+        throw new Error('Session expired. Please log in again.');
+      }
+
+      const response = await fetch('/api/admin/property-designs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result?.error || 'Failed to create property design');
+      }
 
       router.push('/admin/property-designs');
     } catch (err: any) {
@@ -70,20 +142,51 @@ export default function NewPropertyDesignPage() {
     });
   };
 
-  const addImage = () => {
-    if (newImage.trim()) {
-      setFormData({
-        ...formData,
-        images: [...formData.images, newImage.trim()],
-      });
-      setNewImage('');
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files ? Array.from(e.target.files) : [];
+    if (files.length === 0) {
+      return;
     }
+
+    const remainingSlots = 5 - selectedImages.length;
+    const filesToAdd = files.slice(0, remainingSlots);
+    if (filesToAdd.length === 0) {
+      return;
+    }
+
+    const newPreviews = filesToAdd.map((file) => URL.createObjectURL(file));
+    setSelectedImages((prev) => [...prev, ...filesToAdd]);
+    setImagePreviews((prev) => [...prev, ...newPreviews]);
+    setFeaturedIndex((prev) => (prev === null ? 0 : prev));
+
+    // Allow re-selecting the same file(s) if needed.
+    e.target.value = '';
   };
 
   const removeImage = (index: number) => {
-    setFormData({
-      ...formData,
-      images: formData.images.filter((_, i) => i !== index),
+    setSelectedImages((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => {
+      const previewToRemove = prev[index];
+      if (previewToRemove?.startsWith('blob:')) {
+        URL.revokeObjectURL(previewToRemove);
+      }
+      return prev.filter((_, i) => i !== index);
+    });
+
+    setFeaturedIndex((prev) => {
+      if (prev === null) {
+        return null;
+      }
+      if (selectedImages.length === 1) {
+        return null;
+      }
+      if (prev === index) {
+        return 0;
+      }
+      if (prev > index) {
+        return prev - 1;
+      }
+      return prev;
     });
   };
 
@@ -218,56 +321,53 @@ export default function NewPropertyDesignPage() {
           {/* Images */}
           <div className="space-y-4">
             <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Images</h2>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Main Image URL <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={formData.image_path}
-                onChange={(e) => setFormData({ ...formData, image_path: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-                placeholder="/house_designs/..."
-                required
-              />
-            </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Additional Images</label>
-              <div className="flex gap-2 mb-2">
-                <input
-                  type="text"
-                  value={newImage}
-                  onChange={(e) => setNewImage(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addImage())}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-                  placeholder="Enter image URL and press Enter"
-                />
-                <button
-                  type="button"
-                  onClick={addImage}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                >
-                  Add
-                </button>
-              </div>
-              {formData.images.length > 0 && (
-                <div className="space-y-2">
-                  {formData.images.map((image, index) => (
-                    <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded">
-                      <span className="flex-1 text-sm text-gray-700 truncate">{image}</span>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Property Design Images <span className="text-red-500">*</span>{' '}
+                <span className="text-xs text-gray-400">(max 5)</span>
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+                disabled={loading || selectedImages.length >= 5}
+                className="block w-full"
+              />
+
+              {imagePreviews.length > 0 && (
+                <div className="flex flex-wrap gap-4 mt-4">
+                  {imagePreviews.map((preview, index) => (
+                    <div key={preview} className="relative group">
+                      <img
+                        src={preview}
+                        alt={`Preview ${index + 1}`}
+                        className={`w-28 h-28 object-cover rounded border-2 transition-all duration-200 cursor-pointer ${
+                          featuredIndex === index ? 'border-primary shadow-lg' : 'border-gray-300'
+                        }`}
+                        onClick={() => setFeaturedIndex(index)}
+                      />
                       <button
                         type="button"
+                        className="absolute top-1 right-1 bg-red-600 text-white text-xs px-1 py-0.5 rounded opacity-80 hover:opacity-100 shadow"
                         onClick={() => removeImage(index)}
-                        className="text-red-600 hover:text-red-800"
+                        aria-label="Remove image"
                       >
-                        Remove
+                        &times;
                       </button>
+                      {featuredIndex === index && (
+                        <span className="absolute top-1 left-1 bg-primary text-white text-xs px-2 py-1 rounded shadow">
+                          Featured
+                        </span>
+                      )}
                     </div>
                   ))}
                 </div>
               )}
+              <p className="text-xs text-gray-500 mt-2">
+                Upload up to 5 images. Click any preview to mark it as the featured image.
+              </p>
             </div>
           </div>
 
@@ -310,35 +410,6 @@ export default function NewPropertyDesignPage() {
                 ))}
               </div>
             )}
-          </div>
-
-          {/* Other Settings */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Settings</h2>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Folder Path</label>
-              <input
-                type="text"
-                value={formData.folder_path}
-                onChange={(e) => setFormData({ ...formData, folder_path: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-                placeholder="/house_designs/..."
-              />
-            </div>
-
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="is_featured"
-                checked={formData.is_featured}
-                onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
-                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-              />
-              <label htmlFor="is_featured" className="text-sm font-medium text-gray-700">
-                Mark as Featured
-              </label>
-            </div>
           </div>
 
           {/* Submit Buttons */}

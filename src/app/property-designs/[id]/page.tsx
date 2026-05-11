@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { supabase } from '@/lib/supabase';
+import { safeNextImageSrc } from '@/lib/safeNextImageSrc';
 
 interface PropertyDesign {
   id: string;
@@ -286,7 +287,7 @@ export default function PropertyDesignDetailPage() {
             <div className="relative h-96 rounded-2xl overflow-hidden bg-gray-100 cursor-pointer" onClick={openImageModal}>
               {!imageError && design.images && design.images.length > 0 ? (
                 <Image
-                  src={design.images[currentImageIndex] || design.imagePath}
+                  src={safeNextImageSrc(design.images[currentImageIndex] || design.imagePath)}
                   alt={`${design.name} - Image ${currentImageIndex + 1}`}
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-105"
@@ -360,7 +361,7 @@ export default function PropertyDesignDetailPage() {
                     }`}
                   >
                     <Image
-                      src={image}
+                      src={safeNextImageSrc(image)}
                       alt={`Thumbnail ${index + 1}`}
                       fill
                       className="object-cover"
@@ -521,7 +522,11 @@ export default function PropertyDesignDetailPage() {
                 style={{ transform: `scale(${imageZoom})` }}
               >
                 <Image
-                  src={design.images && design.images.length > 0 ? design.images[currentImageIndex] : design.imagePath}
+                  src={safeNextImageSrc(
+                    design.images && design.images.length > 0
+                      ? design.images[currentImageIndex]
+                      : design.imagePath
+                  )}
                   alt={`${design.name} - Image ${currentImageIndex + 1}`}
                   width={1200}
                   height={900}

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
+import { safeNextImageSrc } from '@/lib/safeNextImageSrc';
 
 interface PropertyDesign {
   id: string;
@@ -110,7 +111,7 @@ const FeaturedDesigns = () => {
               {/* Image */}
               <div className="relative h-72 bg-gray-100">
                 <Image
-                  src={design.imagePath}
+                  src={safeNextImageSrc(design.imagePath)}
                   alt={design.name}
                   fill
                   className="object-cover"

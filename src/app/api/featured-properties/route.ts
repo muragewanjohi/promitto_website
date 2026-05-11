@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase';
-import { isPropertySafe } from '@/lib/security/propertySafety';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,9 +39,10 @@ export async function GET() {
       data = fallback.data;
     }
 
-    let mapped = (data ?? [])
-      .filter((property: any) => isPropertySafe(property))
-      .map((property: any) => ({
+    // Do not strip rows here: `isPropertySafe` matched substrings like "api keys" in
+    // descriptions and hid every On Show property after the incident. Listing safety
+    // belongs in admin/RLS and cleaned content, not silent empty homepage sections.
+    let mapped = (data ?? []).map((property: any) => ({
         ...property,
         mainImage: property.featuredImage || property.image_url || '/images/placeholder.png',
         status: property.property_statuses?.name || property.status || 'completed',

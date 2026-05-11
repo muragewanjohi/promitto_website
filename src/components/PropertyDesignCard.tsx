@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { safeNextImageSrc } from '@/lib/safeNextImageSrc';
 
 interface PropertyDesign {
   id: string;
@@ -73,7 +74,7 @@ export default function PropertyDesignCard({ design }: PropertyDesignCardProps) 
       <div className="relative h-48 sm:h-56 lg:h-64 overflow-hidden">
         {!imageError ? (
           <Image
-            src={design.imagePath}
+            src={safeNextImageSrc(design.imagePath)}
             alt={design.name}
             fill
             className="object-cover transition-transform duration-300 hover:scale-105"
