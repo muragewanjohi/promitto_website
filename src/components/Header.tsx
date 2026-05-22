@@ -5,8 +5,21 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname, useRouter } from 'next/navigation';
-import { PhoneIcon, EnvelopeIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { Newspaper, FileText, Calendar, BookOpen, HelpCircle, Lightbulb, Building2, Calculator, Images, User, Settings, LogOut } from 'lucide-react';
+import {
+  ChevronDown,
+  Newspaper,
+  FileText,
+  Calendar,
+  BookOpen,
+  HelpCircle,
+  Lightbulb,
+  Building2,
+  Calculator,
+  Images,
+  User,
+  Settings,
+  LogOut,
+} from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -114,7 +127,7 @@ export default function Header() {
                   onMouseLeave={() => setIsAboutDropdownOpen(false)}
                 >
                   About
-                  <ChevronDownIcon className="w-4 h-4 ml-1" />
+                  <ChevronDown className="w-4 h-4 ml-1" />
                 </button>
                 
                 {/* Dropdown Menu */}
@@ -189,7 +202,7 @@ export default function Header() {
                   }}
                 >
                   Media
-                  <ChevronDownIcon className="w-4 h-4 ml-1" />
+                  <ChevronDown className="w-4 h-4 ml-1" />
                 </button>
                 
                 {/* Dropdown Menu */}
@@ -292,7 +305,7 @@ export default function Header() {
                           <div className="font-medium text-sm">Insights</div>
                           <div className="text-xs text-gray-600 hover:text-gray-300">Learn more about Promitto</div>
                         </div>
-                        <ChevronDownIcon className="w-4 h-4 ml-2" />
+                        <ChevronDown className="w-4 h-4 ml-2" />
                       </div>
                       {/* Nested Dropdown */}
                       {isInsightsDropdownOpen && (
@@ -418,7 +431,7 @@ export default function Header() {
                       <span className="hidden lg:inline text-sm font-medium text-white group-hover:text-secondary transition-colors">
                         Profile
                       </span>
-                      <ChevronDownIcon className={`hidden lg:block w-4 h-4 text-white transition-transform ${isProfileDropdownOpen ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`hidden lg:block w-4 h-4 text-white transition-transform ${isProfileDropdownOpen ? 'rotate-180' : ''}`} />
                     </button>
 
                     {/* Profile Dropdown Menu */}

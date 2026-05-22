@@ -10,7 +10,10 @@ import FloatingCalculator from '@/components/FloatingCalculator';
 import FloatingGetStarted from '@/components/FloatingGetStarted';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 
-const inter = Inter({ 
+// Avoid Next.js lucide-react barrel optimization breaking icons during static prerender.
+export const dynamic = 'force-dynamic';
+
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',

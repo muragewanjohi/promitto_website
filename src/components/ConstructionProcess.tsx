@@ -118,7 +118,9 @@ const ConstructionProcess = () => {
         <div className="space-y-8">
           {Object.entries(groupedSteps).map(([row, steps]) => (
             <div key={row} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {steps.map((step, index) => (
+              {steps.map((step, index) => {
+                const StepIcon = step.icon;
+                return (
                 <div
                   key={step.id}
                   className={`group relative rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 ${step.bgColor}`}
@@ -131,7 +133,7 @@ const ConstructionProcess = () => {
 
                   {/* Icon */}
                   <div className={`${step.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg relative`}>
-                    <step.icon className="w-8 h-8 text-white" />
+                    <StepIcon className="w-8 h-8 text-white" />
                     {/* Construction tool accent */}
                     <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-sm">
                       <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
@@ -158,7 +160,8 @@ const ConstructionProcess = () => {
                   {/* Hover effect overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-green-600/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           ))}
         </div>
@@ -172,10 +175,12 @@ const ConstructionProcess = () => {
           
           <div className="relative">
             <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-green-600 rounded-full opacity-30"></div>
-            {processSteps.map((step, index) => (
+            {processSteps.map((step, index) => {
+              const StepIcon = step.icon;
+              return (
               <div key={`mobile-${step.id}`} className="relative flex items-start space-x-4 pb-8">
                 <div className={`${step.color} w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 z-10 shadow-lg relative`}>
-                  <step.icon className="w-8 h-8 text-white" />
+                  <StepIcon className="w-8 h-8 text-white" />
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-sm">
                     <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
                   </div>
@@ -185,7 +190,8 @@ const ConstructionProcess = () => {
                   <p className="text-gray-600 text-sm leading-relaxed">{step.description}</p>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
