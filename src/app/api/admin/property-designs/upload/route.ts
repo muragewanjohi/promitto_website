@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 import { requireAdmin } from '@/lib/auth/requireAdmin';
 
 export const runtime = 'nodejs';
@@ -12,6 +11,29 @@ function getFileExtension(fileName: string): string {
   return parts.pop()?.toLowerCase() || 'bin';
 }
 
+function parseUploadedFiles(formData: FormData): File[] {
+  const files: File[] = [];
+
+  for (const item of formData.getAll('files')) {
+    if (!(item instanceof Blob) || item.size === 0) {
+      continue;
+    }
+
+    if (item instanceof File) {
+      files.push(item);
+      continue;
+    }
+
+    files.push(
+      new File([item], 'upload.bin', {
+        type: item.type || 'application/octet-stream',
+      })
+    );
+  }
+
+  return files;
+}
+
 export async function POST(request: Request) {
   try {
     const authResult = await requireAdmin(request);
@@ -19,21 +41,11 @@ export async function POST(request: Request) {
       return authResult.response;
     }
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!supabaseUrl || !serviceRoleKey) {
-      return NextResponse.json(
-        { error: 'Server configuration error' },
-        { status: 500 }
-      );
-    }
-
-    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    const { supabase } = authResult;
 
     const formData = await request.formData();
-    const files = formData.getAll('files').filter((item): item is File => item instanceof File);
+    const files = parseUploadedFiles(formData);
+
     if (files.length === 0) {
       return NextResponse.json({ error: 'No files provided' }, { status: 400 });
     }
@@ -49,23 +61,23 @@ export async function POST(request: Request) {
 
       const fileExt = getFileExtension(file.name);
       const filePath = `property-designs/${Date.now()}-${crypto.randomUUID()}.${fileExt}`;
-      const buffer = Buffer.from(await file.arrayBuffer());
 
-      const { error: uploadError } = await supabaseAdmin.storage
+      const { error: uploadError } = await supabase.storage
         .from('properties')
-        .upload(filePath, buffer, {
+        .upload(filePath, file, {
           upsert: false,
           contentType: file.type || 'application/octet-stream',
         });
 
       if (uploadError) {
+        console.error('Property design image upload failed:', uploadError);
         return NextResponse.json(
           { error: 'Failed to upload image', details: uploadError.message },
           { status: 500 }
         );
       }
 
-      const { data: publicUrlData } = supabaseAdmin.storage
+      const { data: publicUrlData } = supabase.storage
         .from('properties')
         .getPublicUrl(filePath);
 

@@ -54,7 +54,7 @@ export default function EditPropertyDesignPage() {
       formData.append('files', file);
     }
 
-    const response = await fetch('/api/admin/property-designs/upload', {
+    const response = await fetch('/api/admin/property-designs/upload/', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -64,7 +64,8 @@ export default function EditPropertyDesignPage() {
     const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(result?.error || 'Failed to upload images');
+      const message = [result?.error, result?.details].filter(Boolean).join(': ');
+      throw new Error(message || 'Failed to upload images');
     }
 
     return result.urls ?? [];
