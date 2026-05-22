@@ -15,20 +15,9 @@ function parseUploadedFiles(formData: FormData): File[] {
   const files: File[] = [];
 
   for (const item of formData.getAll('files')) {
-    if (!(item instanceof Blob) || item.size === 0) {
-      continue;
-    }
-
-    if (item instanceof File) {
+    if (item instanceof File && item.size > 0) {
       files.push(item);
-      continue;
     }
-
-    files.push(
-      new File([item], 'upload.bin', {
-        type: item.type || 'application/octet-stream',
-      })
-    );
   }
 
   return files;
