@@ -38,10 +38,10 @@ const nextConfig = {
   trailingSlash: true,
   assetPrefix: '/',
   
-  // Disable static generation for API routes that require environment variables
-  experimental: {
-    serverComponentsExternalPackages: ['@supabase/supabase-js'],
-  },
+  // Prevent Next.js barrel optimization from breaking lucide-react icon imports in dev.
+  transpilePackages: ['lucide-react'],
+
+  experimental: {},
 };
 
 module.exports = nextConfig; 

@@ -6,7 +6,6 @@ import FeaturedProperties from '../components/FeaturedProperties';
 import FeaturedDesigns from '../components/FeaturedDesigns';
 import FeaturedMedia from '../components/FeaturedMedia';
 import CTASection from '../components/CTASection';
-import WhyChooseUs from '../components/WhyChooseUs';
 import Footer from '../components/Footer';
 
 export default function Home() {
@@ -35,4 +34,4 @@ export default function Home() {
       <Footer />
     </main>
   );
-} 
+}

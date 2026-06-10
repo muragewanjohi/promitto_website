@@ -5,10 +5,15 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { ArrowLeft } from 'lucide-react';
+import {
+  SaveProgressIndicator,
+  type SaveProgressState,
+} from '@/components/admin/SaveProgressIndicator';
 
 export default function NewPropertyDesignPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [saveProgress, setSaveProgress] = useState<SaveProgressState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -36,32 +41,39 @@ export default function NewPropertyDesignPage() {
     return session?.access_token;
   };
 
-  const uploadImages = async (files: File[]): Promise<string[]> => {
-    const accessToken = await getAccessToken();
-    if (!accessToken) {
-      throw new Error('Session expired. Please log in again.');
+  const uploadImages = async (
+    files: File[],
+    onProgress?: (current: number, total: number) => void
+  ): Promise<string[]> => {
+    const urls: string[] = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileExt = file.name.split('.').pop() || 'bin';
+      const filePath = `property-designs/${Date.now()}-${i}-${Math.random().toString(36).slice(2)}.${fileExt}`;
+
+      onProgress?.(i, files.length);
+
+      const { error: uploadError } = await supabase.storage
+        .from('properties')
+        .upload(filePath, file, {
+          upsert: false,
+          contentType: file.type || 'application/octet-stream',
+        });
+
+      if (uploadError) {
+        throw new Error(uploadError.message || 'Failed to upload images');
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from('properties')
+        .getPublicUrl(filePath);
+
+      urls.push(publicUrlData.publicUrl);
+      onProgress?.(i + 1, files.length);
     }
 
-    const formData = new FormData();
-    for (const file of files) {
-      formData.append('files', file);
-    }
-
-    const response = await fetch('/api/admin/property-designs/upload/', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: formData,
-    });
-
-    const result = await response.json();
-    if (!response.ok) {
-      const message = [result?.error, result?.details].filter(Boolean).join(': ');
-      throw new Error(message || 'Failed to upload images');
-    }
-
-    return result.urls ?? [];
+    return urls;
   };
 
   useEffect(() => {
@@ -80,7 +92,6 @@ export default function NewPropertyDesignPage() {
     setError(null);
 
     try {
-      // Validate required fields
       if (!formData.name || !formData.roof_type || !formData.house_type) {
         throw new Error('Please fill in all required fields');
       }
@@ -89,7 +100,17 @@ export default function NewPropertyDesignPage() {
         throw new Error('Please upload at least one image');
       }
 
-      const imageUrls = await uploadImages(selectedImages);
+      setSaveProgress({
+        phase: 'uploading',
+        current: 0,
+        total: selectedImages.length,
+      });
+
+      const imageUrls = await uploadImages(selectedImages, (current, total) => {
+        setSaveProgress({ phase: 'uploading', current, total });
+      });
+
+      setSaveProgress({ phase: 'saving', current: 1, total: 1 });
 
       const resolvedFeaturedIndex = featuredIndex ?? 0;
       const payload = {
@@ -103,7 +124,7 @@ export default function NewPropertyDesignPage() {
         throw new Error('Session expired. Please log in again.');
       }
 
-      const response = await fetch('/api/admin/property-designs', {
+      const response = await fetch('/api/admin/property-designs/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -112,17 +133,19 @@ export default function NewPropertyDesignPage() {
         body: JSON.stringify(payload),
       });
 
-      const result = await response.json();
+      const result = await response.json().catch(() => ({}));
       if (!response.ok) {
-        throw new Error(result?.error || 'Failed to create property design');
+        const message = [result?.error, result?.details].filter(Boolean).join(': ');
+        throw new Error(message || 'Failed to create property design');
       }
 
-      router.push('/admin/property-designs');
+      router.push('/admin/property-designs/');
     } catch (err: any) {
       console.error('Error creating property design:', err);
       setError(err.message || 'Failed to create property design');
     } finally {
       setLoading(false);
+      setSaveProgress(null);
     }
   };
 
@@ -412,6 +435,13 @@ export default function NewPropertyDesignPage() {
               </div>
             )}
           </div>
+
+          {saveProgress && (
+            <SaveProgressIndicator
+              progress={saveProgress}
+              savingLabel="Creating property design..."
+            />
+          )}
 
           {/* Submit Buttons */}
           <div className="flex items-center justify-end gap-4 pt-4 border-t">

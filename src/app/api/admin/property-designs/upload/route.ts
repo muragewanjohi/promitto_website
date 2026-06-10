@@ -51,9 +51,11 @@ export async function POST(request: Request) {
       const fileExt = getFileExtension(file.name);
       const filePath = `property-designs/${Date.now()}-${crypto.randomUUID()}.${fileExt}`;
 
+      const fileBody = Buffer.from(await file.arrayBuffer());
+
       const { error: uploadError } = await supabase.storage
         .from('properties')
-        .upload(filePath, file, {
+        .upload(filePath, fileBody, {
           upsert: false,
           contentType: file.type || 'application/octet-stream',
         });
