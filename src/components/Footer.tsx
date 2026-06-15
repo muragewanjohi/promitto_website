@@ -118,7 +118,7 @@ const Footer = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
                         </div>
-                        <span className="text-gray-300 text-sm leading-relaxed">Nairobi, Loita street, Pension Towers, Floor M2</span>
+                        <span className="text-gray-300 text-sm leading-relaxed">Nairobi, Loita street, Pension Towers, 13th floor</span>
                       </div>
                       <div className="flex items-center group">
                         <div className="w-8 h-8 bg-secondary/20 rounded-lg flex items-center justify-center mr-3 flex-shrink-0 group-hover:bg-secondary/30 transition-colors">

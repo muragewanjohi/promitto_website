@@ -54,7 +54,7 @@ const AboutUs = () => {
                     </h1>
                   </div>
                    <p className="text-xl md:text-2xl text-white font-medium leading-relaxed max-w-2xl">
-                     Delivering the promise of homeownership through innovative construction financing and comprehensive project management.
+                     Promitto Limited helps you achieve homeownership by providing construction funding, project management, and construction services all under one roof. Start with as little as 30% of your project cost, and we&apos;ll finance the rest.
                    </p>
                  </div>
               </div>
@@ -154,7 +154,7 @@ const AboutUs = () => {
                     </div>
                     <div className="bg-primary p-6 flex-1 flex flex-col justify-start">
                       <h3 className="text-xl font-bold text-secondary mb-3">OUR VISION</h3>
-                      <p className="text-white text-base">To empower individuals to become homeowners.</p>
+                      <p className="text-white text-base">To offer structured and innovative housing programs in Africa</p>
                     </div>
                   </div>
 
@@ -265,7 +265,7 @@ const AboutUs = () => {
                     <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                     <div>
                       <h4 className="font-bold text-gray-900 text-lg mb-2">Kenya - Main Office</h4>
-                      <p className="text-gray-600 mb-1"> Nairobi, Loita street, Pension Towers, Floor M2</p>
+                      <p className="text-gray-600 mb-1"> Nairobi, Loita street, Pension Towers, 13th floor</p>
                       <p className="text-primary font-semibold">+254 729 506 506</p>
                       <p className="text-gray-600 text-sm mt-2">Email: info@promittoltd.com</p>
                     </div>
@@ -336,7 +336,7 @@ const AboutUs = () => {
                 <ul className="text-gray-700 space-y-2">
                   <li><span className="mr-2">📞</span><span className="font-semibold">Phone:</span> +254 729 506 506</li>
                   <li><span className="mr-2">✉️</span><span className="font-semibold">Email:</span> info@promittoltd.com</li>
-                  <li><span className="mr-2">🏢</span><span className="font-semibold">Office:</span> Pension Towers, Nairobi Loita street, Floor M2</li>
+                  <li><span className="mr-2">🏢</span><span className="font-semibold">Office:</span> Pension Towers, Nairobi Loita street, 13th floor</li>
                   <li><span className="mr-2">🌐</span><span className="font-semibold">Website:</span> <a href="http://www.promittoltd.com" className="text-blue-600 underline">www.promittoltd.com</a></li>
                 </ul>
               </div>

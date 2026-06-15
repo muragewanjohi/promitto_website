@@ -153,7 +153,7 @@ const ContactUs = () => {
                         </div>
                         <div>
                           <h4 className="text-sm font-medium text-gray-900">Address</h4>
-                          <p className="text-gray-600 text-sm">Pension Towers, Loita St, Nairobi</p>
+                          <p className="text-gray-600 text-sm">Pension Towers, Loita St, Nairobi, 13th floor</p>
                         </div>
                       </div>
                       <div className="flex items-start space-x-4">

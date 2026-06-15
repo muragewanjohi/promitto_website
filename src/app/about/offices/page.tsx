@@ -60,7 +60,7 @@ const OfficesPage = () => {
                     <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                     <div>
                       <h4 className="font-bold text-gray-900 text-lg mb-2">Kenya - Main Office</h4>
-                      <p className="text-gray-600 mb-1"> Nairobi, Loita street, Pension Towers, Floor M2</p>
+                      <p className="text-gray-600 mb-1"> Nairobi, Loita street, Pension Towers, 13th floor</p>
                       <p className="text-secondary font-semibold">+254 729 506 506</p>
                       <p className="text-gray-600 text-sm mt-2">Email: info@promittoltd.com</p>
                     </div>
@@ -122,7 +122,7 @@ const OfficesPage = () => {
                 </li>
                 <li className="flex items-center">
                   <span className="mr-3 text-primary">🏢</span>
-                  <span className="font-semibold">Office:</span> Nairobi, Loita street, Pension Towers, Floor M2
+                  <span className="font-semibold">Office:</span> Nairobi, Loita street, Pension Towers, 13th floor
                 </li>
                 <li className="flex items-center">
                   <span className="mr-3 text-primary">🌐</span>

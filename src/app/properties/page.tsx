@@ -37,6 +37,10 @@ interface Filters {
   roofType: string;
 }
 
+function normalizePropertyStatus(status?: string | null): 'completed' | 'ongoing' {
+  return status?.toLowerCase() === 'ongoing' ? 'ongoing' : 'completed';
+}
+
 function PropertiesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -72,7 +76,7 @@ function PropertiesContent() {
           mainImage: property.featuredImage || (property.images && property.images[0]) || '/images/placeholder.png',
           images: property.images || [],
           featuredImage: property.featuredImage,
-          status: property.property_statuses?.name || 'completed',
+          status: normalizePropertyStatus(property.property_statuses?.name),
           type: property.property_types?.name || 'House',
           area: property.area,
           description: property.description,
@@ -80,7 +84,6 @@ function PropertiesContent() {
           roofType: property.roof_types?.name || '',
         }));
       setProperties(propertiesArray);
-      setFilteredProperties(propertiesArray);
       setLoading(false);
     };
     fetchProperties();

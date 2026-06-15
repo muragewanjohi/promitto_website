@@ -793,7 +793,7 @@ export default function PropertyPage({ params }: PropertyPageProps) {
                       </div>
                       <div>
                         <p className="text-xs font-medium text-gray-500">Visit our office</p>
-                        <p className="text-xs font-medium text-gray-900 leading-relaxed">Pension Towers, Mezzanine Floor, Loita Street, Nairobi</p>
+                        <p className="text-xs font-medium text-gray-900 leading-relaxed">Pension Towers, 13th floor, Loita Street, Nairobi</p>
                       </div>
                     </div>
                   </div>
