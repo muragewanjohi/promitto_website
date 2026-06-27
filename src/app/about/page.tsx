@@ -142,7 +142,7 @@ const AboutUs = () => {
                   <div className="bg-primary rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
                     <div className="relative h-48 flex-shrink-0">
                       <Image
-                        src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                        src="/vision.jpeg"
                         alt="Modern Housing Development Vision"
                         fill
                         className="object-cover"
