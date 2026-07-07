@@ -94,19 +94,25 @@ const paymentTable = (
   </div>
 );
 
-const MembershipDetails: React.FC<MembershipDetailsProps> = ({ showSaveButton }) => {
+interface MembershipDetailsProps {
+  showSaveButton?: boolean;
+  userId?: string;
+}
+
+const MembershipDetails: React.FC<MembershipDetailsProps> = ({ showSaveButton, userId }) => {
   const { user, userProfile } = useAuth();
+  const activeUserId = userId || user?.id;
   const [form, setForm] = useState({ ...initialState });
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    if (user?.id) {
+    if (activeUserId) {
       const fetchDetails = async () => {
         const { data } = await supabase
           .from('membership_details')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('user_id', activeUserId)
           .single();
         if (data) {
           setForm({
@@ -117,9 +123,9 @@ const MembershipDetails: React.FC<MembershipDetailsProps> = ({ showSaveButton })
       };
       fetchDetails();
     }
-  }, [user]);
+  }, [activeUserId]);
 
-  if (!user) {
+  if (!activeUserId) {
     return <div className="text-[#1E40AF]">Loading...</div>;
   }
 
@@ -134,7 +140,7 @@ const MembershipDetails: React.FC<MembershipDetailsProps> = ({ showSaveButton })
       .from('membership_details')
       .upsert([
         {
-          user_id: user.id,
+          user_id: activeUserId,
           reference: form.reference,
           status: form.status,
         },

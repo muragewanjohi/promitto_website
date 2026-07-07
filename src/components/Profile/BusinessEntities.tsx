@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 
 interface BusinessEntitiesProps {
   showSaveButton?: boolean;
+  userId?: string;
 }
 
 const initialState = {
@@ -18,19 +19,20 @@ const initialState = {
   telephone: '',
 };
 
-const BusinessEntities: React.FC<BusinessEntitiesProps> = ({ showSaveButton }) => {
+const BusinessEntities: React.FC<BusinessEntitiesProps> = ({ showSaveButton, userId }) => {
   const { user } = useAuth();
+  const activeUserId = userId || user?.id;
   const [form, setForm] = useState({ ...initialState });
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    if (user?.id) {
+    if (activeUserId) {
       const fetchDetails = async () => {
         const { data } = await supabase
           .from('business_entities')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('user_id', activeUserId)
           .single();
         if (data) {
           setForm({
@@ -47,9 +49,9 @@ const BusinessEntities: React.FC<BusinessEntitiesProps> = ({ showSaveButton }) =
       };
       fetchDetails();
     }
-  }, [user]);
+  }, [activeUserId]);
 
-  if (!user) {
+  if (!activeUserId) {
     return <div className="text-[#1E40AF]">Loading...</div>;
   }
 
@@ -65,7 +67,7 @@ const BusinessEntities: React.FC<BusinessEntitiesProps> = ({ showSaveButton }) =
       .from('business_entities')
       .upsert([
         {
-          user_id: user.id,
+          user_id: activeUserId,
           registered_entity: form.registeredEntity,
           nature_of_business: form.natureOfBusiness,
           date_of_registration: form.dateOfRegistration,

@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 
 interface PropertyDetailsProps {
   showSaveButton?: boolean;
+  userId?: string;
 }
 
 const initialState = {
@@ -18,19 +19,20 @@ const initialState = {
   typeCommercial: false,
 };
 
-const PropertyDetails: React.FC<PropertyDetailsProps> = ({ showSaveButton }) => {
+const PropertyDetails: React.FC<PropertyDetailsProps> = ({ showSaveButton, userId }) => {
   const { user } = useAuth();
+  const activeUserId = userId || user?.id;
   const [form, setForm] = useState({ ...initialState });
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    if (user?.id) {
+    if (activeUserId) {
       const fetchDetails = async () => {
         const { data } = await supabase
           .from('property_details')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('user_id', activeUserId)
           .single();
         if (data) {
           setForm({
@@ -47,9 +49,9 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ showSaveButton }) => 
       };
       fetchDetails();
     }
-  }, [user]);
+  }, [activeUserId]);
 
-  if (!user) {
+  if (!activeUserId) {
     return <div className="text-[#1E40AF]">Loading...</div>;
   }
 
@@ -68,7 +70,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({ showSaveButton }) => 
       .from('property_details')
       .upsert([
         {
-          user_id: user.id,
+          user_id: activeUserId,
           location: form.location,
           title_number: form.titleNumber,
           county: form.county,

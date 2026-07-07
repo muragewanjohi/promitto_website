@@ -9,6 +9,9 @@ interface UserProfile {
   email: string;
   role: string;
   created_at?: string;
+  first_name?: string;
+  second_name?: string;
+  surname?: string;
 }
 
 interface AuthContextType {

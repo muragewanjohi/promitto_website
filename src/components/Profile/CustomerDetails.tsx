@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 
 interface CustomerDetailsProps {
   showSaveButton?: boolean;
+  userId?: string;
 }
 
 const initialState = {
@@ -29,27 +30,40 @@ const initialState = {
 
 const maritalOptions = ['Single', 'Married', 'Widow(er)', 'Divorced', 'Other'];
 
-const CustomerDetails: React.FC<CustomerDetailsProps> = ({ showSaveButton }) => {
+const CustomerDetails: React.FC<CustomerDetailsProps> = ({ showSaveButton, userId }) => {
   const { user } = useAuth();
+  const activeUserId = userId || user?.id;
   const [form, setForm] = useState({ ...initialState });
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    // Always set the email field from the user object
-    setForm((prev) => ({ ...prev, email: user?.email || '' }));
-
-    // Only fetch if user is available
-    if (user?.id) {
+    // Only fetch if activeUserId is available
+    if (activeUserId) {
       const fetchDetails = async () => {
+        // Fetch target user email first if viewing another user
+        if (userId) {
+          const { data: userData } = await supabase
+            .from('users')
+            .select('email')
+            .eq('id', userId)
+            .single();
+          if (userData?.email) {
+            setForm((prev) => ({ ...prev, email: userData.email }));
+          }
+        } else {
+          setForm((prev) => ({ ...prev, email: user?.email || '' }));
+        }
+
         const { data, error } = await supabase
           .from('customer_details')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('user_id', activeUserId)
           .single();
 
         if (data) {
-          setForm({
+          setForm((prev) => ({
+            ...prev,
             firstName: data.first_name || '',
             secondName: data.second_name || '',
             surname: data.surname || '',
@@ -66,15 +80,14 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({ showSaveButton }) => 
             rental: !!data.rental,
             ownerOccupied: !!data.owner_occupied,
             employerHousing: !!data.employer_housing,
-            email: user.email || '',
-          });
+          }));
         }
       };
       fetchDetails();
     }
-  }, [user]);
+  }, [activeUserId, user, userId]);
 
-  if (!user) {
+  if (!activeUserId) {
     return <div className="text-[#1E40AF]">Loading...</div>;
   }
 
@@ -97,7 +110,7 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({ showSaveButton }) => 
       .from('customer_details')
       .upsert([
         {
-          user_id: user?.id,
+          user_id: activeUserId,
           email: user?.email,
           first_name: form.firstName,
           second_name: form.secondName,

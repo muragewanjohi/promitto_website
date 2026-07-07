@@ -1,7 +1,15 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
+import CustomerDetails from '@/components/Profile/CustomerDetails';
+import EmploymentDetails from '@/components/Profile/EmploymentDetails';
+import BusinessEntities from '@/components/Profile/BusinessEntities';
+import PropertyDetails from '@/components/Profile/PropertyDetails';
+import NextOfKinDetails from '@/components/Profile/NextOfKinDetails';
+import MembershipDetails from '@/components/Profile/MembershipDetails';
 
 type ProfileProgress = {
   customerDetails: boolean;
@@ -55,6 +63,15 @@ type User = {
 type TabType = 'memberships' | 'customers' | 'users';
 const ROWS_PER_PAGE = 10;
 
+const customerProfileTabs = [
+  { label: 'Customer Details', component: CustomerDetails },
+  { label: 'Employment Details', component: EmploymentDetails },
+  { label: 'Business Entities', component: BusinessEntities },
+  { label: 'Property Details', component: PropertyDetails },
+  { label: 'Next of Kin Details', component: NextOfKinDetails },
+  { label: 'Membership Details', component: MembershipDetails },
+];
+
 const MembershipManagement = () => {
   const [activeTab, setActiveTab] = useState<TabType>('memberships');
   const [memberships, setMemberships] = useState<Membership[]>([]);
@@ -73,6 +90,9 @@ const MembershipManagement = () => {
     customers: 1,
     users: 1,
   });
+
+  const [viewingCustomerUserId, setViewingCustomerUserId] = useState<string | null>(null);
+  const [activeProfileTab, setActiveProfileTab] = useState(0);
 
   useEffect(() => {
     if (activeTab === 'memberships') {
@@ -684,7 +704,7 @@ const MembershipManagement = () => {
     }
 
     return (
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white rounded-lg shadow overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -708,6 +728,9 @@ const MembershipManagement = () => {
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Created At
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                View Details
               </th>
             </tr>
           </thead>
@@ -779,6 +802,14 @@ const MembershipManagement = () => {
                   <div className="text-sm text-gray-500">
                     {customer.created_at ? new Date(customer.created_at).toLocaleDateString() : 'N/A'}
                   </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <button
+                    onClick={() => setViewingCustomerUserId(customer.user_id)}
+                    className="inline-flex items-center px-3 py-1.5 border border-blue-600 text-xs font-semibold rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200"
+                  >
+                    View Details
+                  </button>
                 </td>
               </tr>
             ))}
@@ -882,103 +913,172 @@ const MembershipManagement = () => {
     );
   };
 
-  return (
-    <div className="max-w-7xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Membership Management</h1>
-          <p className="text-gray-600 mt-2">Manage memberships, customers, and users</p>
+  const renderCustomerProfileView = () => {
+    const ActiveComponent = customerProfileTabs[activeProfileTab].component;
+    const customer = customers.find(c => c.user_id === viewingCustomerUserId);
+    const displayName = customer
+      ? `${customer.first_name || ''} ${customer.second_name || ''} ${customer.surname || ''}`.trim()
+      : '';
+
+    return (
+      <div className="space-y-6">
+        {/* Back Button and Title */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-gray-200">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => {
+                setViewingCustomerUserId(null);
+                setActiveProfileTab(0);
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg text-white bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-[1.02]"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to Customers
+            </button>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Customer Profile: {displayName || 'Loading...'}
+              </h2>
+              <p className="text-gray-600 text-sm mt-1">
+                Viewing details input by the customer
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden mb-6">
+          <nav className="flex flex-wrap" aria-label="Profile Tabs">
+            {customerProfileTabs.map((tab, idx) => (
+              <button
+                key={tab.label}
+                className={`flex-1 px-4 py-3 text-xs font-semibold focus:outline-none transition-all duration-300 border-b-2 ${
+                  activeProfileTab === idx
+                    ? 'text-primary border-primary bg-primary/5'
+                    : 'text-gray-600 border-transparent hover:text-primary hover:bg-gray-50'
+                }`}
+                onClick={() => setActiveProfileTab(idx)}
+                type="button"
+              >
+                <span className="truncate block">{tab.label}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        {/* Content Area */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden p-6 md:p-8">
+          <ActiveComponent showSaveButton={false} userId={viewingCustomerUserId || undefined} />
         </div>
       </div>
+    );
+  };
 
-      {/* Tabs */}
-      <div className="mb-6 border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8">
-          <button
-            onClick={() => setActiveTab('memberships')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'memberships'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-          >
-            Memberships
-          </button>
-          <button
-            onClick={() => setActiveTab('customers')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'customers'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-          >
-            Customers
-          </button>
-          <button
-            onClick={() => setActiveTab('users')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'users'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-          >
-            Users
-          </button>
-        </nav>
-      </div>
-
+  return (
+    <div className="max-w-7xl mx-auto">
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6">
           {error}
         </div>
       )}
 
-      {loading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading...</p>
-          </div>
-        </div>
+      {viewingCustomerUserId ? (
+        renderCustomerProfileView()
       ) : (
         <>
-          <div className="mb-4">
-            <input
-              type="text"
-              value={searchByTab[activeTab]}
-              onChange={(event) =>
-                setSearchByTab((prev) => ({
-                  ...prev,
-                  [activeTab]: event.target.value,
-                }))
-              }
-              placeholder={
-                activeTab === 'memberships'
-                  ? 'Search by name, email, reference, or status'
-                  : activeTab === 'customers'
-                    ? 'Search by name, email, national ID, KRA PIN, or phone'
-                    : 'Search by user ID, email, role, or phone'
-              }
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            />
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Membership Management</h1>
+              <p className="text-gray-600 mt-2">Manage memberships, customers, and users</p>
+            </div>
           </div>
 
-          {activeTab === 'memberships' && (
+          {/* Tabs */}
+          <div className="mb-6 border-b border-gray-200">
+            <nav className="-mb-px flex space-x-8">
+              <button
+                onClick={() => setActiveTab('memberships')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'memberships'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Memberships
+              </button>
+              <button
+                onClick={() => setActiveTab('customers')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'customers'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Customers
+              </button>
+              <button
+                onClick={() => setActiveTab('users')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'users'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Users
+              </button>
+            </nav>
+          </div>
+
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <p className="mt-4 text-gray-600">Loading...</p>
+              </div>
+            </div>
+          ) : (
             <>
-              {renderMembershipsTable()}
-              {renderPagination('memberships')}
-            </>
-          )}
-          {activeTab === 'customers' && (
-            <>
-              {renderCustomersTable()}
-              {renderPagination('customers')}
-            </>
-          )}
-          {activeTab === 'users' && (
-            <>
-              {renderUsersTable()}
-              {renderPagination('users')}
+              <div className="mb-4">
+                <input
+                  type="text"
+                  value={searchByTab[activeTab]}
+                  onChange={(event) =>
+                    setSearchByTab((prev) => ({
+                      ...prev,
+                      [activeTab]: event.target.value,
+                    }))
+                  }
+                  placeholder={
+                    activeTab === 'memberships'
+                      ? 'Search by name, email, reference, or status'
+                      : activeTab === 'customers'
+                        ? 'Search by name, email, national ID, KRA PIN, or phone'
+                        : 'Search by user ID, email, role, or phone'
+                  }
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
+
+              {activeTab === 'memberships' && (
+                <>
+                  {renderMembershipsTable()}
+                  {renderPagination('memberships')}
+                </>
+              )}
+              {activeTab === 'customers' && (
+                <>
+                  {renderCustomersTable()}
+                  {renderPagination('customers')}
+                </>
+              )}
+              {activeTab === 'users' && (
+                <>
+                  {renderUsersTable()}
+                  {renderPagination('users')}
+                </>
+              )}
             </>
           )}
         </>

@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 
 interface EmploymentDetailsProps {
   showSaveButton?: boolean;
+  userId?: string;
 }
 
 const initialState = {
@@ -22,19 +23,20 @@ const initialState = {
 
 const termsOptions = ['Permanent', 'Probation', 'Contract'];
 
-const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({ showSaveButton }) => {
+const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({ showSaveButton, userId }) => {
   const { user } = useAuth();
+  const activeUserId = userId || user?.id;
   const [form, setForm] = useState({ ...initialState });
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    if (user?.id) {
+    if (activeUserId) {
       const fetchDetails = async () => {
         const { data } = await supabase
           .from('employment_details')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('user_id', activeUserId)
           .single();
         if (data) {
           setForm({
@@ -53,9 +55,9 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({ showSaveButton })
       };
       fetchDetails();
     }
-  }, [user]);
+  }, [activeUserId]);
 
-  if (!user) {
+  if (!activeUserId) {
     return <div className="text-[#1E40AF]">Loading...</div>;
   }
 
@@ -75,7 +77,7 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({ showSaveButton })
       .from('employment_details')
       .upsert([
         {
-          user_id: user.id,
+          user_id: activeUserId,
           employer_name: form.employerName,
           postal_address: form.postalAddress,
           postal_code: form.postalCode,

@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 
 interface NextOfKinDetailsProps {
   showSaveButton?: boolean;
+  userId?: string;
 }
 
 const initialState = {
@@ -20,19 +21,20 @@ const initialState = {
   mobile: '',
 };
 
-const NextOfKinDetails: React.FC<NextOfKinDetailsProps> = ({ showSaveButton }) => {
+const NextOfKinDetails: React.FC<NextOfKinDetailsProps> = ({ showSaveButton, userId }) => {
   const { user } = useAuth();
+  const activeUserId = userId || user?.id;
   const [form, setForm] = useState({ ...initialState });
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    if (user?.id) {
+    if (activeUserId) {
       const fetchDetails = async () => {
         const { data } = await supabase
           .from('next_of_kin_details')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('user_id', activeUserId)
           .single();
         if (data) {
           setForm({
@@ -51,9 +53,9 @@ const NextOfKinDetails: React.FC<NextOfKinDetailsProps> = ({ showSaveButton }) =
       };
       fetchDetails();
     }
-  }, [user]);
+  }, [activeUserId]);
 
-  if (!user) {
+  if (!activeUserId) {
     return <div className="text-[#1E40AF]">Loading...</div>;
   }
 
@@ -69,7 +71,7 @@ const NextOfKinDetails: React.FC<NextOfKinDetailsProps> = ({ showSaveButton }) =
       .from('next_of_kin_details')
       .upsert([
         {
-          user_id: user.id,
+          user_id: activeUserId,
           first_name: form.firstName,
           second_name: form.secondName,
           surname: form.surname,
