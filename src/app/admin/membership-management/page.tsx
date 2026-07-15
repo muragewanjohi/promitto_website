@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
@@ -93,6 +93,13 @@ const MembershipManagement = () => {
 
   const [viewingCustomerUserId, setViewingCustomerUserId] = useState<string | null>(null);
   const [activeProfileTab, setActiveProfileTab] = useState(0);
+
+  const [tableScrollWidth, setTableScrollWidth] = useState(0);
+  const [showFakeScroll, setShowFakeScroll] = useState(false);
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+  const fakeScrollContainerRef = useRef<HTMLDivElement>(null);
+
+
 
   useEffect(() => {
     if (activeTab === 'memberships') {
@@ -526,6 +533,65 @@ const MembershipManagement = () => {
     }));
   };
 
+  // Effect 1: Determine if the table needs a scrollbar and track its width
+  useEffect(() => {
+    const table = tableContainerRef.current;
+    if (!table) {
+      setShowFakeScroll(false);
+      return;
+    }
+
+    const updateWidths = () => {
+      setTableScrollWidth(table.scrollWidth);
+      setShowFakeScroll(table.scrollWidth > table.clientWidth);
+    };
+
+    updateWidths();
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateWidths();
+    });
+    resizeObserver.observe(table);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [activeTab, loading, filteredMemberships, filteredCustomers, filteredUsers]);
+
+  // Effect 2: Synchronize scrolling between the table container and fake scrollbar
+  useEffect(() => {
+    const table = tableContainerRef.current;
+    const fake = fakeScrollContainerRef.current;
+    if (!table || !fake) return;
+
+    let isSyncingTableScroll = false;
+    let isSyncingFakeScroll = false;
+
+    const onTableScroll = () => {
+      if (!isSyncingFakeScroll) {
+        isSyncingTableScroll = true;
+        fake.scrollLeft = table.scrollLeft;
+      }
+      isSyncingFakeScroll = false;
+    };
+
+    const onFakeScroll = () => {
+      if (!isSyncingTableScroll) {
+        isSyncingFakeScroll = true;
+        table.scrollLeft = fake.scrollLeft;
+      }
+      isSyncingTableScroll = false;
+    };
+
+    table.addEventListener('scroll', onTableScroll, { passive: true });
+    fake.addEventListener('scroll', onFakeScroll, { passive: true });
+
+    return () => {
+      table.removeEventListener('scroll', onTableScroll);
+      fake.removeEventListener('scroll', onFakeScroll);
+    };
+  }, [showFakeScroll, activeTab]);
+
   const renderPagination = (tab: TabType) => {
     const totalItems = getFilteredCountForTab(tab);
     const totalPages = getTotalPagesForTab(tab);
@@ -579,111 +645,133 @@ const MembershipManagement = () => {
     }
 
     return (
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                User Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Email
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Reference
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Profile Progress
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {paginatedMemberships.map(m => (
-              <tr key={m.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">
-                    {getUserDisplayName(m)}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">
-                    {m.user_email}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {m.reference}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {m.status ? (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      Active
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                      Inactive
-                    </span>
-                  )}
-                </td>
-                <td className="px-6 py-4">
-                  {m.profileProgress ? (
-                    <div className="flex flex-col gap-1">
-                      <div className="text-xs text-gray-600 mb-1">
-                        {Object.values(m.profileProgress).filter(Boolean).length} / 6 completed
-                      </div>
-                      <div className="flex flex-wrap gap-1">
-                        {[
-                          { key: 'customerDetails', label: 'Customer' },
-                          { key: 'employmentDetails', label: 'Employment' },
-                          { key: 'businessEntities', label: 'Business' },
-                          { key: 'propertyDetails', label: 'Property' },
-                          { key: 'nextOfKinDetails', label: 'Next of Kin' },
-                          { key: 'membershipDetails', label: 'Membership' },
-                        ].map(({ key, label }) => {
-                          const isCompleted = m.profileProgress?.[key as keyof ProfileProgress];
-                          return (
-                            <span
-                              key={key}
-                              className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                                isCompleted
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-gray-100 text-gray-600'
-                              }`}
-                              title={isCompleted ? `${label} Details: Completed` : `${label} Details: Not completed`}
-                            >
-                              {isCompleted ? '✓' : '○'} {label}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ) : (
-                    <span className="text-xs text-gray-400">Loading...</span>
-                  )}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button
-                    className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
-                      m.status
-                        ? 'bg-red-500 hover:bg-red-600'
-                        : 'bg-green-600 hover:bg-green-700'
-                    }`}
-                    onClick={() => handleStatusChange(m.id, !m.status)}
-                  >
-                    {m.status ? 'Deactivate' : 'Confirm Payment'}
-                  </button>
-                </td>
+      <div className="relative">
+        <div ref={tableContainerRef} className="bg-white rounded-lg shadow overflow-x-auto scrollbar-hide">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  User Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Email
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Reference
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Profile Progress
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  View Details
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {paginatedMemberships.map(m => (
+                <tr key={m.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900">
+                      {getUserDisplayName(m)}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-500">
+                      {m.user_email}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">
+                      {m.reference}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {m.status ? (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Active
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        Inactive
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    {m.profileProgress ? (
+                      <div className="flex flex-col gap-1">
+                        <div className="text-xs text-gray-600 mb-1">
+                          {Object.values(m.profileProgress).filter(Boolean).length} / 6 completed
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {[
+                            { key: 'customerDetails', label: 'Customer' },
+                            { key: 'employmentDetails', label: 'Employment' },
+                            { key: 'businessEntities', label: 'Business' },
+                            { key: 'propertyDetails', label: 'Property' },
+                            { key: 'nextOfKinDetails', label: 'Next of Kin' },
+                            { key: 'membershipDetails', label: 'Membership' },
+                          ].map(({ key, label }) => {
+                            const isCompleted = m.profileProgress?.[key as keyof ProfileProgress];
+                            return (
+                              <span
+                                key={key}
+                                className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                                  isCompleted
+                                    ? 'bg-green-100 text-green-800'
+                                    : 'bg-gray-100 text-gray-600'
+                                }`}
+                                title={isCompleted ? `${label} Details: Completed` : `${label} Details: Not completed`}
+                              >
+                                {isCompleted ? '✓' : '○'} {label}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-gray-400">Loading...</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button
+                      className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
+                        m.status
+                          ? 'bg-red-500 hover:bg-red-600'
+                          : 'bg-green-600 hover:bg-green-700'
+                      }`}
+                      onClick={() => handleStatusChange(m.id, !m.status)}
+                    >
+                      {m.status ? 'Deactivate' : 'Confirm Payment'}
+                    </button>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button
+                      onClick={() => setViewingCustomerUserId(m.user_id)}
+                      className="inline-flex items-center px-3 py-1.5 border border-blue-600 text-xs font-semibold rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200"
+                    >
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {activeTab === 'memberships' && showFakeScroll && (
+          <div
+            ref={fakeScrollContainerRef}
+            className="sticky bottom-0 overflow-x-auto bg-gray-50 border-t border-gray-200 z-10"
+            style={{ width: '100%' }}
+          >
+            <div style={{ width: tableScrollWidth, height: '1px' }} />
+          </div>
+        )}
       </div>
     );
   };
@@ -704,117 +792,128 @@ const MembershipManagement = () => {
     }
 
     return (
-      <div className="bg-white rounded-lg shadow overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Email
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                National ID
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                KRA PIN
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Mobile
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Profile Progress
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Created At
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                View Details
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {paginatedCustomers.map(customer => (
-              <tr key={customer.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">
-                    {getCustomerDisplayName(customer)}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">
-                    {customer.email || 'N/A'}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {customer.national_id || 'N/A'}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {customer.kra_pin || 'N/A'}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {customer.mobile || customer.telephone || 'N/A'}
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  {customer.profileProgress ? (
-                    <div className="flex flex-col gap-1">
-                      <div className="text-xs text-gray-600 mb-1">
-                        {Object.values(customer.profileProgress).filter(Boolean).length} / 6 completed
-                      </div>
-                      <div className="flex flex-wrap gap-1">
-                        {[
-                          { key: 'customerDetails', label: 'Customer' },
-                          { key: 'employmentDetails', label: 'Employment' },
-                          { key: 'businessEntities', label: 'Business' },
-                          { key: 'propertyDetails', label: 'Property' },
-                          { key: 'nextOfKinDetails', label: 'Next of Kin' },
-                          { key: 'membershipDetails', label: 'Membership' },
-                        ].map(({ key, label }) => {
-                          const isCompleted = customer.profileProgress?.[key as keyof ProfileProgress];
-                          return (
-                            <span
-                              key={key}
-                              className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                                isCompleted
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-gray-100 text-gray-600'
-                              }`}
-                              title={isCompleted ? `${label} Details: Completed` : `${label} Details: Not completed`}
-                            >
-                              {isCompleted ? '✓' : '○'} {label}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ) : (
-                    <span className="text-xs text-gray-400">Loading...</span>
-                  )}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">
-                    {customer.created_at ? new Date(customer.created_at).toLocaleDateString() : 'N/A'}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button
-                    onClick={() => setViewingCustomerUserId(customer.user_id)}
-                    className="inline-flex items-center px-3 py-1.5 border border-blue-600 text-xs font-semibold rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200"
-                  >
-                    View Details
-                  </button>
-                </td>
+      <div className="relative">
+        <div ref={tableContainerRef} className="bg-white rounded-lg shadow overflow-x-auto scrollbar-hide">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Email
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  National ID
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  KRA PIN
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Mobile
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Profile Progress
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Created At
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  View Details
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {paginatedCustomers.map(customer => (
+                <tr key={customer.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900">
+                      {getCustomerDisplayName(customer)}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-500">
+                      {customer.email || 'N/A'}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">
+                      {customer.national_id || 'N/A'}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">
+                      {customer.kra_pin || 'N/A'}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">
+                      {customer.mobile || customer.telephone || 'N/A'}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    {customer.profileProgress ? (
+                      <div className="flex flex-col gap-1">
+                        <div className="text-xs text-gray-600 mb-1">
+                          {Object.values(customer.profileProgress).filter(Boolean).length} / 6 completed
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {[
+                            { key: 'customerDetails', label: 'Customer' },
+                            { key: 'employmentDetails', label: 'Employment' },
+                            { key: 'businessEntities', label: 'Business' },
+                            { key: 'propertyDetails', label: 'Property' },
+                            { key: 'nextOfKinDetails', label: 'Next of Kin' },
+                            { key: 'membershipDetails', label: 'Membership' },
+                          ].map(({ key, label }) => {
+                            const isCompleted = customer.profileProgress?.[key as keyof ProfileProgress];
+                            return (
+                              <span
+                                key={key}
+                                className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                                  isCompleted
+                                    ? 'bg-green-100 text-green-800'
+                                    : 'bg-gray-100 text-gray-600'
+                                }`}
+                                title={isCompleted ? `${label} Details: Completed` : `${label} Details: Not completed`}
+                              >
+                                {isCompleted ? '✓' : '○'} {label}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-gray-400">Loading...</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-500">
+                      {customer.created_at ? new Date(customer.created_at).toLocaleDateString() : 'N/A'}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button
+                      onClick={() => setViewingCustomerUserId(customer.user_id)}
+                      className="inline-flex items-center px-3 py-1.5 border border-blue-600 text-xs font-semibold rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200"
+                    >
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {activeTab === 'customers' && showFakeScroll && (
+          <div
+            ref={fakeScrollContainerRef}
+            className="sticky bottom-0 overflow-x-auto bg-gray-50 border-t border-gray-200 z-10"
+            style={{ width: '100%' }}
+          >
+            <div style={{ width: tableScrollWidth, height: '1px' }} />
+          </div>
+        )}
       </div>
     );
   };
@@ -835,80 +934,91 @@ const MembershipManagement = () => {
     }
 
     return (
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ID
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Email
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Phone Number
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Role
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Created At
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {paginatedUsers.map(user => (
-              <tr key={user.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-mono text-gray-900 truncate max-w-xs">
-                    {user.id}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {user.email}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {user.phone || 'N/A'}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    user.role === 'admin' 
-                      ? 'bg-purple-100 text-purple-800'
-                      : 'bg-blue-100 text-blue-800'
-                  }`}>
-                    {user.role || 'user'}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-500">
-                    {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button
-                    onClick={() => handleDeleteUser(user.id, user.email)}
-                    disabled={deletingUserId === user.id}
-                    className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
-                      deletingUserId === user.id
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-red-600 hover:bg-red-700'
-                    }`}
-                    title="Delete user"
-                  >
-                    {deletingUserId === user.id ? 'Deleting...' : 'Delete'}
-                  </button>
-                </td>
+      <div className="relative">
+        <div ref={tableContainerRef} className="bg-white rounded-lg shadow overflow-x-auto scrollbar-hide">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ID
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Email
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Phone Number
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Role
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Created At
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {paginatedUsers.map(user => (
+                <tr key={user.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-mono text-gray-900 truncate max-w-xs">
+                      {user.id}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">
+                      {user.email}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">
+                      {user.phone || 'N/A'}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      user.role === 'admin' 
+                        ? 'bg-purple-100 text-purple-800'
+                        : 'bg-blue-100 text-blue-800'
+                    }`}>
+                      {user.role || 'user'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-500">
+                      {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button
+                      onClick={() => handleDeleteUser(user.id, user.email)}
+                      disabled={deletingUserId === user.id}
+                      className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
+                        deletingUserId === user.id
+                          ? 'bg-gray-400 cursor-not-allowed'
+                          : 'bg-red-600 hover:bg-red-700'
+                      }`}
+                      title="Delete user"
+                    >
+                      {deletingUserId === user.id ? 'Deleting...' : 'Delete'}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {activeTab === 'users' && showFakeScroll && (
+          <div
+            ref={fakeScrollContainerRef}
+            className="sticky bottom-0 overflow-x-auto bg-gray-50 border-t border-gray-200 z-10"
+            style={{ width: '100%' }}
+          >
+            <div style={{ width: tableScrollWidth, height: '1px' }} />
+          </div>
+        )}
       </div>
     );
   };
